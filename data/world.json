@@ -1,0 +1,232 @@
+{
+  "company": {
+    "name": "Ridgeline Freight, LLC",
+    "hq": {
+      "street": "1432 Quarrystone Avenue",
+      "city": "Chicago",
+      "state": "IL",
+      "zip": "60632"
+    },
+    "founded": "2009",
+    "fiscalYearStart": "01/01",
+    "officers": [
+      {
+        "title": "Chief Executive Officer",
+        "name": "Marian Voss"
+      },
+      {
+        "title": "Chief Financial Officer",
+        "name": "Owen Carlisle"
+      },
+      {
+        "title": "Chief Operating Officer",
+        "name": "Denise Harrow"
+      },
+      {
+        "title": "VP, Sales & Commercial",
+        "name": "Liam Granger"
+      }
+    ]
+  },
+  "customers": [
+    {
+      "id": "cust-harbor-point-foods",
+      "name": "Harbor Point Foods, Inc.",
+      "industry": "Food & Beverage",
+      "city": "Rockford",
+      "state": "IL",
+      "commodity": "packed and frozen groceries",
+      "volumeBand": "5k-20k"
+    },
+    {
+      "id": "cust-lakeshore-retail",
+      "name": "Lakeshore Retail Group",
+      "industry": "Retail",
+      "city": "Milwaukee",
+      "state": "WI",
+      "commodity": "general consumer goods",
+      "volumeBand": "5k-20k"
+    },
+    {
+      "id": "cust-prairie-wind-mfg",
+      "name": "Prairie Wind Manufacturing",
+      "industry": "Manufacturing",
+      "city": "Des Moines",
+      "state": "IA",
+      "commodity": "metal components and assemblies",
+      "volumeBand": "1k-5k"
+    },
+    {
+      "id": "cust-marlowe-finch-medical",
+      "name": "Marlowe & Finch Medical Supply",
+      "industry": "Medical Supply",
+      "city": "Indianapolis",
+      "state": "IN",
+      "commodity": "medical devices and disposables",
+      "volumeBand": "1k-5k"
+    },
+    {
+      "id": "cust-northline-auto",
+      "name": "Northline Auto Parts",
+      "industry": "Automotive",
+      "city": "Cleveland",
+      "state": "OH",
+      "commodity": "aftermarket auto parts",
+      "volumeBand": "1k-5k"
+    },
+    {
+      "id": "cust-cedar-valley-beverages",
+      "name": "Cedar Valley Beverages",
+      "industry": "Beverage",
+      "city": "Cedar Rapids",
+      "state": "IA",
+      "commodity": "bottled non-alcoholic beverages",
+      "volumeBand": "1k-5k"
+    }
+  ],
+  "carriers": [
+    {
+      "id": "car-brightwater",
+      "name": "Brightwater Carriers LLC",
+      "equipment": [
+        "dry van",
+        "reefer",
+        "flatbed"
+      ],
+      "state": "WI",
+      "fleetSizeBand": "150-300"
+    },
+    {
+      "id": "car-ashgrove-haulage",
+      "name": "Ashgrove Haulage LLC",
+      "equipment": [
+        "dry van",
+        "straight truck"
+      ],
+      "state": "IL",
+      "fleetSizeBand": "50-150"
+    },
+    {
+      "id": "car-juniper-bend",
+      "name": "Juniper Bend Logistics",
+      "equipment": [
+        "dry van",
+        "reefer",
+        "container chassis"
+      ],
+      "state": "OH",
+      "fleetSizeBand": "200-500"
+    },
+    {
+      "id": "car-granite-fork-intermodal",
+      "name": "Granite Fork Intermodal",
+      "equipment": [
+        "container chassis",
+        "flatbed"
+      ],
+      "state": "NE",
+      "fleetSizeBand": "100-250"
+    }
+  ],
+  "lanes": [
+    {
+      "id": "lane-chi-mke",
+      "origin": "Chicago, IL",
+      "destination": "Milwaukee, WI",
+      "miles": 92
+    },
+    {
+      "id": "lane-chi-msp",
+      "origin": "Chicago, IL",
+      "destination": "Minneapolis, MN",
+      "miles": 410
+    },
+    {
+      "id": "lane-chi-dsm",
+      "origin": "Chicago, IL",
+      "destination": "Des Moines, IA",
+      "miles": 335
+    },
+    {
+      "id": "lane-chi-ind",
+      "origin": "Chicago, IL",
+      "destination": "Indianapolis, IN",
+      "miles": 185
+    },
+    {
+      "id": "lane-chi-cle",
+      "origin": "Chicago, IL",
+      "destination": "Cleveland, OH",
+      "miles": 345
+    },
+    {
+      "id": "lane-mke-msp",
+      "origin": "Milwaukee, WI",
+      "destination": "Minneapolis, MN",
+      "miles": 337
+    },
+    {
+      "id": "lane-dsm-cid",
+      "origin": "Des Moines, IA",
+      "destination": "Cedar Rapids, IA",
+      "miles": 125
+    },
+    {
+      "id": "lane-cid-roc",
+      "origin": "Cedar Rapids, IA",
+      "destination": "Rockford, IL",
+      "miles": 190
+    },
+    {
+      "id": "lane-stl-kci",
+      "origin": "St. Louis, MO",
+      "destination": "Kansas City, MO",
+      "miles": 250
+    },
+    {
+      "id": "lane-oma-kck",
+      "origin": "Omaha, NE",
+      "destination": "Kansas City, KS",
+      "miles": 190
+    }
+  ],
+  "warehouses": [
+    {
+      "id": "wh-chicago-west",
+      "name": "Ridgeline Freight Warehouse - Chicago West",
+      "street": "2107 Northwind Terrace",
+      "city": "Chicago",
+      "state": "IL",
+      "zip": "60639",
+      "docks": 24
+    },
+    {
+      "id": "wh-joliet-south",
+      "name": "Ridgeline Freight Warehouse - Joliet",
+      "street": "88 Kestrel Loop",
+      "city": "Joliet",
+      "state": "IL",
+      "zip": "60433",
+      "docks": 16
+    },
+    {
+      "id": "wh-minneapolis-north",
+      "name": "Ridgeline Freight Warehouse - Twin Cities",
+      "street": "402 Meridian Park Drive",
+      "city": "Minneapolis",
+      "state": "MN",
+      "zip": "55411",
+      "docks": 12
+    }
+  ],
+  "glossary": {
+    "detention": "Charge assessed when a driver is held beyond the allotted free time at pickup or delivery.",
+    "layover": "Charge paid when a driver is held overnight because a load cannot be picked up or delivered as scheduled.",
+    "accessorial": "Additional services or charges outside standard linehaul (e.g., liftgate, inside delivery).",
+    "tonu": "Truck Ordered Not Used: cancellation fee charged when a dispatched truck is not loaded.",
+    "lumperFee": "Fee charged for third-party labor used to load or unload freight at a facility.",
+    "osd": "Over, Short & Damaged — discrepancies between shipped and received goods noted on delivery.",
+    "hazmat": "Hazardous materials classification for goods that require special handling and documentation.",
+    "reefer": "Refrigerated trailer or service used to transport temperature-sensitive freight."
+  }
+}
