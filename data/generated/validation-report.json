@@ -1,0 +1,176 @@
+{
+  "passed": true,
+  "documentCount": 24,
+  "factCount": 177,
+  "missingFactCount": 0,
+  "documents": [
+    {
+      "slug": "msa-harbor-point-foods",
+      "passed": true,
+      "factCount": 8,
+      "missingFacts": [],
+      "errors": []
+    },
+    {
+      "slug": "msa-lakeshore-retail",
+      "passed": true,
+      "factCount": 8,
+      "missingFacts": [],
+      "errors": []
+    },
+    {
+      "slug": "msa-prairie-wind-mfg",
+      "passed": true,
+      "factCount": 8,
+      "missingFacts": [],
+      "errors": []
+    },
+    {
+      "slug": "msa-marlowe-finch-medical",
+      "passed": true,
+      "factCount": 8,
+      "missingFacts": [],
+      "errors": []
+    },
+    {
+      "slug": "msa-northline-auto",
+      "passed": true,
+      "factCount": 8,
+      "missingFacts": [],
+      "errors": []
+    },
+    {
+      "slug": "msa-cedar-valley-beverages",
+      "passed": true,
+      "factCount": 8,
+      "missingFacts": [],
+      "errors": []
+    },
+    {
+      "slug": "carrier-brightwater",
+      "passed": true,
+      "factCount": 8,
+      "missingFacts": [],
+      "errors": []
+    },
+    {
+      "slug": "carrier-ashgrove-haulage",
+      "passed": true,
+      "factCount": 8,
+      "missingFacts": [],
+      "errors": []
+    },
+    {
+      "slug": "carrier-juniper-bend",
+      "passed": true,
+      "factCount": 8,
+      "missingFacts": [],
+      "errors": []
+    },
+    {
+      "slug": "carrier-granite-fork-intermodal",
+      "passed": true,
+      "factCount": 8,
+      "missingFacts": [],
+      "errors": []
+    },
+    {
+      "slug": "hr-pto-holidays",
+      "passed": true,
+      "factCount": 7,
+      "missingFacts": [],
+      "errors": []
+    },
+    {
+      "slug": "hr-remote-hybrid-work",
+      "passed": true,
+      "factCount": 6,
+      "missingFacts": [],
+      "errors": []
+    },
+    {
+      "slug": "hr-travel-expense",
+      "passed": true,
+      "factCount": 7,
+      "missingFacts": [],
+      "errors": []
+    },
+    {
+      "slug": "hr-conduct-at-will",
+      "passed": true,
+      "factCount": 6,
+      "missingFacts": [],
+      "errors": []
+    },
+    {
+      "slug": "hr-driver-hours-safety",
+      "passed": true,
+      "factCount": 8,
+      "missingFacts": [],
+      "errors": []
+    },
+    {
+      "slug": "hr-attendance-leave",
+      "passed": true,
+      "factCount": 7,
+      "missingFacts": [],
+      "errors": []
+    },
+    {
+      "slug": "sop-inbound-receiving",
+      "passed": true,
+      "factCount": 8,
+      "missingFacts": [],
+      "errors": []
+    },
+    {
+      "slug": "sop-outbound-pick-pack",
+      "passed": true,
+      "factCount": 7,
+      "missingFacts": [],
+      "errors": []
+    },
+    {
+      "slug": "sop-hazmat-handling",
+      "passed": true,
+      "factCount": 7,
+      "missingFacts": [],
+      "errors": []
+    },
+    {
+      "slug": "sop-osd-exceptions",
+      "passed": true,
+      "factCount": 7,
+      "missingFacts": [],
+      "errors": []
+    },
+    {
+      "slug": "rate-ltl-midwest",
+      "passed": true,
+      "factCount": 7,
+      "missingFacts": [],
+      "errors": []
+    },
+    {
+      "slug": "rate-ftl-dry-van",
+      "passed": true,
+      "factCount": 7,
+      "missingFacts": [],
+      "errors": []
+    },
+    {
+      "slug": "rate-accessorials",
+      "passed": true,
+      "factCount": 7,
+      "missingFacts": [],
+      "errors": []
+    },
+    {
+      "slug": "rate-fuel-surcharge",
+      "passed": true,
+      "factCount": 6,
+      "missingFacts": [],
+      "errors": []
+    }
+  ]
+}

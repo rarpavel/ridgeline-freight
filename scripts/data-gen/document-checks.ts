@@ -50,7 +50,7 @@ function factForms(fact: Fact): string[] {
   return [fact.value, ...fact.aliases].map((form) => normalizeText(form).replace(/\.$/, ''));
 }
 
-function mentionsFact(normalized: string, fact: Fact): boolean {
+export function mentionsFact(normalized: string, fact: Fact): boolean {
   return factForms(fact).some((form) => normalized.includes(form));
 }
 
