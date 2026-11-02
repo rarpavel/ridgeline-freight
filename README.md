@@ -25,8 +25,12 @@ Postgres listens on port 5432. If that port is taken, put `POSTGRES_PORT=<port>`
 Fill in the empty required values in `.env.local` (`OPENAI_API_KEY`, `SESSION_SECRET`, `DEMO_ACCOUNTS_JSON`); the app refuses to start without them and names what is missing. `pnpm hash-password` prints a ready `DEMO_ACCOUNTS_JSON` line for `.env.local`, with random passwords and every `$` escaped as `\$`. Then:
 
 ```bash
+pnpm db:migrate
+pnpm ingest
 pnpm dev
 ```
+
+`pnpm ingest` indexes the 24 documents in `data/corpus` (embeddings cost well under $0.01). A repeat run skips unchanged documents; `--force` rewrites them and `--only <slug>` limits the run to one document.
 
 Open http://localhost:3000/login. The session cookie is always `Secure`; Chrome and Firefox accept that on `localhost`, but Safari may not, so use one of those to sign in locally.
 
