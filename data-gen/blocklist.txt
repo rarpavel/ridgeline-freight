@@ -1,0 +1,83 @@
+# Real companies the generators must not produce (SYNTHETIC_DATA.md §1, §5.2). One name per line,
+# matched case-insensitively as a substring, so names that hide inside ordinary words stay out or
+# use their long form: "XPO" would match "export", "UPS" would match "pickups", "Target" is a word.
+
+# Carriers and parcel
+J.B. Hunt
+JB Hunt
+Schneider National
+Werner Enterprises
+Knight-Swift
+Swift Transportation
+Old Dominion
+Saia LTL
+Estes Express
+YRC Freight
+Yellow Corporation
+ArcBest
+TForce Freight
+Southeastern Freight
+Averitt Express
+R+L Carriers
+Landstar
+FedEx
+Federal Express
+United Parcel Service
+XPO Logistics
+Roadway Express
+Con-way
+
+# Brokers and 3PLs
+C.H. Robinson
+CH Robinson
+Echo Global Logistics
+Coyote Logistics
+Uber Freight
+Convoy Inc
+Expeditors International
+DHL
+Kuehne+Nagel
+Kuehne + Nagel
+DB Schenker
+GXO Logistics
+Ryder System
+Penske Logistics
+Total Quality Logistics
+
+# Retailers and distributors
+Walmart
+Costco
+Kroger
+Home Depot
+Lowe's
+Best Buy
+Amazon
+Sysco
+US Foods
+Walgreens
+
+# Manufacturers and medical suppliers
+Procter & Gamble
+General Motors
+Ford Motor
+Caterpillar Inc
+John Deere
+Coca-Cola
+PepsiCo
+Anheuser-Busch
+McKesson
+Cardinal Health
+Medline
+AutoZone
+O'Reilly Auto Parts
+NAPA Auto Parts
+
+# Rejected catalog candidates that matched real businesses (name check, 2026-11-02)
+Great Lakes Medical Supply
+Ironwood Manufacturing
+Redline Trucking
+TriState Haulers
+Fox River Terminals
+Heartland Intermodal Gateway
+Keystone Lines
+Northwest Express

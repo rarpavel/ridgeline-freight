@@ -1,0 +1,218 @@
+[
+  {
+    "slug": "msa-harbor-point-foods",
+    "title": "Master Service Agreement — Harbor Point Foods, Inc.",
+    "type": "msa",
+    "roles": [
+      "sales",
+      "admin"
+    ]
+  },
+  {
+    "slug": "msa-lakeshore-retail",
+    "title": "Master Service Agreement — Lakeshore Retail Group",
+    "type": "msa",
+    "roles": [
+      "sales",
+      "admin"
+    ]
+  },
+  {
+    "slug": "msa-prairie-wind-mfg",
+    "title": "Master Service Agreement — Prairie Wind Manufacturing",
+    "type": "msa",
+    "roles": [
+      "sales",
+      "admin"
+    ]
+  },
+  {
+    "slug": "msa-marlowe-finch-medical",
+    "title": "Master Service Agreement — Marlowe & Finch Medical Supply",
+    "type": "msa",
+    "roles": [
+      "sales",
+      "admin"
+    ]
+  },
+  {
+    "slug": "msa-northline-auto",
+    "title": "Master Service Agreement — Northline Auto Parts",
+    "type": "msa",
+    "roles": [
+      "sales",
+      "admin"
+    ]
+  },
+  {
+    "slug": "msa-cedar-valley-beverages",
+    "title": "Master Service Agreement — Cedar Valley Beverages",
+    "type": "msa",
+    "roles": [
+      "sales",
+      "admin"
+    ]
+  },
+  {
+    "slug": "carrier-brightwater",
+    "title": "Carrier Agreement — Brightwater Carriers LLC",
+    "type": "carrier_agreement",
+    "roles": [
+      "ops",
+      "admin"
+    ]
+  },
+  {
+    "slug": "carrier-ashgrove-haulage",
+    "title": "Carrier Agreement — Ashgrove Haulage LLC",
+    "type": "carrier_agreement",
+    "roles": [
+      "ops",
+      "admin"
+    ]
+  },
+  {
+    "slug": "carrier-juniper-bend",
+    "title": "Carrier Agreement — Juniper Bend Logistics",
+    "type": "carrier_agreement",
+    "roles": [
+      "ops",
+      "admin"
+    ]
+  },
+  {
+    "slug": "carrier-granite-fork-intermodal",
+    "title": "Subcontractor Agreement — Granite Fork Intermodal",
+    "type": "carrier_agreement",
+    "roles": [
+      "ops",
+      "admin"
+    ]
+  },
+  {
+    "slug": "hr-pto-holidays",
+    "title": "Employee Handbook — Paid Time Off and Holidays",
+    "type": "hr_policy",
+    "roles": [
+      "hr",
+      "admin"
+    ]
+  },
+  {
+    "slug": "hr-remote-hybrid-work",
+    "title": "Employee Handbook — Remote and Hybrid Work",
+    "type": "hr_policy",
+    "roles": [
+      "hr",
+      "admin"
+    ]
+  },
+  {
+    "slug": "hr-travel-expense",
+    "title": "Employee Handbook — Business Travel and Expense Reimbursement",
+    "type": "hr_policy",
+    "roles": [
+      "hr",
+      "admin"
+    ]
+  },
+  {
+    "slug": "hr-conduct-at-will",
+    "title": "Employee Handbook — Code of Conduct and At-Will Employment",
+    "type": "hr_policy",
+    "roles": [
+      "hr",
+      "admin"
+    ]
+  },
+  {
+    "slug": "hr-driver-hours-safety",
+    "title": "Employee Handbook — Driver Hours and Safety Compliance",
+    "type": "hr_policy",
+    "roles": [
+      "hr",
+      "admin"
+    ]
+  },
+  {
+    "slug": "hr-attendance-leave",
+    "title": "Employee Handbook — Attendance and Leaves of Absence",
+    "type": "hr_policy",
+    "roles": [
+      "hr",
+      "admin"
+    ]
+  },
+  {
+    "slug": "sop-inbound-receiving",
+    "title": "SOP — Inbound Receiving and Dock Scheduling",
+    "type": "sop",
+    "roles": [
+      "ops",
+      "admin"
+    ]
+  },
+  {
+    "slug": "sop-outbound-pick-pack",
+    "title": "SOP — Outbound Pick, Pack and Ship",
+    "type": "sop",
+    "roles": [
+      "ops",
+      "admin"
+    ]
+  },
+  {
+    "slug": "sop-hazmat-handling",
+    "title": "SOP — Hazardous Materials Handling",
+    "type": "sop",
+    "roles": [
+      "ops",
+      "admin"
+    ]
+  },
+  {
+    "slug": "sop-osd-exceptions",
+    "title": "SOP — Delivery Exceptions and OS&D Claims",
+    "type": "sop",
+    "roles": [
+      "ops",
+      "admin"
+    ]
+  },
+  {
+    "slug": "rate-ltl-midwest",
+    "title": "Rate Sheet — Regional LTL, Midwest Lanes (2026)",
+    "type": "rate_sheet",
+    "roles": [
+      "sales",
+      "admin"
+    ]
+  },
+  {
+    "slug": "rate-ftl-dry-van",
+    "title": "Rate Sheet — Full Truckload Dry Van (2026)",
+    "type": "rate_sheet",
+    "roles": [
+      "sales",
+      "admin"
+    ]
+  },
+  {
+    "slug": "rate-accessorials",
+    "title": "Accessorial Fee Schedule (2026)",
+    "type": "rate_sheet",
+    "roles": [
+      "sales",
+      "admin"
+    ]
+  },
+  {
+    "slug": "rate-fuel-surcharge",
+    "title": "Fuel Surcharge Table (2026)",
+    "type": "rate_sheet",
+    "roles": [
+      "sales",
+      "admin"
+    ]
+  }
+]

@@ -7,7 +7,9 @@ Last updated: 2026-11-02
 ## Versioning
 
 - File name carries the version: `prompts/rag-system.v1.md`. A change = a new file with `v2`; old files stay.
-- `src/server/prompts/load.ts` returns `{ name, version, hash, text }`; `hash` = first 8 hex chars of sha256 of the file. Recorded as `rag-system@v1#1a2b3c4d` in traces and eval runs.
+- `src/server/prompts/load.ts` exports `loadPrompt(name, version)`, which returns `{ name, version, hash, text }`; `hash` = first 8 hex chars of sha256 of the file. `formatPromptVersion(prompt)` gives the form recorded in traces and eval runs: `rag-system@v1#1a2b3c4d`.
+- `src/server/prompts/render.ts` exports `renderPrompt(template, variables)`, which throws on a variable with no value.
+- LLM clients: `src/server/llm/client.ts` (`openai`) and `src/server/llm/judge.ts` (`completeWithClaude`, CLI only). Both rely on the SDK's retries for 429 and 5xx.
 - Data-generation prompts are versioned the same way but their outputs are committed, so a version bump means regenerated data and a new `data/VERSION`.
 
 ## Runtime prompts (`prompts/`)

@@ -1,0 +1,29 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "required": ["version", "facts"],
+  "properties": {
+    "version": { "type": "string" },
+    "facts": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["factId", "docSlug", "category", "statement", "value", "aliases", "valueType"],
+        "additionalProperties": false,
+        "properties": {
+          "factId":      { "type": "string", "pattern": "^[a-z0-9-]+#[0-9]{2}$" },
+          "docSlug":     { "type": "string" },
+          "category":    { "enum": ["payment_terms","penalty","liability_cap","term_and_termination","notice_period","rate","fee","threshold","policy_rule","date","party","exception","other"] },
+          "statement":   { "type": "string", "minLength": 20 },
+          "value":       { "type": "string" },
+          "aliases":     { "type": "array", "items": { "type": "string" }, "minItems": 1 },
+          "valueType":   { "enum": ["money","days","percent","date","number","text"] },
+          "sectionHint": { "type": "string" },
+          "isException": { "type": "boolean", "default": false },
+          "differsFrom": { "type": "array", "items": { "type": "string" } },
+          "entityIds":   { "type": "array", "items": { "type": "string" } }
+        }
+      }
+    }
+  }
+}
