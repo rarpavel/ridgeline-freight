@@ -89,7 +89,7 @@ Confidential information disclosed under this Agreement will be used only for th
 
 ## 10. Termination
 ### 10.1 Termination for Convenience
-Subject to the Term and Termination provisions in this Agreement, either party may terminate this Agreement in accordance with the notice provisions set forth herein. Either party may terminate the Master Service Agreement — Cedar Valley Beverages with 120 days' prior written notice.
+Either party may terminate the Master Service Agreement — Cedar Valley Beverages with 120 days' prior written notice.
 
 ### 10.2 Termination for Cause
 A party may terminate for material breach that remains uncured following reasonable prior written notice and an opportunity to cure. Termination for cause will not relieve a breaching party of obligations accrued prior to termination.

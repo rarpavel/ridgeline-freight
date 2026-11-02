@@ -4,7 +4,7 @@
 This Standard Operating Procedure establishes requirements and procedural steps for handling delivery exceptions and Overages, Shortages & Damages (OS&D) claims for Ridgeline Freight, LLC. The SOP defines roles, evidence requirements, reporting windows, resolution timelines, billing treatment for accessorials, escalation paths, and recordkeeping to ensure consistent, auditable handling of exceptions and claims.
 
 ## 2. Scope
-This SOP applies to all Ridgeline Freight, LLC operations, customers, and facilities involved in the receipt, handling, and delivery of freight. The SOP specifically covers activity at Ridgeline Freight Warehouse - Chicago West (2107 Northwind Terrace, Chicago, IL 60639, docks 24) and Ridgeline Freight Warehouse - Twin Cities (402 Meridian Park Drive, Minneapolis, MN 55411, docks 12). Cedar Valley Beverages (Cedar Rapids, IA) and other customers are subject to these procedures unless contractual terms state otherwise.
+This SOP applies to all Ridgeline Freight, LLC operations, customers, and facilities involved in the receipt, handling, and delivery of freight. The SOP specifically covers activity at Ridgeline Freight Warehouse - Chicago West (2107 Northwind Terrace, Chicago, IL 60639, 24 docks) and Ridgeline Freight Warehouse - Twin Cities (402 Meridian Park Drive, Minneapolis, MN 55411, 12 docks). Cedar Valley Beverages (Cedar Rapids, IA) and other customers are subject to these procedures unless contractual terms state otherwise.
 
 ## 3. Definitions
 - Delivery Exception: Any event at receipt or delivery that deviates from the expected shipment condition, count, or documentation.
@@ -69,14 +69,14 @@ A detailed step-by-step procedure follows.
 - The Evidence Package should include the delivery receipt showing exception notation, driver statement, and any related carrier documents.
 
 ## 8. Claims / Reporting Window
-- SOP — Delivery Exceptions and OS&D Claims requires customers to report OS&D and delivery exceptions within 5 business days of delivery.
+- This SOP requires customers to report OS&D and delivery exceptions within 5 business days of delivery.
 - For facilities such as Ridgeline Freight Warehouse - Twin Cities, the local manager will accept and log reports consistent with this reporting window.
 
 ## 9. Claims / Thresholds
-- SOP — Delivery Exceptions and OS&D Claims states that monetary discrepancies under $100.00 do not trigger formal claims.
+- This SOP states that monetary discrepancies under $100.00 do not trigger formal claims.
 - For smaller variances consistent with internal policy, document the event but do not open a formal claim unless otherwise requested by the customer or required by contract.
 
-Simple checklist table
+Summary of thresholds:
 
 | Item | Threshold / Requirement |
 |---|---|
@@ -84,14 +84,14 @@ Simple checklist table
 | Minimum claim monetary threshold | $100.00 |
 
 ## 10. Claims / Resolution Timeline
-- SOP — Delivery Exceptions and OS&D Claims requires Ridgeline to complete routine OS&D investigations within 30 calendar days of claim submission.
+- This SOP requires Ridgeline to complete routine OS&D investigations within 30 calendar days of claim submission.
 - If the Investigation Owner anticipates an extended inquiry, the claimant will be notified and periodic updates provided.
 
 ## 11. Accessorial Charges / Detention (OSD)
 - For shipments subject to an OS&D investigation, Ridgeline applies a detention fee of $95.00 per hour after free time. The applicable fee is documented on the accessorial invoice and is subject to contract terms and dispute resolution.
 
 ## 12. Accessorial Billing / Lumper
-- Lumper fees are billed to the consignee; Lumper fees billed to consignee, except Cedar Valley Beverages (billed to Ridgeline). This means that, as a rule, consignees are responsible for lumper charges, with the stated exception for Cedar Valley Beverages where Ridgeline Freight, LLC will absorb lumper fees for that customer.
+- Billing rule: Lumper fees billed to consignee, except Cedar Valley Beverages (billed to Ridgeline). Consignees are responsible for lumper charges, while Ridgeline Freight, LLC absorbs lumper fees for Cedar Valley Beverages.
 
 ## 13. Exceptions and Escalation
 1. Exceptions to standard procedure:
@@ -104,6 +104,7 @@ Simple checklist table
 ## 14. Records and KPIs
 - Maintain a file for each OS&D claim containing the Evidence Package, investigation notes, correspondence, and settlement documentation.
 - Retain records in accordance with Ridgeline document retention policies.
+- The Investigation Owner confirms that the claim file is complete before closing a claim.
 - Key performance indicators include timeliness of claim registration, evidence completeness, and closure within the resolution timeline stated in this SOP.
 
 ## 15. Force Majeure

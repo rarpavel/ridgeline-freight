@@ -13,7 +13,7 @@ Chicago, IL 60632
 ### 1.3 Carrier Identifiers
 Carrier legal name: Brightwater Carriers LLC  
 State of registration: WI  
-Reported fleet size band: 150-300  
+Fleet size: 150-300 vehicles  
 Equipment types represented by Carrier: dry van, reefer, flatbed
 
 ## 2. Agreement Date / Term
@@ -172,6 +172,6 @@ Name: Liam Granger
 Title: VP, Sales & Commercial  
 Date: _________________________
 
---- 
+---
 
 This Agreement may be executed in counterparts and delivered by electronic signature, each of which will be deemed an original and all of which together will constitute one and the same instrument.

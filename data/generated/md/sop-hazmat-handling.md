@@ -6,7 +6,7 @@ This Standard Operating Procedure establishes Ridgeline Freight, LLC controls an
 Ridgeline Freight, LLC headquarters: 1432 Quarrystone Avenue, Chicago, IL 60632.
 
 ## 2. Scope
-This SOP applies to all Ridgeline Freight, LLC employees, agents, contractors, and carrier partners engaged in the movement or custody of hazardous materials on behalf of customers. It covers acceptance, inspection, placarding, temperature control for refrigerated hazmat, incident reporting, records retention and dispute handling at Ridgeline Freight facilities, including Ridgeline Freight Warehouse - Twin Cities, 402 Meridian Park Drive, Minneapolis, MN 55411, docks 12.
+This SOP applies to all Ridgeline Freight, LLC employees, agents, contractors, and carrier partners engaged in the movement or custody of hazardous materials on behalf of customers. It covers acceptance, inspection, placarding, temperature control for refrigerated hazmat, incident reporting, records retention and dispute handling at Ridgeline Freight facilities, including Ridgeline Freight Warehouse - Twin Cities, 402 Meridian Park Drive, Minneapolis, MN 55411 (12 docks).
 
 This SOP supplements customer-specific terms and carrier agreements where applicable.
 
@@ -27,7 +27,7 @@ This SOP supplements customer-specific terms and carrier agreements where applic
 - Carrier partners: Ensure placarding and paperwork accompany hazardous loads in transit and comply with carrier responsibilities described herein.
 
 ## 5. Acceptance / Notice Requirements
-SOP — Hazardous Materials Handling requires hazardous shipments to be approved and documented at least 72 hours before scheduled pickup. Customers must provide complete shipment details and any special handling instructions within that timeframe to permit acceptance review and routing.
+This SOP requires hazardous shipments to be approved and documented at least 72 hours before scheduled pickup. Customers must provide complete shipment details and any special handling instructions within that timeframe to permit acceptance review and routing.
 
 Customer-specific handling instructions that affect acceptance must be supplied before approval. Where a customer has standing arrangements with Ridgeline Freight, LLC, those arrangements do not negate the requirement that hazardous shipments be approved and documented at least 72 hours before scheduled pickup.
 
@@ -62,7 +62,7 @@ OSD reporting process:
 2. Ridgeline logs the OSD and issues an investigation ticket.
 3. If required, samples or photographs are secured under controlled conditions to support investigation.
 
-Reports submitted after the 48 hours threshold may be considered untimely and may limit investigatory remedies.
+Reports submitted after the 48-hour window may be considered untimely and may limit investigatory remedies.
 
 ## 10. Procedures
 10.1 General acceptance procedure
@@ -108,15 +108,15 @@ Records to retain:
 - Billing records showing application of the hazmat handling fee of $200.00 per shipment and any documented exceptions for carriers such as Juniper Bend Logistics.
 - Transport records demonstrating that placarding and complete hazmat paperwork required during transport accompanied the load.
 
-Key performance indicators (qualitative and operational):
+Key performance indicators:
 - Compliance with acceptance timing.
 - Incidence of OSD reported within 48 hours.
-- Percentage of reefer hazmat maintained within 36°F to 46°F while in custody (measurement methodology to be defined in operational metrics).
+- Percentage of reefer hazmat maintained within 36°F to 46°F while in custody.
 
 ## 13. Facilities and Carrier Partners
-Ridgeline Freight Warehouse - Twin Cities, 402 Meridian Park Drive, Minneapolis, MN 55411, docks 12, is a primary facility for Midwest hazmat custody and operations and must be maintained to support the procedures in this SOP.
+Ridgeline Freight Warehouse - Twin Cities, 402 Meridian Park Drive, Minneapolis, MN 55411 (12 docks), is a primary facility for Midwest hazmat custody and operations and must be maintained to support the procedures in this SOP.
 
-Carrier partners include Juniper Bend Logistics (state: OH; equipment: dry van, reefer, container chassis) and Granite Fork Intermodal (state: NE; equipment: container chassis, flatbed). These partners are bound to the documentation and placarding requirements set out in this SOP when acting on Ridgeline Freight, LLC shipments.
+Carrier partners include Juniper Bend Logistics (Ohio; dry van, reefer, and container chassis equipment) and Granite Fork Intermodal (Nebraska; container chassis and flatbed equipment). These partners are bound to the documentation and placarding requirements set out in this SOP when acting on Ridgeline Freight, LLC shipments.
 
 ## 14. Legal / Governing Law
 Governing law: Illinois; venue: Cook County, IL. This SOP and any disputes arising from its application are governed by the laws of that jurisdiction and venue rules.
@@ -141,16 +141,16 @@ Approved by:
 
 Chief Executive Officer
 Marian Voss
-[signature line]
+Signature: __________________________
 
 Chief Operating Officer
 Denise Harrow
-[signature line]
+Signature: __________________________
 
 Chief Financial Officer
 Owen Carlisle
-[signature line]
+Signature: __________________________
 
 VP, Sales & Commercial
 Liam Granger
-[signature line]
+Signature: __________________________

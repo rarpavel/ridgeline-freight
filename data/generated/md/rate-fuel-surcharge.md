@@ -30,4 +30,4 @@ This schedule applies to shipments moved by Ridgeline Freight, LLC and establish
 3. 7.5% for $4.00–$4.49/gal
 4. 10.0% for $4.50+/gal
 5. Apply to linehaul and accessorials; exclude lumper fees and third-party direct charges
-6. Values are updated weekly based on the DOE national diesel average; published percentages are applied to linehaul and eligible accessorials and will be updated on a weekly basis.
+6. Values are updated weekly based on the DOE national diesel average.

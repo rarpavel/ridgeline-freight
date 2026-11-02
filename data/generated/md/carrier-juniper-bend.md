@@ -7,7 +7,7 @@ Ridgeline Freight, LLC headquarters:
 1432 Quarrystone Avenue
 Chicago, IL 60632
 
-Carrier information on record: Juniper Bend Logistics, State of registration: OH, fleet size band: 200-500, primary equipment types: dry van, reefer, container chassis.
+Juniper Bend Logistics is registered in Ohio, operates a fleet of 200-500 vehicles, and runs dry van, reefer, and container chassis equipment.
 
 ## 2. Agreement Date / Term
 ### 2.1 Effective Date
@@ -41,7 +41,7 @@ Carrier shall provide and maintain Equipment in good working order and suitable 
 Carrier shall, at its expense, procure and maintain insurance coverage as required by law and as reasonably requested by Broker. Carrier shall provide certificates of insurance upon Broker’s request and shall notify Broker promptly of any material change, cancellation, or nonrenewal of coverage.
 
 ### 5.2 Cargo Liability
-Carrier’s cargo liability for shipments transported under this Agreement is limited to $250,000.00 per occurrence, except for shipments transported on container chassis. The foregoing sentence states the limitation and the exception in the same sentence.
+Carrier’s cargo liability for shipments transported under this Agreement is limited to $250,000.00 per occurrence, except for shipments transported on container chassis.
 
 ### 5.3 Claims Handling
 Carrier shall promptly notify Broker of any loss, damage, shortage, or other cargo claim and shall cooperate in the investigation and resolution of claims. Carrier shall preserve and make available records, bills of lading, delivery receipts, inspections, and other documentation reasonably necessary to process any claim.
@@ -137,6 +137,6 @@ Date: _______________________________
 Juniper Bend Logistics
 
 By: _________________________________
-Name: Authorized Representative
+Name: _______________________________
 Title: Authorized Representative
 Date: _______________________________

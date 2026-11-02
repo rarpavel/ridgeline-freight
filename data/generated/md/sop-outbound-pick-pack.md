@@ -46,7 +46,7 @@ This SOP applies to all outbound pick, pack and ship operations executed at Ridg
    - Validate order details, SKUs, quantities, and special handling requirements.
 
 2. Scheduling and Cutoff
-   - For same‑day shipment requests, ensure pick, pack and staging requests are received by 15:00 (3:00 PM) local time at Ridgeline Freight Warehouse - Joliet. SOP — Outbound Pick, Pack and Ship requires pick, pack and staging requests for same‑day shipment to be received by 15:00 (3:00 PM) local time at Ridgeline Freight Warehouse - Joliet.
+   - For same-day shipment requests, ensure pick, pack and staging requests are received by 15:00 (3:00 PM) local time at Ridgeline Freight Warehouse - Joliet.
    - Confirm carrier appointment times and dock assignments.
 
 3. Pick and Pack Execution
@@ -69,22 +69,22 @@ This SOP applies to all outbound pick, pack and ship operations executed at Ridg
    - Forward applicable accessorials and minimum charges to Finance for billing.
 
 ## 6. Loading / Free Time
-SOP — Outbound Pick, Pack and Ship provides carriers 45 minutes of free time for loading at Ridgeline Freight Warehouse - Joliet. Dock managers will monitor loading start and completion times. Any time beyond the allowed loading free time is subject to detention charges as specified in Section 7.
+This SOP provides carriers 45 minutes of free time for loading at Ridgeline Freight Warehouse - Joliet. Dock managers will monitor loading start and completion times. Any time beyond the allowed loading free time is subject to detention charges as specified in Section 7.
 
-Note: When traffic, weather, or unforeseen events impact inbound carrier arrival windows, Operations will communicate expected delays to carriers and Sales. Reference to the permitted loading interval is as stated above; billing thresholds are governed by Section 7.
+When traffic, weather, or unforeseen events affect carrier arrival windows, Operations will communicate expected delays to carriers and Sales.
 
 ## 7. Accessorial Charges
 ### 7.1 Detention
-SOP — Outbound Pick, Pack and Ship charges detention at $85.00 per hour after outbound free time at Ridgeline Freight Warehouse - Joliet. Detention invoicing is calculated from the end of the allowed loading period until the carrier completes loading and departs the facility.
+This SOP charges detention at $85.00 per hour after outbound free time at Ridgeline Freight Warehouse - Joliet. Detention invoicing is calculated from the end of the allowed loading period until the carrier completes loading and departs the facility.
 
 ### 7.2 TONU
-SOP — Outbound Pick, Pack and Ship applies a TONU fee of $200.00 unless the Customer provides written notice at least 24 hours prior to the scheduled pickup. This TONU policy applies to customers served from Ridgeline Freight Warehouse - Joliet, including Lakeshore Retail Group, and will be billed to the customer when a truck is tendered but the shipment is not presented for loading.
+This SOP applies a TONU fee of $200.00 unless the Customer provides written notice at least 24 hours prior to the scheduled pickup. This TONU policy applies to customers served from Ridgeline Freight Warehouse - Joliet, including Lakeshore Retail Group, and will be billed to the customer when a truck is tendered but the shipment is not presented for loading.
 
 ### 7.3 Minimum Charge
-SOP — Outbound Pick, Pack and Ship sets a minimum outbound charge of $45.00 per shipment at Ridgeline Freight Warehouse - Joliet. Finance will apply the minimum outbound charge where line-haul or other charges would otherwise fall below the minimum.
+This SOP sets a minimum outbound charge of $45.00 per shipment at Ridgeline Freight Warehouse - Joliet. Finance will apply the minimum outbound charge where line-haul or other charges would otherwise fall below the minimum.
 
 ## 8. Cutoff Times / Same-Day Shipping
-SOP — Outbound Pick, Pack and Ship requires pick, pack and staging requests for same‑day shipment to be received by 15:00 (3:00 PM) local time at Ridgeline Freight Warehouse - Joliet. Requests received after that cutoff will be processed on the next operational cycle, unless Operations authorizes an exception.
+This SOP requires pick, pack and staging requests for same-day shipment to be received by 15:00 (3:00 PM) local time at Ridgeline Freight Warehouse - Joliet. Requests received after that cutoff will be processed on the next operational cycle, unless Operations authorizes an exception.
 
 ## 9. Escalation / Exceptions
 Orders not picked within 12 hours of scheduled pick time will be escalated to Operations. The escalation process:
@@ -99,7 +99,7 @@ All outbound documentation including pick tickets, pack lists, staging manifests
 - On-time pick completion (percent of picks completed per scheduled pick window).
 - Load accuracy (percent of loads matched to manifest).
 - Accessorial incidence (count and type).
-- Carrier turnaround (qualitative assessment referenced to free time and detention).
+- Carrier turnaround (loading time against free time and detention).
 
 The following simple checklist supports outbound readiness and verification:
 
