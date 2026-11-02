@@ -2,38 +2,37 @@
 
 Effective date: 04/01/2026
 
-This rate sheet applies to full truckload dry van and reefer services offered by Ridgeline Freight, LLC for the lanes listed below.
+This rate sheet issued by Ridgeline Freight, LLC applies to Full Truckload Dry Van and Reefer equipment on the lanes listed below.
 
-## Rates by Lane — Full Truckload
+## Published Full Truckload Rates — Dry Van & Reefer (per mile)
 
 | Lane | Origin | Destination | Miles | Equipment | Min Charge | Rate / Mile |
 | --- | --- | --- | --- | --- | --- | --- |
-| lane-chi-mke | Chicago, IL | Milwaukee, WI | 92 | Dry van | $950.00 | $1.40 |
-| lane-chi-mke | Chicago, IL | Milwaukee, WI | 92 | Reefer | $950.00 | $1.70 |
-| lane-dsm-cid | Des Moines, IA | Cedar Rapids, IA | 125 | Dry van | $950.00 | $1.45 |
-| lane-dsm-cid | Des Moines, IA | Cedar Rapids, IA | 125 | Reefer | $950.00 | $1.75 |
-| lane-chi-ind | Chicago, IL | Indianapolis, IN | 185 | Dry van | $950.00 | $1.60 |
-| lane-chi-ind | Chicago, IL | Indianapolis, IN | 185 | Reefer | $950.00 | $1.90 |
-| lane-cid-roc | Cedar Rapids, IA | Rockford, IL | 190 | Dry van | $950.00 | $1.65 |
-| lane-cid-roc | Cedar Rapids, IA | Rockford, IL | 190 | Reefer | $950.00 | $1.95 |
-| lane-oma-kck | Omaha, NE | Kansas City, KS | 190 | Dry van | $950.00 | $1.65 |
-| lane-oma-kck | Omaha, NE | Kansas City, KS | 190 | Reefer | $950.00 | $1.95 |
-| lane-stl-kci | St. Louis, MO | Kansas City, MO | 250 | Dry van | $950.00 | $1.80 |
-| lane-stl-kci | St. Louis, MO | Kansas City, MO | 250 | Reefer | $950.00 | $2.10 |
-| lane-chi-dsm | Chicago, IL | Des Moines, IA | 335 | Dry van | $950.00 | $1.95 |
-| lane-chi-dsm | Chicago, IL | Des Moines, IA | 335 | Reefer | $950.00 | $2.25 |
-| lane-mke-msp | Milwaukee, WI | Minneapolis, MN | 337 | Dry van | $950.00 | $1.97 |
-| lane-mke-msp | Milwaukee, WI | Minneapolis, MN | 337 | Reefer | $950.00 | $2.27 |
-| lane-chi-cle | Chicago, IL | Cleveland, OH | 345 | Dry van | $950.00 | $1.99 |
-| lane-chi-cle | Chicago, IL | Cleveland, OH | 345 | Reefer | $950.00 | $2.29 |
-| lane-chi-msp | Chicago, IL | Minneapolis, MN | 410 | Dry van | $950.00 | $2.10 |
-| lane-chi-msp | Chicago, IL | Minneapolis, MN | 410 | Reefer | $950.00 | $2.45 |
+| lane-chi-mke | Chicago, IL | Milwaukee, WI | 92 | Dry van | $350.00 | $4.25 |
+| lane-chi-mke | Chicago, IL | Milwaukee, WI | 92 | Reefer | $350.00 | $4.55 |
+| lane-chi-msp | Chicago, IL | Minneapolis, MN | 410 | Dry van | $350.00 | $2.10 |
+| lane-chi-msp | Chicago, IL | Minneapolis, MN | 410 | Reefer | $350.00 | $2.40 |
+| lane-chi-dsm | Chicago, IL | Des Moines, IA | 335 | Dry van | $350.00 | $2.20 |
+| lane-chi-dsm | Chicago, IL | Des Moines, IA | 335 | Reefer | $350.00 | $2.50 |
+| lane-chi-ind | Chicago, IL | Indianapolis, IN | 185 | Dry van | $350.00 | $3.10 |
+| lane-chi-ind | Chicago, IL | Indianapolis, IN | 185 | Reefer | $350.00 | $3.40 |
+| lane-chi-cle | Chicago, IL | Cleveland, OH | 345 | Dry van | $350.00 | $2.15 |
+| lane-chi-cle | Chicago, IL | Cleveland, OH | 345 | Reefer | $350.00 | $2.45 |
+| lane-mke-msp | Milwaukee, WI | Minneapolis, MN | 337 | Dry van | $350.00 | $2.19 |
+| lane-mke-msp | Milwaukee, WI | Minneapolis, MN | 337 | Reefer | $350.00 | $2.49 |
+| lane-dsm-cid | Des Moines, IA | Cedar Rapids, IA | 125 | Dry van | $350.00 | $3.50 |
+| lane-dsm-cid | Des Moines, IA | Cedar Rapids, IA | 125 | Reefer | $350.00 | $3.80 |
+| lane-cid-roc | Cedar Rapids, IA | Rockford, IL | 190 | Dry van | $350.00 | $3.05 |
+| lane-cid-roc | Cedar Rapids, IA | Rockford, IL | 190 | Reefer | $350.00 | $3.35 |
+| lane-stl-kci | St. Louis, MO | Kansas City, MO | 250 | Dry van | $350.00 | $2.85 |
+| lane-stl-kci | St. Louis, MO | Kansas City, MO | 250 | Reefer | $350.00 | $3.15 |
+| lane-oma-kck | Omaha, NE | Kansas City, KS | 190 | Dry van | $350.00 | $3.05 |
+| lane-oma-kck | Omaha, NE | Kansas City, KS | 190 | Reefer | $350.00 | $3.35 |
 
 ## Notes
 
-1. Payment terms: Net 45.
-2. Minimum charge per full truckload: $950.00.
-3. Truck Ordered Not Used (TONU): $850.00, except when loads are cancelled more than 4 hours before scheduled pickup.
-4. Cargo liability is limited to $125,000.00 unless the Customer declares a higher value in writing prior to shipment.
-5. Fuel surcharge: 5.5% when diesel is $3.50–$3.99/gal.
-6. Rates shown are published lane rates for the listed equipment and are subject to equipment availability and Ridgeline Freight, LLC standard terms and conditions.
+1. Payment Terms: Net 45
+2. Minimum charge per full truckload is $350.00.
+3. Cargo liability is limited to $125,000.00 unless the Customer declares a higher value in writing prior to shipment.
+4. Truck Ordered Not Used (TONU) fee is $850.00, except when loads are cancelled more than 4 hours before scheduled pickup.
+5. Fuel surcharge applied to linehaul is 5.5% when diesel is $3.50–$3.99/gal. Fuel surcharge bands are updated weekly based on the national diesel average.

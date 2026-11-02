@@ -99,6 +99,19 @@ function checkCostGrowsWithMiles(rows: Row[], costOf: (row: Row) => number): str
   return errors;
 }
 
+// Short lanes cost more per mile, so a strictly longer lane never has a higher rate.
+function checkRateFallsWithMiles(rows: Row[], rateOf: (row: Row) => number): string[] {
+  const errors: string[] = [];
+  for (const shorter of rows) {
+    for (const longer of rows) {
+      if (Number(cell(shorter, 3)) < Number(cell(longer, 3)) && rateOf(shorter) < rateOf(longer)) {
+        errors.push(`${cell(shorter, 0)} has a lower Rate / Mile than the longer lane ${cell(longer, 0)}`);
+      }
+    }
+  }
+  return errors;
+}
+
 function checkMinCharge(rows: Row[], index: number, expected: string): string[] {
   return rows
     .filter((row) => cell(row, index) !== expected)
@@ -135,8 +148,10 @@ function checkFtl(rows: Row[], { facts, world }: RateSheetInput): string[] {
   if (missing.length > 0) errors.push(`each lane needs a dry van and a reefer row, missing: ${missing.join(', ')}`);
   errors.push(...checkMinCharge(rows, 5, factValue(facts, 'rate-ftl-dry-van#03')));
 
-  const linehaul = (row: Row): number => money(cell(row, 6)) * Number(cell(row, 3));
+  const rate = (row: Row): number => money(cell(row, 6));
+  const linehaul = (row: Row): number => rate(row) * Number(cell(row, 3));
   errors.push(...checkCostGrowsWithMiles(dryVan, linehaul), ...checkCostGrowsWithMiles(reefer, linehaul));
+  errors.push(...checkRateFallsWithMiles(dryVan, rate), ...checkRateFallsWithMiles(reefer, rate));
   for (const row of reefer) {
     const dry = dryVan.find((candidate) => cell(candidate, 0) === cell(row, 0));
     if (dry && money(cell(row, 6)) < money(cell(dry, 6))) errors.push(`${cell(row, 0)}: reefer is below dry van`);

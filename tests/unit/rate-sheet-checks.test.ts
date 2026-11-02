@@ -59,8 +59,8 @@ function ltlRows(): string[][] {
 
 function ftlRows(): string[][] {
   return world.lanes.flatMap((lane) => [
-    [...laneCells(lane), 'Dry van', '$950.00', '$2.10'],
-    [...laneCells(lane), 'Reefer', '$950.00', '$2.40'],
+    [...laneCells(lane), 'Dry van', '$350.00', '$2.10'],
+    [...laneCells(lane), 'Reefer', '$350.00', '$2.40'],
   ]);
 }
 
@@ -249,13 +249,13 @@ describe('ftl lanes', () => {
 
   it('rejects a lane that is not in the world', () => {
     const rows = ftlRows();
-    rows[0] = ['L-01', 'Chicago, IL', 'Milwaukee, WI', '92', 'Dry van', '$950.00', '$2.10'];
+    rows[0] = ['L-01', 'Chicago, IL', 'Milwaukee, WI', '92', 'Dry van', '$350.00', '$2.10'];
     expect(errorsOf('ftl', rows)).toContainEqual(expect.stringContaining('unknown lane "L-01"'));
   });
 
   it('rejects miles that differ from the world', () => {
     const rows = ftlRows();
-    rows[0] = ['lane-chi-mke', 'Chicago, IL', 'Milwaukee, WI', '95', 'Dry van', '$950.00', '$2.10'];
+    rows[0] = ['lane-chi-mke', 'Chicago, IL', 'Milwaukee, WI', '95', 'Dry van', '$350.00', '$2.10'];
     expect(errorsOf('ftl', rows)).toContain(
       'lane-chi-mke: origin, destination and miles must match WORLD',
     );
@@ -274,6 +274,15 @@ describe('ftl lanes', () => {
     );
     expect(errorsOf('ftl', rows)).toContainEqual(
       expect.stringContaining('the longer lane lane-chi-msp'),
+    );
+  });
+
+  it('rejects a Rate / Mile that rises with miles', () => {
+    const rows = ftlRows().map((row) =>
+      row[0] === 'lane-chi-mke' && row[4] === 'Dry van' ? [...row.slice(0, 6), '$1.40'] : row,
+    );
+    expect(errorsOf('ftl', rows)).toContainEqual(
+      expect.stringContaining('lane-chi-mke has a lower Rate / Mile than the longer lane'),
     );
   });
 
