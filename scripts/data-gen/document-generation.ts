@@ -4,6 +4,11 @@ import type { World } from '../../data-gen/schemas/world';
 
 const MAX_RETRIES = 2;
 
+export function readOption(name: string): string | undefined {
+  const index = process.argv.indexOf(name);
+  return index === -1 ? undefined : process.argv[index + 1];
+}
+
 export function parsePromptTemplate(promptFile: string): string {
   const match = /## Prompt\n[\s\S]*?```\n([\s\S]*?)\n```/.exec(promptFile);
   if (!match?.[1]) throw new Error('Prompt block not found in the document prompt file');

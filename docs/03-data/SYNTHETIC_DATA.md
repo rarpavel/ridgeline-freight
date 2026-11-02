@@ -79,7 +79,7 @@ Rules enforced by `pnpm datagen:validate-registry`:
 
 `pnpm datagen:registry` makes one call per document type and writes the file even when a rule fails, because a failing registry is fixed by hand rather than regenerated. If the file exists, the script writes nothing unless given `--force`, which would discard the hand edits.
 
-The committed registry was generated on 2026-11-02 (`gpt-5-mini`, 162 facts) and hand-edited: money values reduced to the amount, liability caps made unique across documents, TONU facts moved from `penalty` to `fee`, fuel surcharges and the hazmat fee aligned across documents, and `differsFrom` links between incomparable facts removed. RAG-012 added one `date` fact to each of the 14 carrier, HR and SOP documents that had none (176 facts now) and rewrote four values such as `15.00 days per year` that the writer model would not reproduce.
+The committed registry was generated on 2026-11-02 (`gpt-5-mini`, 162 facts) and hand-edited: money values reduced to the amount, liability caps made unique across documents, TONU facts moved from `penalty` to `fee`, fuel surcharges and the hazmat fee aligned across documents, and `differsFrom` links between incomparable facts removed. RAG-012 added one `date` fact to each of the 14 carrier, HR and SOP documents that had none (176 facts now) and rewrote four values such as `15.00 days per year` that the writer model would not reproduce. RAG-013 added the effective date of `rate-accessorials`, the last document without one (177 facts now).
 
 ## 4. Document catalog — `data/catalog.json` (24 documents, all DOCX)
 
@@ -118,7 +118,8 @@ Name check (web search, 2026-11-02): no exact matches for any customer or carrie
 pnpm datagen:check              → calls both providers, parses JSON with zod, prints the prompt version
 pnpm datagen:world              → data/world.json              (prompt 01 part A; then hand-edit)
 pnpm datagen:registry           → data/registry.json           (prompt 01 part B)  + validate-registry
-pnpm datagen:docs               → data/generated/md/<slug>.md  (prompt 02; rate sheets: prompt 03 → JSON tables → Markdown tables)
+pnpm datagen:docs               → data/generated/md/<slug>.md  (prompt 02; 20 documents)
+pnpm datagen:rate-sheets        → data/generated/rate-sheets/<slug>.json + md/<slug>.md  (prompt 03; JSON tables → Markdown tables)
 pnpm datagen:render             → data/corpus/<type>/<slug>.docx
 pnpm datagen:validate           → report: every alias found? format checks, blocklist
 pnpm datagen:questions          → data/eval/questions.json     (prompt 04; different model than docs)
@@ -126,7 +127,11 @@ pnpm datagen:questions          → data/eval/questions.json     (prompt 04; dif
 
 Document, registry and rate-sheet generation use the `openai` client (`src/server/llm/client.ts`) with `DATAGEN_MODEL` (default `gpt-5-mini`); question generation uses a different model family through `src/server/llm/judge.ts` (`@anthropic-ai/sdk`, `DATAGEN_QUESTIONS_MODEL`, default `claude-haiku-5-5`). Sampling parameters are left at provider defaults. Outputs are committed; regeneration is deliberate (`--force`).
 
-`pnpm datagen:docs` writes the 20 MSA, carrier, HR and SOP documents (rate sheets arrive with RAG-013). Before a file is written it must pass: first line `# <title>`, ≥ 8 `##` sections, 1,200–2,400 words, every fact present, every money, date and percent token found in the facts or the world slice, an exception word in the sentence of an exception fact whose statement has one, no blocklist, URL, email or phone hits. A failing document is retried up to 2 times with the errors in the prompt, and if it still fails it is not written. An existing file is only checked, so a run costs nothing once all files exist; `--force` regenerates and `--only <slug>` limits the run to one document. The report prints each exception sentence for review, and standalone numbers above 12 outside the allowed set as warnings.
+`pnpm datagen:rate-sheets` writes the 4 rate sheets. The JSON in `data/generated/rate-sheets/` is the source, and hand edits go there: an existing file is only checked and its Markdown rewritten, so a run costs nothing once all files exist. Before a file is written it must pass: the exact columns for its kind, no `|` in a cell, every fact value verbatim, money with cents, no blocklist, URL, email or phone hits, and the rules for its kind. LTL and FTL: lane ids, cities and miles match `world.json`, all 10 lanes present (dry van and reefer rows on FTL), minimum charges and lane rates in their cells, longer lanes cost at least as much, reefer ≥ dry van. Accessorials: all 10 services, with fact amounts in the Charge cell. Fuel surcharge: 12–16 steps, contiguous to the cent and strictly increasing, with each fact tier as one step. The tiers in the registry end at an open-ended `$4.50 and above`, so the other steps sit below `$3.00`. `--force`, `--only` and the retries work as in `pnpm datagen:docs`.
+
+The committed rate sheets were generated on 2026-11-02 (`gpt-5-mini`) and hand-edited to remove notes that repeated the table or leaked prompt wording. No check reads the notes for meaning, so they need the manual review in §7.
+
+`pnpm datagen:docs` writes the 20 MSA, carrier, HR and SOP documents. Before a file is written it must pass: first line `# <title>`, ≥ 8 `##` sections, 1,200–2,400 words, every fact present, every money, date and percent token found in the facts or the world slice, an exception word in the sentence of an exception fact whose statement has one, no blocklist, URL, email or phone hits. A failing document is retried up to 2 times with the errors in the prompt, and if it still fails it is not written. An existing file is only checked, so a run costs nothing once all files exist; `--force` regenerates and `--only <slug>` limits the run to one document. The report prints each exception sentence for review, and standalone numbers above 12 outside the allowed set as warnings.
 
 Scripts run with `tsx --conditions=react-server`, so `server-only` resolves outside Next.js, and import `scripts/data-gen/load-env.ts` first, so `.env.local` is parsed the way Next.js parses it. `src/env.ts` still validates every app variable, so `SESSION_SECRET` and `DEMO_ACCOUNTS_JSON` must be set for the scripts too. Zod schemas are in `data-gen/schemas/*.ts`.
 
