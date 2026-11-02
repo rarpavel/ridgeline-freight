@@ -1,13 +1,13 @@
 import './load-env';
 
-import Anthropic from '@anthropic-ai/sdk';
-import OpenAI from 'openai';
 import { z } from 'zod';
 
 import { env } from '@/env';
 import { openai } from '@/server/llm/client';
 import { completeWithClaude } from '@/server/llm/judge';
 import { formatPromptVersion, loadPrompt } from '@/server/prompts/load';
+
+import { describeError } from './describe-error';
 
 const PROMPT = 'Reply with JSON only, with no other text: {"ok": true}';
 // Leaves room for reasoning tokens, which count against the limit on gpt-5 models.
@@ -36,13 +36,6 @@ async function checkOpenAi(): Promise<void> {
 async function checkAnthropic(): Promise<void> {
   parseReply(await completeWithClaude({ prompt: PROMPT, model: env.DATAGEN_QUESTIONS_MODEL }));
   console.log(`anthropic ok (${env.DATAGEN_QUESTIONS_MODEL})`);
-}
-
-// Provider error messages can echo part of the API key, so only the status is printed for them.
-function describeError(err: unknown): string {
-  if (err instanceof OpenAI.APIError) return `OpenAI API error, status ${err.status}`;
-  if (err instanceof Anthropic.APIError) return `Anthropic API error, status ${err.status}`;
-  return err instanceof Error ? err.message : String(err);
 }
 
 async function main(): Promise<void> {

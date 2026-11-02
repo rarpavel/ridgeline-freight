@@ -16,16 +16,21 @@ Last updated: 2026-11-02
 
 ```json
 {
-  "company": { "name": "Ridgeline Freight, LLC", "hq": { "street": "4100 S Pulaski Rd", "city": "Chicago", "state": "IL", "zip": "60632" },
-               "founded": "2009", "fiscalYearStart": "01/01", "officers": [{ "title": "Chief Executive Officer", "name": "Fictional Name" }] },
-  "customers": [ { "id": "cust-harbor-point", "name": "Harbor Point Foods, Inc.", "industry": "food distribution", "city": "Milwaukee", "state": "WI" } ],
-  "carriers":  [ { "id": "car-brightwater", "name": "Brightwater Carriers LLC", "equipment": ["dry van", "reefer"], "state": "IN" } ],
+  "company": { "name": "Ridgeline Freight, LLC", "hq": { "street": "1432 Quarrystone Avenue", "city": "Chicago", "state": "IL", "zip": "60632" },
+               "founded": "2009", "fiscalYearStart": "01/01", "officers": [{ "title": "Chief Executive Officer", "name": "Marian Voss" }] },
+  "customers": [ { "id": "cust-harbor-point-foods", "name": "Harbor Point Foods, Inc.", "industry": "Food & Beverage", "city": "Rockford", "state": "IL", "commodity": "packed and frozen groceries", "volumeBand": "5k-20k" } ],
+  "carriers":  [ { "id": "car-brightwater", "name": "Brightwater Carriers LLC", "equipment": ["dry van", "reefer", "flatbed"], "state": "WI", "fleetSizeBand": "150-300" } ],
   "lanes":     [ { "id": "lane-chi-mke", "origin": "Chicago, IL", "destination": "Milwaukee, WI", "miles": 92 } ],
-  "glossary":  { "detention": "...", "accessorial": "...", "layover": "..." }
+  "warehouses": [ { "id": "wh-chicago-west", "name": "Ridgeline Freight Warehouse - Chicago West", "street": "2107 Northwind Terrace", "city": "Chicago", "state": "IL", "zip": "60639", "docks": 24 } ],
+  "glossary":  { "detention": "...", "layover": "...", "accessorial": "...", "tonu": "...", "lumperFee": "...", "osd": "...", "hazmat": "...", "reefer": "..." }
 }
 ```
 
-Generated once by `pnpm datagen:world` (part A of `data-gen/prompts/01-fact-registry.md`), then **hand-edited and frozen**.
+Counts are fixed by `data-gen/schemas/world.ts`: 4 officers, 6 customers, 4 carriers, 10 lanes, 3 warehouses. Customer and carrier names come from the catalog titles, and ids come from the document slugs (`msa-northline-auto` → `cust-northline-auto`, `carrier-brightwater` → `car-brightwater`).
+
+Generated once by `pnpm datagen:world` (part A of `data-gen/prompts/01-fact-registry.md`), then **hand-edited and frozen**: if the file exists, the script writes nothing unless given `--force`. A run writes the file only after the schema, catalog, blocklist and URL/email/phone checks pass.
+
+Name check for the names the world bible adds (web search, 2026-11-02): no matches for the HQ and warehouse streets in their cities or for the four officers in logistics roles. Generated names that were replaced: "Ridgeline Avenue" (close to Chicago's Ridgeland Avenue), "Ridgeline Distribution Center" (close to projects of Ridgeline Property Group, a real industrial developer active near Joliet) and "Ironwood Loop" (reuses a rejected catalog name).
 
 ## 3. Fact registry — `data/registry.json`
 

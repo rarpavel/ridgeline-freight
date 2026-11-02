@@ -114,6 +114,6 @@ Requirements for the whole set:
   "sectionHint": "Service Levels and Remedies",
   "isException": true,
   "differsFrom": ["msa-lakeshore-retail#03"],
-  "entityIds": ["cust-harbor-point"]
+  "entityIds": ["cust-harbor-point-foods"]
 }
 ```
