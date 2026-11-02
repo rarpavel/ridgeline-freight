@@ -8,6 +8,7 @@ import { completeWithClaude } from '@/server/llm/judge';
 import { formatPromptVersion, loadPrompt } from '@/server/prompts/load';
 
 import { describeError } from './describe-error';
+import { stripCodeFence } from './text-checks';
 
 const PROMPT = 'Reply with JSON only, with no other text: {"ok": true}';
 // Leaves room for reasoning tokens, which count against the limit on gpt-5 models.
@@ -16,11 +17,7 @@ const OPENAI_MAX_TOKENS = 800;
 const replySchema = z.object({ ok: z.literal(true) });
 
 function parseReply(text: string): void {
-  const json = text
-    .trim()
-    .replace(/^```(?:json)?\s*/, '')
-    .replace(/\s*```$/, '');
-  replySchema.parse(JSON.parse(json));
+  replySchema.parse(JSON.parse(stripCodeFence(text)));
 }
 
 async function checkOpenAi(): Promise<void> {

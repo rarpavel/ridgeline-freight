@@ -9,6 +9,15 @@ Last updated: 2026-11-02
 - 40 questions in `data/eval/questions.json`, generated per `SYNTHETIC_DATA.md §6` and manually reviewed (`reviewed: true` required to be imported).
 - Categories: direct 16, comparison 6, exception 5, no_answer 8, other_role 5.
 - Split: `dev` 12 and `test` 28, stratified by category. **Only the test split is reported** in the README and the case study; dev is for tuning `simFloor`, chunking and prompts.
+
+| Category | Total | dev | test |
+|----------|-------|-----|------|
+| direct | 16 | 5 | 11 |
+| comparison | 6 | 2 | 4 |
+| exception | 5 | 2 | 3 |
+| no_answer | 8 | 2 | 6 |
+| other_role | 5 | 1 | 4 |
+
 - Versioned with `data/VERSION`; every run records it.
 
 ## 2. Metrics
