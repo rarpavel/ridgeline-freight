@@ -238,6 +238,16 @@ Daily budget: `INSERT INTO usage_daily (day) VALUES (current_date) ON CONFLICT D
 
 - Tool: drizzle-kit, SQL files in `drizzle/` (ADR-0003). `pnpm db:generate` after schema edits, `pnpm db:migrate` applies with `DATABASE_URL_DIRECT`.
 - Custom migrations (`drizzle-kit generate --custom`) hold the extension, the generated `tsv` column and CHECK constraints Drizzle cannot express.
+- `drizzle.config.ts` loads `.env.local` when it exists, with variables already set taking precedence, and uses `DATABASE_URL_DIRECT`, falling back to `DATABASE_URL`.
+- Migration files so far:
+
+| File | Kind | Contents |
+|------|------|----------|
+| `0000_enable_pgvector.sql` | custom | `CREATE EXTENSION vector`, before any table uses the type |
+| `0001_corpus_tables.sql` | generated | `documents`, `document_texts`, `chunks`, their foreign keys, unique constraints and `chunks_document_idx` |
+| `0002_corpus_constraints_and_tsv.sql` | custom | CHECK constraints on `doc_type`, `access_roles`, `char_end > char_start` and `token_count > 0`; generated `tsv`; `chunks_tsv_idx` |
+
+- `chunks.tsv` and the CHECK constraints are not declared in `src/server/db/schema/*.ts`, so Drizzle never tries to write `tsv`; queries reach it through `sql`. `tests/integration/migrations.test.ts` fails if the database columns and the Drizzle schema diverge.
 - Forward-only; a rollback is a new migration. CI applies all migrations to a fresh `pgvector/pgvector:pg17` container on every PR. Production migrations are run from the developer's machine before merging the PR that needs them (`DEPLOYMENT.md §3`); migrations are additive so the previous app version keeps working.
 
 ## 5. Seed strategy
