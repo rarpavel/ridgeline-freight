@@ -80,9 +80,11 @@ describe('chunkDocument', () => {
       file.endsWith('.docx'),
     );
     expect(files).toHaveLength(24);
+    let total = 0;
     for (const file of files) {
       const parsed = await parseDocx(readFileSync(join(CORPUS, file)));
       const chunks = chunkDocument(parsed, file);
+      total += chunks.length;
       expectSizes(chunks);
       expectOffsetsMatch(parsed.text, chunks);
       expectFullCoverage(parsed.text, chunks);
@@ -92,6 +94,8 @@ describe('chunkDocument', () => {
         expect(chunk.content.match(/^\| --- /gm)?.length ?? 0).toBeLessThanOrEqual(1);
       }
     }
+    expect(total).toBeGreaterThanOrEqual(400);
+    expect(total).toBeLessThanOrEqual(900);
   });
 
   it('puts each of three tables in its own chunk and keeps a table above 600 tokens whole', async () => {
@@ -139,15 +143,15 @@ describe('chunkDocument', () => {
     expect(JSON.stringify(chunkDocument(parsed, TITLE))).toBe(
       JSON.stringify(chunkDocument(parsed, TITLE)),
     );
-    expect(CHUNKER_VERSION).toBe('v1');
+    expect(CHUNKER_VERSION).toBe('v2');
   });
 
   it('merges short sub-units with the following ones, also across sections', async () => {
     const parsed = await parseMarkdown(
       [
         '# Agreement',
-        `## 1. Term\n\n### 1.1 Start\n\n${words(3)}\n\n### 1.2 End\n\n${words(3)}`,
-        `## 2. Notice\n\n${words(3)}`,
+        `## 1. Term\n\n### 1.1 Start\n\n${words(1)}\n\n### 1.2 End\n\n${words(1)}`,
+        `## 2. Notice\n\n${words(1)}`,
         `## 3. Payment\n\n${words(12)}`,
       ].join('\n\n'),
     );

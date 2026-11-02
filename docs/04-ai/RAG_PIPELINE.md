@@ -24,17 +24,17 @@ For each Shipment delivered more than 24 hours after ...
 
 Tables become Markdown tables (the first row is the header; a `|` in a cell is escaped as `\|`); lists become `-`/`1.` lines, nested items indented by three spaces. Inline formatting, page headers and footers, rules and empty paragraphs are dropped, and whitespace inside a line collapses to one space. `document_texts.sections` has one flat entry per heading of any level, in order: `ref` is the leading number (`4.3`, or `''` for an unnumbered heading such as the title or `Notes`), `title` is the rest of the heading, and `text.slice(charStart, charEnd)` is the heading line plus its body up to the line before the next heading, so a `##` section does not include its `###` subsections and sections never overlap. The same parser is used by the data validator (`SYNTHETIC_DATA.md §5.2`).
 
-### 1.2 Structural chunker (`src/server/ingest/chunker.ts`, `CHUNKER_VERSION = 'v1'`)
+### 1.2 Structural chunker (`src/server/ingest/chunker.ts`, `CHUNKER_VERSION = 'v2'`)
 
 1. Split the normalized text into sub-units at `##`/`###` headings; a numbered clause (`4.3 …`) inside a section starts a sub-unit, and a table is a sub-unit of its own. Heading lines stay in `content`.
 2. A chunk is one sub-unit if ≤ 600 tokens (`js-tiktoken`, `o200k_base`); sub-units > 600 tokens split at paragraph boundaries with an overlap of at most 50 tokens, cutting at word boundaries only inside a paragraph too long for one chunk.
-3. Chunks < 120 tokens merge with the following sub-unit of the same `##` section. What is still short then merges with a neighbouring chunk across sections: the next one first, and into a table only if no text chunk fits (ADR-0017). A chunk stays below 120 tokens only if no neighbour has room, or if the whole document is that short.
+3. Chunks < 50 tokens (ADR-0018) merge with the following sub-unit of the same `##` section. What is still short then merges with a neighbouring chunk across sections: the next one first, and into a table only if no text chunk fits (ADR-0017). A chunk stays below 50 tokens only if no neighbour has room, or if the whole document is that short.
 4. Tables: one chunk per table, whole up to 1,080 tokens even above the 600 limit; a short heading or note may merge into it, up to 1,200 tokens. A larger table splits by rows; every part after the first repeats the header rows in `context_prefix`, not in `content`, so offsets still hold (ADR-0017).
 5. Each chunk records `section_ref` (`4.3`, or `null` above the first section), `section_title` (the `###` or `##` title), `char_start/char_end`, `token_count`. `text.slice(char_start, char_end) === content` for every chunk. A merged chunk takes these from its first sub-unit with body text.
 6. `context_prefix = "<title> — <H2 title> › <H3 title>"` (parts that exist).
 7. Text sent to the embedder and FTS = `context_prefix + "\n" + content`.
 
-Actual on the 24-document corpus: 8–13 chunks per contract, policy or SOP (mean ≈ 175 tokens), 1–2 per rate sheet; no table reaches the split limit.
+Actual on the 24-document corpus: 423 chunks, 14–25 per contract, policy or SOP (mean ≈ 90 tokens), 2–3 per rate sheet; no table reaches the split limit.
 
 ### 1.3 Embeddings (`src/server/llm/embeddings.ts`)
 
@@ -50,7 +50,7 @@ Actual on the 24-document corpus: 8–13 chunks per contract, policy or SOP (mea
 - Prints a summary table (slug, chunks, tokens, embedded, skipped, failed) and exits non-zero on any failure.
 - `documents.effective_date` stays `NULL`: nothing reads it yet.
 
-Actual on the 24-document corpus: 217 chunks, about 38k tokens; the first run takes about 11 s, a run that skips everything about 1 s.
+Actual on the 24-document corpus: 423 chunks, about 39k tokens; the first run takes about 10 s, a run that skips everything about 1 s.
 
 ## 2. Query handling (`src/server/rag/`)
 
@@ -113,7 +113,7 @@ One `request_traces` row per request (candidates with scores, gate, prompt versi
 | `rrfK` | 60 | `retrieval_config` | fixed |
 | `finalK` / `perDocCap` | 8 / 3 | `retrieval_config` | dev split |
 | `simFloor` | 0.30 | env `SIM_FLOOR` | dev split |
-| chunk size | 120–600 tokens | `CHUNKER_VERSION` | dev split |
+| chunk size | 50–600 tokens | `CHUNKER_VERSION` | dev split |
 | `max_tokens` | 700 | env | fixed |
 
 Roadmap (not MVP): HNSW index with iterative scans at larger corpus sizes; reranker between fusion and gate; query condensation for follow-ups.

@@ -5,14 +5,15 @@ import o200kBase from 'js-tiktoken/ranks/o200k_base';
 
 import type { ParsedDocx } from '@/server/ingest/parsers/docx';
 
-export const CHUNKER_VERSION = 'v1';
-export const MIN_CHUNK_TOKENS = 120;
+export const CHUNKER_VERSION = 'v2';
+// ADR-0018: gives 423 chunks on the corpus.
+export const MIN_CHUNK_TOKENS = 50;
 export const MAX_CHUNK_TOKENS = 600;
 export const OVERLAP_TOKENS = 50;
 // Tables stay whole past MAX_CHUNK_TOKENS; only a table above TABLE_SPLIT_TOKENS is split by rows.
 // The difference leaves room for a short heading or note to merge into any table or table part.
 export const MAX_TABLE_TOKENS = 1200;
-const TABLE_SPLIT_TOKENS = MAX_TABLE_TOKENS - MIN_CHUNK_TOKENS;
+const TABLE_SPLIT_TOKENS = 1080;
 
 export type Chunk = {
   sectionRef: string | null;

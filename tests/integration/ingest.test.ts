@@ -404,7 +404,8 @@ describe('pnpm ingest', () => {
               (SELECT array_agg(DISTINCT embedding_model) FROM chunks) AS models`,
     );
     expect(Number(counts.rows[0]?.documents)).toBe(24);
-    expect(Number(counts.rows[0]?.chunks)).toBeGreaterThan(0);
+    expect(Number(counts.rows[0]?.chunks)).toBeGreaterThanOrEqual(400);
+    expect(Number(counts.rows[0]?.chunks)).toBeLessThanOrEqual(900);
     expect(counts.rows[0]?.models).toEqual([MODEL]);
 
     requestCount = 0;

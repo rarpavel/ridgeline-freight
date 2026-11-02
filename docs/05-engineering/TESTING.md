@@ -16,7 +16,7 @@ Last updated: 2026-11-02
 ## 2. What is tested where
 
 ### Unit (`tests/unit/`)
-- `chunker`: sizes within 120–600 tokens, section refs, offsets map back to the source text, tables kept whole, deterministic (`CHUNKER_VERSION`).
+- `chunker`: sizes within 50–600 tokens, 400–900 chunks on the corpus, section refs, offsets map back to the source text, tables kept whole, deterministic (`CHUNKER_VERSION`).
 - `fuse`: RRF ordering, per-document cap, tie handling.
 - `gate`: refusal only when both signals are weak; vector-unavailable path.
 - `citations`: alias parsing, unknown alias removal, `NO_ANSWER:` detection, zero-citation → refusal conversion, text otherwise intact.

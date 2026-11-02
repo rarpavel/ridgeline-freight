@@ -78,7 +78,7 @@ CREATE TABLE documents (
   source_path      text NOT NULL UNIQUE,                       -- data/corpus/msa/harbor-point-foods.docx
   checksum         text NOT NULL,                              -- sha256 of file bytes
   effective_date   date,
-  chunker_version  text NOT NULL,                              -- 'v1'
+  chunker_version  text NOT NULL,                              -- 'v2'
   ingested_at      timestamptz NOT NULL DEFAULT now()
 );
 
@@ -267,4 +267,4 @@ A fresh environment is: `pnpm db:migrate && pnpm ingest && pnpm eval:import`.
 
 ## 7. Sizing
 
-24 documents × ~2–3 pages → ~500–800 chunks; 1,536 floats × 4 bytes ≈ 6 KB per chunk → ~5 MB. `request_traces` grows ~5 KB per request. Neon Free (1 GB) is far from any limit.
+24 documents → 423 chunks; 1,536 floats × 4 bytes ≈ 6 KB per chunk → ~3 MB. `request_traces` grows ~5 KB per request. Neon Free (1 GB) is far from any limit.

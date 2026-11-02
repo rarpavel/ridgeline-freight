@@ -1,6 +1,6 @@
 # ADR-0017: Chunker merging across sections and split-table headers
 
-Status: Accepted · Date: 2026-11-02
+Status: Accepted, minimum size replaced by ADR-0018 · Date: 2026-11-02
 
 ## Context
 RAG-019 asks for chunks of 120–600 tokens, merging short sub-units only within their section. Most sections of the corpus are far below 120 tokens (often 38 of 41 in a contract), and some whole `##` sections are too, so that rule alone leaves chunks under the minimum.
