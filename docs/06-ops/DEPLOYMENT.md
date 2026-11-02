@@ -9,7 +9,7 @@ Last updated: 2026-11-02
 | | local | production |
 |--|-------|------------|
 | App | `pnpm dev` (http://localhost:3000) | Vercel production from `main` (Git integration) |
-| DB | Docker `pgvector/pgvector:pg17` (`docker-compose.yml`, port 5432, db `ridgeline`) | Neon Free, main branch, region `us-east-2` (`TO VERIFY` closest to Vercel `iad1`) |
+| DB | Docker `pgvector/pgvector:pg17` (`docker-compose.yml`, port 5432 or `POSTGRES_PORT` from `.env`, db `ridgeline`) | Neon Free, main branch, region `us-east-2` (`TO VERIFY` closest to Vercel `iad1`) |
 | LLM | OpenAI | OpenAI, `DAILY_TOKEN_BUDGET=400000` |
 | Auth | demo accounts | demo accounts |
 
