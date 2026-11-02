@@ -19,6 +19,7 @@
     "db:migrate": "drizzle-kit migrate",
     "db:studio": "drizzle-kit studio",
     "hash-password": "tsx scripts/hash-password.ts",
+    "ingest": "tsx --conditions=react-server scripts/ingest.ts",
     "datagen:check": "tsx --conditions=react-server scripts/data-gen/check.ts",
     "datagen:world": "tsx --conditions=react-server scripts/data-gen/world.ts",
     "datagen:registry": "tsx --conditions=react-server scripts/data-gen/registry.ts",

@@ -38,14 +38,19 @@ Actual on the 24-document corpus: 8–13 chunks per contract, policy or SOP (mea
 
 ### 1.3 Embeddings (`src/server/llm/embeddings.ts`)
 
-- `openai.embeddings.create({ model: EMBEDDING_MODEL, input: batch })`, batches of 64; retry with exponential backoff on 429/5xx (3 attempts); assert `vector.length === 1536` before insert; `embedding_model` stored per chunk.
+- `openai.embeddings.create({ model: EMBEDDING_MODEL, input: batch })`, batches of 64; the SDK retries 429/5xx with exponential backoff (3 retries, set in `llm/client.ts`); assert the number of vectors and `vector.length === 1536` before insert; `embedding_model` stored per chunk.
 
-### 1.4 Idempotency and CLI
+### 1.4 Idempotency and CLI (`src/server/ingest/pipeline.ts`, `scripts/ingest.ts`)
 
 `pnpm ingest [--force] [--only <slug>]`:
-- For each catalog entry: compute sha256; if `documents.checksum` and `chunker_version` match → skip.
-- Otherwise in one transaction: upsert `documents`, replace `document_texts`, delete+insert `chunks` (with embeddings).
-- Prints a summary table (slug, chunks, tokens, embedded, skipped) and exits non-zero on any failure.
+- At the start, reject the run if `chunks` holds another `embedding_model`; only `--force` without `--only` may replace it (`DATA_MODEL.md §6`).
+- For each catalog entry: compute sha256; if `documents.checksum` and `chunker_version` match and there is no `--force` → skip.
+- Otherwise parse, chunk and embed outside any transaction, so a failed embedding call writes nothing and no connection waits on the network. Then in one transaction: upsert `documents`, replace `document_texts`, delete+insert `chunks` (with embeddings).
+- A failed document keeps its previous version and the run moves on to the next one.
+- Prints a summary table (slug, chunks, tokens, embedded, skipped, failed) and exits non-zero on any failure.
+- `documents.effective_date` stays `NULL`: nothing reads it yet.
+
+Actual on the 24-document corpus: 217 chunks, about 38k tokens; the first run takes about 11 s, a run that skips everything about 1 s.
 
 ## 2. Query handling (`src/server/rag/`)
 
