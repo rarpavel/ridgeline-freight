@@ -70,11 +70,16 @@ JSON Schema (`data-gen/schemas/registry.schema.json`):
 
 Rules enforced by `pnpm datagen:validate-registry`:
 - 5–8 facts per document; every `docSlug` exists in the catalog.
-- `value` is the canonical rendering (`$1,250.00`, `Net 30`, `04/15/2026`, `2%`); `aliases` lists accepted alternatives (`$1,250`, `thirty (30) days`, `April 15, 2026`).
+- `value` is the canonical rendering (`$1,250.00`, `Net 30`, `04/15/2026`, `2%`); `aliases` lists accepted alternatives (`$1,250`, `thirty (30) days`, `April 15, 2026`). A `money` value is the amount alone: units such as "per hour" and qualifiers go in `statement` and `aliases`. A whole-dollar amount must list its short form as an alias, and a date its long form.
 - ≥ 8 facts carry `differsFrom` linking the same `category` in another document of the same type with **different** values (penalties, payment terms, liability caps across MSAs; detention rates across carriers; accrual rates across policies).
 - ≥ 4 facts have `isException: true`.
 - No two documents share the same `value` for `penalty` or `liability_cap`.
 - Every `entityIds` entry exists in `world.json`.
+- No ISO dates, URLs, emails, phone numbers or blocklisted names. Names with a legal suffix (LLC, Inc., Corp., Ltd.) in a `statement` must come from `world.json`; a name without a suffix is not detected.
+
+`pnpm datagen:registry` makes one call per document type and writes the file even when a rule fails, because a failing registry is fixed by hand rather than regenerated. If the file exists, the script writes nothing unless given `--force`, which would discard the hand edits.
+
+The committed registry was generated on 2026-11-02 (`gpt-5-mini`, 162 facts) and hand-edited: money values reduced to the amount, liability caps made unique across documents, TONU facts moved from `penalty` to `fee`, fuel surcharges and the hazmat fee aligned across documents, and `differsFrom` links between incomparable facts removed.
 
 ## 4. Document catalog — `data/catalog.json` (24 documents, all DOCX)
 

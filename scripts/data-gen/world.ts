@@ -2,10 +2,7 @@ import './load-env';
 
 import { existsSync, readFileSync, writeFileSync } from 'node:fs';
 
-import { z } from 'zod';
-
 import { env } from '@/env';
-import { openai } from '@/server/llm/client';
 import { renderPrompt } from '@/server/prompts/render';
 
 import { catalogSchema } from '../../data-gen/schemas/catalog';
@@ -16,6 +13,7 @@ import {
   type World,
   type WorldEntity,
 } from '../../data-gen/schemas/world';
+import { completeJson } from './complete-json';
 import { describeError } from './describe-error';
 import { findBlocklistHits, findForbiddenPatterns, parseBlocklist } from './text-checks';
 
@@ -32,30 +30,6 @@ function loadPartAPrompt(): string {
 
 function formatEntities(entities: WorldEntity[]): string {
   return entities.map((entity) => `${entity.id} | ${entity.name}`).join('; ');
-}
-
-// Drops the "$schema" key that zod emits, since response_format only needs the schema itself.
-function worldJsonSchema(): Record<string, unknown> {
-  const schema: Record<string, unknown> = z.toJSONSchema(worldSchema);
-  delete schema.$schema;
-  return schema;
-}
-
-async function generateWorld(prompt: string): Promise<unknown> {
-  const response = await openai.chat.completions.create({
-    model: env.DATAGEN_MODEL,
-    max_completion_tokens: MAX_COMPLETION_TOKENS,
-    messages: [{ role: 'user', content: prompt }],
-    response_format: {
-      type: 'json_schema',
-      json_schema: { name: 'world', strict: true, schema: worldJsonSchema() },
-    },
-  });
-  const choice = response.choices[0];
-  if (!choice?.message.content) {
-    throw new Error(`Model returned no content, finish reason: ${choice?.finish_reason ?? 'none'}`);
-  }
-  return JSON.parse(choice.message.content);
 }
 
 function assertSafe(world: World): void {
@@ -79,7 +53,9 @@ async function main(): Promise<void> {
     carriers_list: formatEntities(carriers),
   });
 
-  const world = worldSchema.parse(await generateWorld(prompt));
+  const world = worldSchema.parse(
+    await completeJson(prompt, 'world', worldSchema, MAX_COMPLETION_TOKENS),
+  );
   if (!worldMatchesCatalog(world, catalog)) {
     throw new Error('Customers or carriers differ from data/catalog.json');
   }

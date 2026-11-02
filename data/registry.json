@@ -1,0 +1,3137 @@
+{
+  "version": "2026.11-1",
+  "facts": [
+    {
+      "factId": "msa-harbor-point-foods#01",
+      "docSlug": "msa-harbor-point-foods",
+      "category": "party",
+      "statement": "The Master Service Agreement — Harbor Point Foods, Inc. is between Ridgeline Freight, LLC and Harbor Point Foods, Inc.",
+      "value": "Harbor Point Foods, Inc.",
+      "aliases": [
+        "Harbor Point Foods",
+        "Harbor Point Foods, Inc"
+      ],
+      "valueType": "text",
+      "sectionHint": "Parties",
+      "isException": false,
+      "differsFrom": [],
+      "entityIds": [
+        "cust-harbor-point-foods"
+      ]
+    },
+    {
+      "factId": "msa-harbor-point-foods#02",
+      "docSlug": "msa-harbor-point-foods",
+      "category": "date",
+      "statement": "The effective date of the Master Service Agreement — Harbor Point Foods, Inc. is 04/01/2026.",
+      "value": "04/01/2026",
+      "aliases": [
+        "April 1, 2026"
+      ],
+      "valueType": "date",
+      "sectionHint": "Agreement Date / Term",
+      "isException": false,
+      "differsFrom": [],
+      "entityIds": [
+        "cust-harbor-point-foods"
+      ]
+    },
+    {
+      "factId": "msa-harbor-point-foods#03",
+      "docSlug": "msa-harbor-point-foods",
+      "category": "payment_terms",
+      "statement": "In the Master Service Agreement — Harbor Point Foods, Inc., payment terms are Net 30.",
+      "value": "Net 30",
+      "aliases": [
+        "net thirty (30) days",
+        "thirty (30) days from the invoice date"
+      ],
+      "valueType": "text",
+      "sectionHint": "Payment Terms",
+      "isException": false,
+      "differsFrom": [
+        "msa-lakeshore-retail#03",
+        "msa-prairie-wind-mfg#03",
+        "msa-marlowe-finch-medical#03",
+        "msa-northline-auto#03",
+        "msa-cedar-valley-beverages#03"
+      ],
+      "entityIds": [
+        "cust-harbor-point-foods"
+      ]
+    },
+    {
+      "factId": "msa-harbor-point-foods#04",
+      "docSlug": "msa-harbor-point-foods",
+      "category": "penalty",
+      "statement": "The Master Service Agreement — Harbor Point Foods, Inc. imposes a late delivery penalty of 1.5% per week of the affected invoice amount.",
+      "value": "1.5% per week",
+      "aliases": [
+        "1.5 percent per week",
+        "1.5%/week"
+      ],
+      "valueType": "percent",
+      "sectionHint": "Penalties / Credits",
+      "isException": false,
+      "differsFrom": [
+        "msa-lakeshore-retail#04",
+        "msa-prairie-wind-mfg#04",
+        "msa-marlowe-finch-medical#04",
+        "msa-northline-auto#04",
+        "msa-cedar-valley-beverages#04"
+      ],
+      "entityIds": [
+        "cust-harbor-point-foods"
+      ]
+    },
+    {
+      "factId": "msa-harbor-point-foods#05",
+      "docSlug": "msa-harbor-point-foods",
+      "category": "liability_cap",
+      "statement": "The Master Service Agreement — Harbor Point Foods, Inc. limits carrier liability to $100,000.00 per shipment.",
+      "value": "$100,000.00",
+      "aliases": [
+        "$100,000",
+        "one hundred thousand dollars"
+      ],
+      "valueType": "money",
+      "sectionHint": "Liability / Insurance",
+      "isException": false,
+      "differsFrom": [
+        "msa-lakeshore-retail#05",
+        "msa-prairie-wind-mfg#05",
+        "msa-marlowe-finch-medical#05",
+        "msa-northline-auto#05",
+        "msa-cedar-valley-beverages#05"
+      ],
+      "entityIds": [
+        "cust-harbor-point-foods"
+      ]
+    },
+    {
+      "factId": "msa-harbor-point-foods#06",
+      "docSlug": "msa-harbor-point-foods",
+      "category": "notice_period",
+      "statement": "Either party may terminate the Master Service Agreement — Harbor Point Foods, Inc. with 30 days' prior written notice.",
+      "value": "30 days",
+      "aliases": [
+        "thirty (30) days"
+      ],
+      "valueType": "days",
+      "sectionHint": "Term and Termination",
+      "isException": false,
+      "differsFrom": [
+        "msa-lakeshore-retail#06",
+        "msa-prairie-wind-mfg#06",
+        "msa-marlowe-finch-medical#06",
+        "msa-northline-auto#06",
+        "msa-cedar-valley-beverages#06"
+      ],
+      "entityIds": [
+        "cust-harbor-point-foods"
+      ]
+    },
+    {
+      "factId": "msa-harbor-point-foods#07",
+      "docSlug": "msa-harbor-point-foods",
+      "category": "exception",
+      "statement": "Lumper fees will be charged at actual cost, except for hazmat shipments where third-party lumper charges are the Customer's responsibility and not billed by Ridgeline Freight, LLC.",
+      "value": "Lumper fees charged at actual cost, except for hazmat shipments (third-party lumper charges are Customer responsibility).",
+      "aliases": [
+        "lumper fees charged at actual cost except for hazardous materials",
+        "lumper fees = actual cost; exclude hazmat shipments"
+      ],
+      "valueType": "text",
+      "sectionHint": "Accessorials / Exceptions",
+      "isException": true,
+      "differsFrom": [],
+      "entityIds": [
+        "cust-harbor-point-foods"
+      ]
+    },
+    {
+      "factId": "msa-harbor-point-foods#08",
+      "docSlug": "msa-harbor-point-foods",
+      "category": "other",
+      "statement": "The Master Service Agreement — Harbor Point Foods, Inc. is governed by the laws of the State of Illinois and venue is in Cook County, Illinois.",
+      "value": "State of Illinois; venue in Cook County, Illinois.",
+      "aliases": [
+        "Illinois law; Cook County, Illinois",
+        "governed by the laws of Illinois, venue Cook County"
+      ],
+      "valueType": "text",
+      "sectionHint": "Governing Law",
+      "isException": false,
+      "differsFrom": [],
+      "entityIds": [
+        "cust-harbor-point-foods"
+      ]
+    },
+    {
+      "factId": "msa-lakeshore-retail#01",
+      "docSlug": "msa-lakeshore-retail",
+      "category": "party",
+      "statement": "The Master Service Agreement — Lakeshore Retail Group is between Ridgeline Freight, LLC and Lakeshore Retail Group.",
+      "value": "Lakeshore Retail Group",
+      "aliases": [
+        "Lakeshore Retail",
+        "Lakeshore Retail Group"
+      ],
+      "valueType": "text",
+      "sectionHint": "Parties",
+      "isException": false,
+      "differsFrom": [],
+      "entityIds": [
+        "cust-lakeshore-retail"
+      ]
+    },
+    {
+      "factId": "msa-lakeshore-retail#02",
+      "docSlug": "msa-lakeshore-retail",
+      "category": "date",
+      "statement": "The effective date of the Master Service Agreement — Lakeshore Retail Group is 04/15/2026.",
+      "value": "04/15/2026",
+      "aliases": [
+        "April 15, 2026"
+      ],
+      "valueType": "date",
+      "sectionHint": "Agreement Date / Term",
+      "isException": false,
+      "differsFrom": [],
+      "entityIds": [
+        "cust-lakeshore-retail"
+      ]
+    },
+    {
+      "factId": "msa-lakeshore-retail#03",
+      "docSlug": "msa-lakeshore-retail",
+      "category": "payment_terms",
+      "statement": "In the Master Service Agreement — Lakeshore Retail Group, payment terms are Net 45.",
+      "value": "Net 45",
+      "aliases": [
+        "net forty-five (45) days",
+        "forty-five (45) days from the invoice date"
+      ],
+      "valueType": "text",
+      "sectionHint": "Payment Terms",
+      "isException": false,
+      "differsFrom": [
+        "msa-harbor-point-foods#03",
+        "msa-prairie-wind-mfg#03",
+        "msa-marlowe-finch-medical#03",
+        "msa-northline-auto#03",
+        "msa-cedar-valley-beverages#03"
+      ],
+      "entityIds": [
+        "cust-lakeshore-retail"
+      ]
+    },
+    {
+      "factId": "msa-lakeshore-retail#04",
+      "docSlug": "msa-lakeshore-retail",
+      "category": "penalty",
+      "statement": "The Master Service Agreement — Lakeshore Retail Group imposes a flat late delivery fee of $500.00 per late delivery.",
+      "value": "$500.00",
+      "aliases": [
+        "$500",
+        "five hundred dollars"
+      ],
+      "valueType": "money",
+      "sectionHint": "Penalties / Credits",
+      "isException": false,
+      "differsFrom": [
+        "msa-harbor-point-foods#04",
+        "msa-prairie-wind-mfg#04",
+        "msa-marlowe-finch-medical#04",
+        "msa-northline-auto#04",
+        "msa-cedar-valley-beverages#04"
+      ],
+      "entityIds": [
+        "cust-lakeshore-retail"
+      ]
+    },
+    {
+      "factId": "msa-lakeshore-retail#05",
+      "docSlug": "msa-lakeshore-retail",
+      "category": "liability_cap",
+      "statement": "The Master Service Agreement — Lakeshore Retail Group limits carrier liability to $50,000.00 per shipment.",
+      "value": "$50,000.00",
+      "aliases": [
+        "$50,000",
+        "fifty thousand dollars"
+      ],
+      "valueType": "money",
+      "sectionHint": "Liability / Insurance",
+      "isException": false,
+      "differsFrom": [
+        "msa-harbor-point-foods#05",
+        "msa-prairie-wind-mfg#05",
+        "msa-marlowe-finch-medical#05",
+        "msa-northline-auto#05",
+        "msa-cedar-valley-beverages#05"
+      ],
+      "entityIds": [
+        "cust-lakeshore-retail"
+      ]
+    },
+    {
+      "factId": "msa-lakeshore-retail#06",
+      "docSlug": "msa-lakeshore-retail",
+      "category": "notice_period",
+      "statement": "Either party may terminate the Master Service Agreement — Lakeshore Retail Group with 60 days' prior written notice.",
+      "value": "60 days",
+      "aliases": [
+        "sixty (60) days"
+      ],
+      "valueType": "days",
+      "sectionHint": "Term and Termination",
+      "isException": false,
+      "differsFrom": [
+        "msa-harbor-point-foods#06",
+        "msa-prairie-wind-mfg#06",
+        "msa-marlowe-finch-medical#06",
+        "msa-northline-auto#06",
+        "msa-cedar-valley-beverages#06"
+      ],
+      "entityIds": [
+        "cust-lakeshore-retail"
+      ]
+    },
+    {
+      "factId": "msa-lakeshore-retail#07",
+      "docSlug": "msa-lakeshore-retail",
+      "category": "exception",
+      "statement": "A Truck Ordered Not Used (TONU) fee applies unless the Customer provides written notice at least 24 hours before the scheduled pickup.",
+      "value": "TONU fee applies unless Customer provides written notice at least 24 hours prior to pickup.",
+      "aliases": [
+        "TONU applies unless 24-hour written cancellation",
+        "truck ordered not used fee unless 24 hours' notice"
+      ],
+      "valueType": "text",
+      "sectionHint": "Accessorials / Exceptions",
+      "isException": true,
+      "differsFrom": [],
+      "entityIds": [
+        "cust-lakeshore-retail"
+      ]
+    },
+    {
+      "factId": "msa-lakeshore-retail#08",
+      "docSlug": "msa-lakeshore-retail",
+      "category": "other",
+      "statement": "The Master Service Agreement — Lakeshore Retail Group is governed by the laws of the State of Illinois and venue is in Cook County, Illinois.",
+      "value": "State of Illinois; venue in Cook County, Illinois.",
+      "aliases": [
+        "Illinois law; Cook County, Illinois",
+        "governed by the laws of Illinois, venue Cook County"
+      ],
+      "valueType": "text",
+      "sectionHint": "Governing Law",
+      "isException": false,
+      "differsFrom": [],
+      "entityIds": [
+        "cust-lakeshore-retail"
+      ]
+    },
+    {
+      "factId": "msa-prairie-wind-mfg#01",
+      "docSlug": "msa-prairie-wind-mfg",
+      "category": "party",
+      "statement": "The Master Service Agreement — Prairie Wind Manufacturing is between Ridgeline Freight, LLC and Prairie Wind Manufacturing.",
+      "value": "Prairie Wind Manufacturing",
+      "aliases": [
+        "Prairie Wind Manufacturing",
+        "Prairie Wind Mfg"
+      ],
+      "valueType": "text",
+      "sectionHint": "Parties",
+      "isException": false,
+      "differsFrom": [],
+      "entityIds": [
+        "cust-prairie-wind-mfg"
+      ]
+    },
+    {
+      "factId": "msa-prairie-wind-mfg#02",
+      "docSlug": "msa-prairie-wind-mfg",
+      "category": "date",
+      "statement": "The effective date of the Master Service Agreement — Prairie Wind Manufacturing is 05/01/2026.",
+      "value": "05/01/2026",
+      "aliases": [
+        "May 1, 2026"
+      ],
+      "valueType": "date",
+      "sectionHint": "Agreement Date / Term",
+      "isException": false,
+      "differsFrom": [],
+      "entityIds": [
+        "cust-prairie-wind-mfg"
+      ]
+    },
+    {
+      "factId": "msa-prairie-wind-mfg#03",
+      "docSlug": "msa-prairie-wind-mfg",
+      "category": "payment_terms",
+      "statement": "In the Master Service Agreement — Prairie Wind Manufacturing, payment terms are Net 60.",
+      "value": "Net 60",
+      "aliases": [
+        "net sixty (60) days",
+        "sixty (60) days from the invoice date"
+      ],
+      "valueType": "text",
+      "sectionHint": "Payment Terms",
+      "isException": false,
+      "differsFrom": [
+        "msa-harbor-point-foods#03",
+        "msa-lakeshore-retail#03",
+        "msa-marlowe-finch-medical#03",
+        "msa-northline-auto#03",
+        "msa-cedar-valley-beverages#03"
+      ],
+      "entityIds": [
+        "cust-prairie-wind-mfg"
+      ]
+    },
+    {
+      "factId": "msa-prairie-wind-mfg#04",
+      "docSlug": "msa-prairie-wind-mfg",
+      "category": "penalty",
+      "statement": "The Master Service Agreement — Prairie Wind Manufacturing imposes a late delivery penalty of 2.0% per week of the affected invoice amount.",
+      "value": "2.0% per week",
+      "aliases": [
+        "2.0 percent per week",
+        "2% per week"
+      ],
+      "valueType": "percent",
+      "sectionHint": "Penalties / Credits",
+      "isException": false,
+      "differsFrom": [
+        "msa-harbor-point-foods#04",
+        "msa-lakeshore-retail#04",
+        "msa-marlowe-finch-medical#04",
+        "msa-northline-auto#04",
+        "msa-cedar-valley-beverages#04"
+      ],
+      "entityIds": [
+        "cust-prairie-wind-mfg"
+      ]
+    },
+    {
+      "factId": "msa-prairie-wind-mfg#05",
+      "docSlug": "msa-prairie-wind-mfg",
+      "category": "liability_cap",
+      "statement": "The Master Service Agreement — Prairie Wind Manufacturing limits carrier liability to $25,000.00 per shipment.",
+      "value": "$25,000.00",
+      "aliases": [
+        "$25,000",
+        "twenty-five thousand dollars"
+      ],
+      "valueType": "money",
+      "sectionHint": "Liability / Insurance",
+      "isException": false,
+      "differsFrom": [
+        "msa-harbor-point-foods#05",
+        "msa-lakeshore-retail#05",
+        "msa-marlowe-finch-medical#05",
+        "msa-northline-auto#05",
+        "msa-cedar-valley-beverages#05"
+      ],
+      "entityIds": [
+        "cust-prairie-wind-mfg"
+      ]
+    },
+    {
+      "factId": "msa-prairie-wind-mfg#06",
+      "docSlug": "msa-prairie-wind-mfg",
+      "category": "notice_period",
+      "statement": "Either party may terminate the Master Service Agreement — Prairie Wind Manufacturing with 45 days' prior written notice.",
+      "value": "45 days",
+      "aliases": [
+        "forty-five (45) days"
+      ],
+      "valueType": "days",
+      "sectionHint": "Term and Termination",
+      "isException": false,
+      "differsFrom": [
+        "msa-harbor-point-foods#06",
+        "msa-lakeshore-retail#06",
+        "msa-marlowe-finch-medical#06",
+        "msa-northline-auto#06",
+        "msa-cedar-valley-beverages#06"
+      ],
+      "entityIds": [
+        "cust-prairie-wind-mfg"
+      ]
+    },
+    {
+      "factId": "msa-prairie-wind-mfg#07",
+      "docSlug": "msa-prairie-wind-mfg",
+      "category": "exception",
+      "statement": "Detention charges apply after the applicable free time except for shipments delivered to Ridgeline Freight Warehouse - Twin Cities, which follow the warehouse's separate detention policy.",
+      "value": "Detention charges apply after free time, except for shipments to Ridgeline Freight Warehouse - Twin Cities (warehouse policy applies).",
+      "aliases": [
+        "detention applies after free time except at Twin Cities warehouse",
+        "detention charges exclude Ridgeline Freight Warehouse - Twin Cities shipments"
+      ],
+      "valueType": "text",
+      "sectionHint": "Accessorials / Exceptions",
+      "isException": true,
+      "differsFrom": [],
+      "entityIds": [
+        "cust-prairie-wind-mfg",
+        "wh-minneapolis-north"
+      ]
+    },
+    {
+      "factId": "msa-prairie-wind-mfg#08",
+      "docSlug": "msa-prairie-wind-mfg",
+      "category": "other",
+      "statement": "The Master Service Agreement — Prairie Wind Manufacturing is governed by the laws of the State of Illinois and venue is in Cook County, Illinois.",
+      "value": "State of Illinois; venue in Cook County, Illinois.",
+      "aliases": [
+        "Illinois law; Cook County, Illinois",
+        "governed by the laws of Illinois, venue Cook County"
+      ],
+      "valueType": "text",
+      "sectionHint": "Governing Law",
+      "isException": false,
+      "differsFrom": [],
+      "entityIds": [
+        "cust-prairie-wind-mfg"
+      ]
+    },
+    {
+      "factId": "msa-marlowe-finch-medical#01",
+      "docSlug": "msa-marlowe-finch-medical",
+      "category": "party",
+      "statement": "The Master Service Agreement — Marlowe & Finch Medical Supply is between Ridgeline Freight, LLC and Marlowe & Finch Medical Supply.",
+      "value": "Marlowe & Finch Medical Supply",
+      "aliases": [
+        "Marlowe & Finch Medical",
+        "Marlowe & Finch Medical Supply"
+      ],
+      "valueType": "text",
+      "sectionHint": "Parties",
+      "isException": false,
+      "differsFrom": [],
+      "entityIds": [
+        "cust-marlowe-finch-medical"
+      ]
+    },
+    {
+      "factId": "msa-marlowe-finch-medical#02",
+      "docSlug": "msa-marlowe-finch-medical",
+      "category": "date",
+      "statement": "The effective date of the Master Service Agreement — Marlowe & Finch Medical Supply is 03/15/2026.",
+      "value": "03/15/2026",
+      "aliases": [
+        "March 15, 2026"
+      ],
+      "valueType": "date",
+      "sectionHint": "Agreement Date / Term",
+      "isException": false,
+      "differsFrom": [],
+      "entityIds": [
+        "cust-marlowe-finch-medical"
+      ]
+    },
+    {
+      "factId": "msa-marlowe-finch-medical#03",
+      "docSlug": "msa-marlowe-finch-medical",
+      "category": "payment_terms",
+      "statement": "In the Master Service Agreement — Marlowe & Finch Medical Supply, payment terms are Net 15.",
+      "value": "Net 15",
+      "aliases": [
+        "net fifteen (15) days",
+        "fifteen (15) days from the invoice date"
+      ],
+      "valueType": "text",
+      "sectionHint": "Payment Terms",
+      "isException": false,
+      "differsFrom": [
+        "msa-harbor-point-foods#03",
+        "msa-lakeshore-retail#03",
+        "msa-prairie-wind-mfg#03",
+        "msa-northline-auto#03",
+        "msa-cedar-valley-beverages#03"
+      ],
+      "entityIds": [
+        "cust-marlowe-finch-medical"
+      ]
+    },
+    {
+      "factId": "msa-marlowe-finch-medical#04",
+      "docSlug": "msa-marlowe-finch-medical",
+      "category": "penalty",
+      "statement": "The Master Service Agreement — Marlowe & Finch Medical Supply imposes a flat late delivery fee of $250.00 per late delivery.",
+      "value": "$250.00",
+      "aliases": [
+        "$250",
+        "two hundred fifty dollars"
+      ],
+      "valueType": "money",
+      "sectionHint": "Penalties / Credits",
+      "isException": false,
+      "differsFrom": [
+        "msa-harbor-point-foods#04",
+        "msa-lakeshore-retail#04",
+        "msa-prairie-wind-mfg#04",
+        "msa-northline-auto#04",
+        "msa-cedar-valley-beverages#04"
+      ],
+      "entityIds": [
+        "cust-marlowe-finch-medical"
+      ]
+    },
+    {
+      "factId": "msa-marlowe-finch-medical#05",
+      "docSlug": "msa-marlowe-finch-medical",
+      "category": "liability_cap",
+      "statement": "The Master Service Agreement — Marlowe & Finch Medical Supply limits carrier liability to $500,000.00 per shipment.",
+      "value": "$500,000.00",
+      "aliases": [
+        "$500,000",
+        "five hundred thousand dollars"
+      ],
+      "valueType": "money",
+      "sectionHint": "Liability / Insurance",
+      "isException": false,
+      "differsFrom": [
+        "msa-harbor-point-foods#05",
+        "msa-lakeshore-retail#05",
+        "msa-prairie-wind-mfg#05",
+        "msa-northline-auto#05",
+        "msa-cedar-valley-beverages#05"
+      ],
+      "entityIds": [
+        "cust-marlowe-finch-medical"
+      ]
+    },
+    {
+      "factId": "msa-marlowe-finch-medical#06",
+      "docSlug": "msa-marlowe-finch-medical",
+      "category": "notice_period",
+      "statement": "Either party may terminate the Master Service Agreement — Marlowe & Finch Medical Supply with 15 days' prior written notice.",
+      "value": "15 days",
+      "aliases": [
+        "fifteen (15) days"
+      ],
+      "valueType": "days",
+      "sectionHint": "Term and Termination",
+      "isException": false,
+      "differsFrom": [
+        "msa-harbor-point-foods#06",
+        "msa-lakeshore-retail#06",
+        "msa-prairie-wind-mfg#06",
+        "msa-northline-auto#06",
+        "msa-cedar-valley-beverages#06"
+      ],
+      "entityIds": [
+        "cust-marlowe-finch-medical"
+      ]
+    },
+    {
+      "factId": "msa-marlowe-finch-medical#07",
+      "docSlug": "msa-marlowe-finch-medical",
+      "category": "exception",
+      "statement": "Standard liability limits do not apply to temperature-controlled (reefer) shipments; reefer shipments are subject to a separate, higher liability schedule.",
+      "value": "Standard liability limits do not apply to reefer shipments; reefer shipments follow a separate higher liability schedule.",
+      "aliases": [
+        "reefer shipments excluded from standard liability cap",
+        "temperature-controlled shipments subject to separate liability limits"
+      ],
+      "valueType": "text",
+      "sectionHint": "Liability / Exceptions",
+      "isException": true,
+      "differsFrom": [],
+      "entityIds": [
+        "cust-marlowe-finch-medical"
+      ]
+    },
+    {
+      "factId": "msa-marlowe-finch-medical#08",
+      "docSlug": "msa-marlowe-finch-medical",
+      "category": "other",
+      "statement": "The Master Service Agreement — Marlowe & Finch Medical Supply is governed by the laws of the State of Illinois and venue is in Cook County, Illinois.",
+      "value": "State of Illinois; venue in Cook County, Illinois.",
+      "aliases": [
+        "Illinois law; Cook County, Illinois",
+        "governed by the laws of Illinois, venue Cook County"
+      ],
+      "valueType": "text",
+      "sectionHint": "Governing Law",
+      "isException": false,
+      "differsFrom": [],
+      "entityIds": [
+        "cust-marlowe-finch-medical"
+      ]
+    },
+    {
+      "factId": "msa-northline-auto#01",
+      "docSlug": "msa-northline-auto",
+      "category": "party",
+      "statement": "The Master Service Agreement — Northline Auto Parts is between Ridgeline Freight, LLC and Northline Auto Parts.",
+      "value": "Northline Auto Parts",
+      "aliases": [
+        "Northline Auto Parts",
+        "Northline Auto"
+      ],
+      "valueType": "text",
+      "sectionHint": "Parties",
+      "isException": false,
+      "differsFrom": [],
+      "entityIds": [
+        "cust-northline-auto"
+      ]
+    },
+    {
+      "factId": "msa-northline-auto#02",
+      "docSlug": "msa-northline-auto",
+      "category": "date",
+      "statement": "The effective date of the Master Service Agreement — Northline Auto Parts is 06/01/2026.",
+      "value": "06/01/2026",
+      "aliases": [
+        "June 1, 2026"
+      ],
+      "valueType": "date",
+      "sectionHint": "Agreement Date / Term",
+      "isException": false,
+      "differsFrom": [],
+      "entityIds": [
+        "cust-northline-auto"
+      ]
+    },
+    {
+      "factId": "msa-northline-auto#03",
+      "docSlug": "msa-northline-auto",
+      "category": "payment_terms",
+      "statement": "In the Master Service Agreement — Northline Auto Parts, payment terms are Net 21.",
+      "value": "Net 21",
+      "aliases": [
+        "net twenty-one (21) days",
+        "twenty-one (21) days from the invoice date"
+      ],
+      "valueType": "text",
+      "sectionHint": "Payment Terms",
+      "isException": false,
+      "differsFrom": [
+        "msa-harbor-point-foods#03",
+        "msa-lakeshore-retail#03",
+        "msa-prairie-wind-mfg#03",
+        "msa-marlowe-finch-medical#03",
+        "msa-cedar-valley-beverages#03"
+      ],
+      "entityIds": [
+        "cust-northline-auto"
+      ]
+    },
+    {
+      "factId": "msa-northline-auto#04",
+      "docSlug": "msa-northline-auto",
+      "category": "penalty",
+      "statement": "The Master Service Agreement — Northline Auto Parts imposes a late delivery penalty of 0.5% per day of the affected invoice amount.",
+      "value": "0.5% per day",
+      "aliases": [
+        "0.5 percent per day",
+        "0.5%/day"
+      ],
+      "valueType": "percent",
+      "sectionHint": "Penalties / Credits",
+      "isException": false,
+      "differsFrom": [
+        "msa-harbor-point-foods#04",
+        "msa-lakeshore-retail#04",
+        "msa-prairie-wind-mfg#04",
+        "msa-marlowe-finch-medical#04",
+        "msa-cedar-valley-beverages#04"
+      ],
+      "entityIds": [
+        "cust-northline-auto"
+      ]
+    },
+    {
+      "factId": "msa-northline-auto#05",
+      "docSlug": "msa-northline-auto",
+      "category": "liability_cap",
+      "statement": "The Master Service Agreement — Northline Auto Parts limits carrier liability to $10,000.00 per shipment.",
+      "value": "$10,000.00",
+      "aliases": [
+        "$10,000",
+        "ten thousand dollars"
+      ],
+      "valueType": "money",
+      "sectionHint": "Liability / Insurance",
+      "isException": false,
+      "differsFrom": [
+        "msa-harbor-point-foods#05",
+        "msa-lakeshore-retail#05",
+        "msa-prairie-wind-mfg#05",
+        "msa-marlowe-finch-medical#05",
+        "msa-cedar-valley-beverages#05"
+      ],
+      "entityIds": [
+        "cust-northline-auto"
+      ]
+    },
+    {
+      "factId": "msa-northline-auto#06",
+      "docSlug": "msa-northline-auto",
+      "category": "notice_period",
+      "statement": "Either party may terminate the Master Service Agreement — Northline Auto Parts with 90 days' prior written notice.",
+      "value": "90 days",
+      "aliases": [
+        "ninety (90) days"
+      ],
+      "valueType": "days",
+      "sectionHint": "Term and Termination",
+      "isException": false,
+      "differsFrom": [
+        "msa-harbor-point-foods#06",
+        "msa-lakeshore-retail#06",
+        "msa-prairie-wind-mfg#06",
+        "msa-marlowe-finch-medical#06",
+        "msa-cedar-valley-beverages#06"
+      ],
+      "entityIds": [
+        "cust-northline-auto"
+      ]
+    },
+    {
+      "factId": "msa-northline-auto#07",
+      "docSlug": "msa-northline-auto",
+      "category": "exception",
+      "statement": "Accessorial charges apply as stated, excluding federal holidays when supplemental accessorial billing will not be assessed.",
+      "value": "Accessorial charges apply, excluding federal holidays (no supplemental accessorial billing on federal holidays).",
+      "aliases": [
+        "accessorials excluded on federal holidays",
+        "no accessorial billing on federal holidays"
+      ],
+      "valueType": "text",
+      "sectionHint": "Accessorials / Exceptions",
+      "isException": true,
+      "differsFrom": [],
+      "entityIds": [
+        "cust-northline-auto"
+      ]
+    },
+    {
+      "factId": "msa-northline-auto#08",
+      "docSlug": "msa-northline-auto",
+      "category": "other",
+      "statement": "The Master Service Agreement — Northline Auto Parts is governed by the laws of the State of Illinois and venue is in Cook County, Illinois.",
+      "value": "State of Illinois; venue in Cook County, Illinois.",
+      "aliases": [
+        "Illinois law; Cook County, Illinois",
+        "governed by the laws of Illinois, venue Cook County"
+      ],
+      "valueType": "text",
+      "sectionHint": "Governing Law",
+      "isException": false,
+      "differsFrom": [],
+      "entityIds": [
+        "cust-northline-auto"
+      ]
+    },
+    {
+      "factId": "msa-cedar-valley-beverages#01",
+      "docSlug": "msa-cedar-valley-beverages",
+      "category": "party",
+      "statement": "The Master Service Agreement — Cedar Valley Beverages is between Ridgeline Freight, LLC and Cedar Valley Beverages.",
+      "value": "Cedar Valley Beverages",
+      "aliases": [
+        "Cedar Valley Beverages",
+        "Cedar Valley Bev."
+      ],
+      "valueType": "text",
+      "sectionHint": "Parties",
+      "isException": false,
+      "differsFrom": [],
+      "entityIds": [
+        "cust-cedar-valley-beverages"
+      ]
+    },
+    {
+      "factId": "msa-cedar-valley-beverages#02",
+      "docSlug": "msa-cedar-valley-beverages",
+      "category": "date",
+      "statement": "The effective date of the Master Service Agreement — Cedar Valley Beverages is 07/01/2026.",
+      "value": "07/01/2026",
+      "aliases": [
+        "July 1, 2026"
+      ],
+      "valueType": "date",
+      "sectionHint": "Agreement Date / Term",
+      "isException": false,
+      "differsFrom": [],
+      "entityIds": [
+        "cust-cedar-valley-beverages"
+      ]
+    },
+    {
+      "factId": "msa-cedar-valley-beverages#03",
+      "docSlug": "msa-cedar-valley-beverages",
+      "category": "payment_terms",
+      "statement": "In the Master Service Agreement — Cedar Valley Beverages, payment terms are Net 90.",
+      "value": "Net 90",
+      "aliases": [
+        "net ninety (90) days",
+        "ninety (90) days from the invoice date"
+      ],
+      "valueType": "text",
+      "sectionHint": "Payment Terms",
+      "isException": false,
+      "differsFrom": [
+        "msa-harbor-point-foods#03",
+        "msa-lakeshore-retail#03",
+        "msa-prairie-wind-mfg#03",
+        "msa-marlowe-finch-medical#03",
+        "msa-northline-auto#03"
+      ],
+      "entityIds": [
+        "cust-cedar-valley-beverages"
+      ]
+    },
+    {
+      "factId": "msa-cedar-valley-beverages#04",
+      "docSlug": "msa-cedar-valley-beverages",
+      "category": "penalty",
+      "statement": "The Master Service Agreement — Cedar Valley Beverages imposes a late delivery penalty of 1.0% per week of the affected invoice amount.",
+      "value": "1.0% per week",
+      "aliases": [
+        "1.0 percent per week",
+        "1% per week"
+      ],
+      "valueType": "percent",
+      "sectionHint": "Penalties / Credits",
+      "isException": false,
+      "differsFrom": [
+        "msa-harbor-point-foods#04",
+        "msa-lakeshore-retail#04",
+        "msa-prairie-wind-mfg#04",
+        "msa-marlowe-finch-medical#04",
+        "msa-northline-auto#04"
+      ],
+      "entityIds": [
+        "cust-cedar-valley-beverages"
+      ]
+    },
+    {
+      "factId": "msa-cedar-valley-beverages#05",
+      "docSlug": "msa-cedar-valley-beverages",
+      "category": "liability_cap",
+      "statement": "The Master Service Agreement — Cedar Valley Beverages limits carrier liability to $75,000.00 per shipment.",
+      "value": "$75,000.00",
+      "aliases": [
+        "$75,000",
+        "seventy-five thousand dollars"
+      ],
+      "valueType": "money",
+      "sectionHint": "Liability / Insurance",
+      "isException": false,
+      "differsFrom": [
+        "msa-harbor-point-foods#05",
+        "msa-lakeshore-retail#05",
+        "msa-prairie-wind-mfg#05",
+        "msa-marlowe-finch-medical#05",
+        "msa-northline-auto#05"
+      ],
+      "entityIds": [
+        "cust-cedar-valley-beverages"
+      ]
+    },
+    {
+      "factId": "msa-cedar-valley-beverages#06",
+      "docSlug": "msa-cedar-valley-beverages",
+      "category": "notice_period",
+      "statement": "Either party may terminate the Master Service Agreement — Cedar Valley Beverages with 120 days' prior written notice.",
+      "value": "120 days",
+      "aliases": [
+        "one hundred twenty (120) days"
+      ],
+      "valueType": "days",
+      "sectionHint": "Term and Termination",
+      "isException": false,
+      "differsFrom": [
+        "msa-harbor-point-foods#06",
+        "msa-lakeshore-retail#06",
+        "msa-prairie-wind-mfg#06",
+        "msa-marlowe-finch-medical#06",
+        "msa-northline-auto#06"
+      ],
+      "entityIds": [
+        "cust-cedar-valley-beverages"
+      ]
+    },
+    {
+      "factId": "msa-cedar-valley-beverages#07",
+      "docSlug": "msa-cedar-valley-beverages",
+      "category": "exception",
+      "statement": "TONU fees are waived only if Customer cancels 48 hours or more before scheduled pickup; otherwise TONU applies.",
+      "value": "TONU waived only if Customer cancels 48 hours or more before pickup; otherwise TONU applies.",
+      "aliases": [
+        "TONU waived with 48-hour cancellation",
+        "TONU applies if cancellation under 48 hours"
+      ],
+      "valueType": "text",
+      "sectionHint": "Accessorials / Exceptions",
+      "isException": true,
+      "differsFrom": [],
+      "entityIds": [
+        "cust-cedar-valley-beverages"
+      ]
+    },
+    {
+      "factId": "msa-cedar-valley-beverages#08",
+      "docSlug": "msa-cedar-valley-beverages",
+      "category": "other",
+      "statement": "The Master Service Agreement — Cedar Valley Beverages is governed by the laws of the State of Illinois and venue is in Cook County, Illinois.",
+      "value": "State of Illinois; venue in Cook County, Illinois.",
+      "aliases": [
+        "Illinois law; Cook County, Illinois",
+        "governed by the laws of Illinois, venue Cook County"
+      ],
+      "valueType": "text",
+      "sectionHint": "Governing Law",
+      "isException": false,
+      "differsFrom": [],
+      "entityIds": [
+        "cust-cedar-valley-beverages"
+      ]
+    },
+    {
+      "factId": "carrier-brightwater#01",
+      "docSlug": "carrier-brightwater",
+      "category": "party",
+      "statement": "The Carrier Agreement is between Ridgeline Freight, LLC and Brightwater Carriers LLC.",
+      "value": "Ridgeline Freight, LLC and Brightwater Carriers LLC",
+      "aliases": [
+        "Brightwater Carriers LLC",
+        "Brightwater Carriers"
+      ],
+      "valueType": "text",
+      "sectionHint": "Parties",
+      "isException": false,
+      "differsFrom": [],
+      "entityIds": [
+        "car-brightwater"
+      ]
+    },
+    {
+      "factId": "carrier-brightwater#02",
+      "docSlug": "carrier-brightwater",
+      "category": "payment_terms",
+      "statement": "Payment for services under the Brightwater Carrier Agreement is due Net 30.",
+      "value": "Net 30",
+      "aliases": [
+        "net thirty (30) days",
+        "thirty (30) days from the invoice date"
+      ],
+      "valueType": "text",
+      "sectionHint": "Payment Terms",
+      "isException": false,
+      "differsFrom": [
+        "carrier-ashgrove-haulage#02",
+        "carrier-juniper-bend#02",
+        "carrier-granite-fork-intermodal#02"
+      ],
+      "entityIds": [
+        "car-brightwater"
+      ]
+    },
+    {
+      "factId": "carrier-brightwater#03",
+      "docSlug": "carrier-brightwater",
+      "category": "fee",
+      "statement": "Detention under the Brightwater Carrier Agreement is charged at $50.00 per hour after 2 hours free time at pickup or delivery.",
+      "value": "$50.00 per hour after 2 hours free time",
+      "aliases": [
+        "$50.00/hr after 2 hours free time",
+        "fifty dollars per hour after two (2) hours free time"
+      ],
+      "valueType": "text",
+      "sectionHint": "Fees & Accessorials",
+      "isException": false,
+      "differsFrom": [
+        "carrier-ashgrove-haulage#03",
+        "carrier-juniper-bend#03",
+        "carrier-granite-fork-intermodal#03"
+      ],
+      "entityIds": [
+        "car-brightwater"
+      ]
+    },
+    {
+      "factId": "carrier-brightwater#04",
+      "docSlug": "carrier-brightwater",
+      "category": "threshold",
+      "statement": "Free time at pickup and delivery under the Brightwater Carrier Agreement is 2 hours.",
+      "value": "2 hours",
+      "aliases": [
+        "two (2) hours",
+        "two hours"
+      ],
+      "valueType": "days",
+      "sectionHint": "Fees & Accessorials",
+      "isException": false,
+      "differsFrom": [
+        "carrier-ashgrove-haulage#04",
+        "carrier-juniper-bend#04",
+        "carrier-granite-fork-intermodal#04"
+      ],
+      "entityIds": [
+        "car-brightwater"
+      ]
+    },
+    {
+      "factId": "carrier-brightwater#05",
+      "docSlug": "carrier-brightwater",
+      "category": "liability_cap",
+      "statement": "Under the Brightwater Carrier Agreement, cargo liability is limited to $150,000.00 per occurrence, except for hazmat shipments.",
+      "value": "$150,000.00",
+      "aliases": [
+        "$150,000",
+        "$150,000.00 per occurrence",
+        "one hundred fifty thousand dollars"
+      ],
+      "valueType": "money",
+      "sectionHint": "Insurance & Liability",
+      "isException": true,
+      "differsFrom": [
+        "carrier-ashgrove-haulage#05",
+        "carrier-juniper-bend#05",
+        "carrier-granite-fork-intermodal#05"
+      ],
+      "entityIds": [
+        "car-brightwater"
+      ]
+    },
+    {
+      "factId": "carrier-brightwater#06",
+      "docSlug": "carrier-brightwater",
+      "category": "term_and_termination",
+      "statement": "Either party may terminate the Brightwater Carrier Agreement for convenience with 30 days' written notice.",
+      "value": "30 days",
+      "aliases": [
+        "thirty (30) days",
+        "30 calendar days' written notice"
+      ],
+      "valueType": "days",
+      "sectionHint": "Term and Termination",
+      "isException": false,
+      "differsFrom": [
+        "carrier-ashgrove-haulage#06",
+        "carrier-juniper-bend#06",
+        "carrier-granite-fork-intermodal#06"
+      ],
+      "entityIds": [
+        "car-brightwater"
+      ]
+    },
+    {
+      "factId": "carrier-brightwater#07",
+      "docSlug": "carrier-brightwater",
+      "category": "penalty",
+      "statement": "Late payments under the Brightwater Carrier Agreement incur a late fee of 1.5% per month on the outstanding balance.",
+      "value": "1.5% per month",
+      "aliases": [
+        "1.5%/month",
+        "1.5 percent per month"
+      ],
+      "valueType": "percent",
+      "sectionHint": "Payment Terms",
+      "isException": false,
+      "differsFrom": [
+        "carrier-juniper-bend#07"
+      ],
+      "entityIds": [
+        "car-brightwater"
+      ]
+    },
+    {
+      "factId": "carrier-ashgrove-haulage#01",
+      "docSlug": "carrier-ashgrove-haulage",
+      "category": "party",
+      "statement": "The Carrier Agreement is between Ridgeline Freight, LLC and Ashgrove Haulage LLC.",
+      "value": "Ridgeline Freight, LLC and Ashgrove Haulage LLC",
+      "aliases": [
+        "Ashgrove Haulage LLC",
+        "Ashgrove Haulage"
+      ],
+      "valueType": "text",
+      "sectionHint": "Parties",
+      "isException": false,
+      "differsFrom": [],
+      "entityIds": [
+        "car-ashgrove-haulage"
+      ]
+    },
+    {
+      "factId": "carrier-ashgrove-haulage#02",
+      "docSlug": "carrier-ashgrove-haulage",
+      "category": "payment_terms",
+      "statement": "Payment for services under the Ashgrove Carrier Agreement is due Net 45.",
+      "value": "Net 45",
+      "aliases": [
+        "net forty-five (45) days",
+        "forty-five (45) days from the invoice date"
+      ],
+      "valueType": "text",
+      "sectionHint": "Payment Terms",
+      "isException": false,
+      "differsFrom": [
+        "carrier-brightwater#02",
+        "carrier-juniper-bend#02",
+        "carrier-granite-fork-intermodal#02"
+      ],
+      "entityIds": [
+        "car-ashgrove-haulage"
+      ]
+    },
+    {
+      "factId": "carrier-ashgrove-haulage#03",
+      "docSlug": "carrier-ashgrove-haulage",
+      "category": "fee",
+      "statement": "Detention under the Ashgrove Carrier Agreement is charged at $35.00 per hour after 3 hours free time at pickup or delivery.",
+      "value": "$35.00 per hour after 3 hours free time",
+      "aliases": [
+        "$35.00/hr after 3 hours free time",
+        "thirty-five dollars per hour after three (3) hours free time"
+      ],
+      "valueType": "text",
+      "sectionHint": "Fees & Accessorials",
+      "isException": false,
+      "differsFrom": [
+        "carrier-brightwater#03",
+        "carrier-juniper-bend#03",
+        "carrier-granite-fork-intermodal#03"
+      ],
+      "entityIds": [
+        "car-ashgrove-haulage"
+      ]
+    },
+    {
+      "factId": "carrier-ashgrove-haulage#04",
+      "docSlug": "carrier-ashgrove-haulage",
+      "category": "threshold",
+      "statement": "Free time at pickup and delivery under the Ashgrove Carrier Agreement is 3 hours.",
+      "value": "3 hours",
+      "aliases": [
+        "three (3) hours",
+        "three hours"
+      ],
+      "valueType": "days",
+      "sectionHint": "Fees & Accessorials",
+      "isException": false,
+      "differsFrom": [
+        "carrier-brightwater#04",
+        "carrier-juniper-bend#04",
+        "carrier-granite-fork-intermodal#04"
+      ],
+      "entityIds": [
+        "car-ashgrove-haulage"
+      ]
+    },
+    {
+      "factId": "carrier-ashgrove-haulage#05",
+      "docSlug": "carrier-ashgrove-haulage",
+      "category": "liability_cap",
+      "statement": "Under the Ashgrove Carrier Agreement, cargo liability is limited to $60,000.00 per occurrence, except for hazmat shipments.",
+      "value": "$60,000.00",
+      "aliases": [
+        "$60,000",
+        "$60,000.00 per occurrence",
+        "sixty thousand dollars"
+      ],
+      "valueType": "money",
+      "sectionHint": "Insurance & Liability",
+      "isException": true,
+      "differsFrom": [
+        "carrier-brightwater#05",
+        "carrier-juniper-bend#05",
+        "carrier-granite-fork-intermodal#05"
+      ],
+      "entityIds": [
+        "car-ashgrove-haulage"
+      ]
+    },
+    {
+      "factId": "carrier-ashgrove-haulage#06",
+      "docSlug": "carrier-ashgrove-haulage",
+      "category": "term_and_termination",
+      "statement": "Either party may terminate the Ashgrove Carrier Agreement for convenience with 15 days' written notice.",
+      "value": "15 days",
+      "aliases": [
+        "fifteen (15) days",
+        "15 calendar days' written notice"
+      ],
+      "valueType": "days",
+      "sectionHint": "Term and Termination",
+      "isException": false,
+      "differsFrom": [
+        "carrier-brightwater#06",
+        "carrier-juniper-bend#06",
+        "carrier-granite-fork-intermodal#06"
+      ],
+      "entityIds": [
+        "car-ashgrove-haulage"
+      ]
+    },
+    {
+      "factId": "carrier-ashgrove-haulage#07",
+      "docSlug": "carrier-ashgrove-haulage",
+      "category": "other",
+      "statement": "The Ashgrove Carrier Agreement is governed by the laws of the State of Illinois and venue is Cook County, Illinois.",
+      "value": "Governing law: Illinois; venue: Cook County, Illinois",
+      "aliases": [
+        "Illinois governing law with venue in Cook County, Illinois",
+        "governed by Illinois law and Cook County venue"
+      ],
+      "valueType": "text",
+      "sectionHint": "General Provisions",
+      "isException": false,
+      "differsFrom": [],
+      "entityIds": [
+        "car-ashgrove-haulage"
+      ]
+    },
+    {
+      "factId": "carrier-juniper-bend#01",
+      "docSlug": "carrier-juniper-bend",
+      "category": "party",
+      "statement": "The Carrier Agreement is between Ridgeline Freight, LLC and Juniper Bend Logistics.",
+      "value": "Ridgeline Freight, LLC and Juniper Bend Logistics",
+      "aliases": [
+        "Juniper Bend Logistics"
+      ],
+      "valueType": "text",
+      "sectionHint": "Parties",
+      "isException": false,
+      "differsFrom": [],
+      "entityIds": [
+        "car-juniper-bend"
+      ]
+    },
+    {
+      "factId": "carrier-juniper-bend#02",
+      "docSlug": "carrier-juniper-bend",
+      "category": "payment_terms",
+      "statement": "Payment for services under the Juniper Bend Carrier Agreement is due Net 15.",
+      "value": "Net 15",
+      "aliases": [
+        "net fifteen (15) days",
+        "fifteen (15) days from the invoice date"
+      ],
+      "valueType": "text",
+      "sectionHint": "Payment Terms",
+      "isException": false,
+      "differsFrom": [
+        "carrier-brightwater#02",
+        "carrier-ashgrove-haulage#02",
+        "carrier-granite-fork-intermodal#02"
+      ],
+      "entityIds": [
+        "car-juniper-bend"
+      ]
+    },
+    {
+      "factId": "carrier-juniper-bend#03",
+      "docSlug": "carrier-juniper-bend",
+      "category": "fee",
+      "statement": "Detention under the Juniper Bend Carrier Agreement is charged at $60.00 per hour after 90 minutes free time at pickup or delivery.",
+      "value": "$60.00 per hour after 90 minutes free time",
+      "aliases": [
+        "$60.00/hr after 90 minutes free time",
+        "sixty dollars per hour after ninety (90) minutes free time"
+      ],
+      "valueType": "text",
+      "sectionHint": "Fees & Accessorials",
+      "isException": false,
+      "differsFrom": [
+        "carrier-brightwater#03",
+        "carrier-ashgrove-haulage#03",
+        "carrier-granite-fork-intermodal#03"
+      ],
+      "entityIds": [
+        "car-juniper-bend"
+      ]
+    },
+    {
+      "factId": "carrier-juniper-bend#04",
+      "docSlug": "carrier-juniper-bend",
+      "category": "threshold",
+      "statement": "Free time at pickup and delivery under the Juniper Bend Carrier Agreement is 90 minutes.",
+      "value": "90 minutes",
+      "aliases": [
+        "ninety (90) minutes",
+        "1.5 hours",
+        "one and a half hours"
+      ],
+      "valueType": "text",
+      "sectionHint": "Fees & Accessorials",
+      "isException": false,
+      "differsFrom": [
+        "carrier-brightwater#04",
+        "carrier-ashgrove-haulage#04",
+        "carrier-granite-fork-intermodal#04"
+      ],
+      "entityIds": [
+        "car-juniper-bend"
+      ]
+    },
+    {
+      "factId": "carrier-juniper-bend#05",
+      "docSlug": "carrier-juniper-bend",
+      "category": "liability_cap",
+      "statement": "Under the Juniper Bend Carrier Agreement, cargo liability is limited to $250,000.00 per occurrence, except for shipments transported on container chassis.",
+      "value": "$250,000.00",
+      "aliases": [
+        "$250,000",
+        "$250,000.00 per occurrence",
+        "two hundred fifty thousand dollars"
+      ],
+      "valueType": "money",
+      "sectionHint": "Insurance & Liability",
+      "isException": true,
+      "differsFrom": [
+        "carrier-brightwater#05",
+        "carrier-ashgrove-haulage#05",
+        "carrier-granite-fork-intermodal#05"
+      ],
+      "entityIds": [
+        "car-juniper-bend"
+      ]
+    },
+    {
+      "factId": "carrier-juniper-bend#06",
+      "docSlug": "carrier-juniper-bend",
+      "category": "term_and_termination",
+      "statement": "Either party may terminate the Juniper Bend Carrier Agreement for convenience with 60 days' written notice.",
+      "value": "60 days",
+      "aliases": [
+        "sixty (60) days",
+        "60 calendar days' written notice"
+      ],
+      "valueType": "days",
+      "sectionHint": "Term and Termination",
+      "isException": false,
+      "differsFrom": [
+        "carrier-brightwater#06",
+        "carrier-ashgrove-haulage#06",
+        "carrier-granite-fork-intermodal#06"
+      ],
+      "entityIds": [
+        "car-juniper-bend"
+      ]
+    },
+    {
+      "factId": "carrier-juniper-bend#07",
+      "docSlug": "carrier-juniper-bend",
+      "category": "penalty",
+      "statement": "Late payments under the Juniper Bend Carrier Agreement incur a late fee of 1.0% per month on the outstanding balance.",
+      "value": "1.0% per month",
+      "aliases": [
+        "1.0%/month",
+        "1.0 percent per month"
+      ],
+      "valueType": "percent",
+      "sectionHint": "Payment Terms",
+      "isException": false,
+      "differsFrom": [
+        "carrier-brightwater#07"
+      ],
+      "entityIds": [
+        "car-juniper-bend"
+      ]
+    },
+    {
+      "factId": "carrier-granite-fork-intermodal#01",
+      "docSlug": "carrier-granite-fork-intermodal",
+      "category": "party",
+      "statement": "The Subcontractor Agreement is between Ridgeline Freight, LLC and Granite Fork Intermodal.",
+      "value": "Ridgeline Freight, LLC and Granite Fork Intermodal",
+      "aliases": [
+        "Granite Fork Intermodal"
+      ],
+      "valueType": "text",
+      "sectionHint": "Parties",
+      "isException": false,
+      "differsFrom": [],
+      "entityIds": [
+        "car-granite-fork-intermodal"
+      ]
+    },
+    {
+      "factId": "carrier-granite-fork-intermodal#02",
+      "docSlug": "carrier-granite-fork-intermodal",
+      "category": "payment_terms",
+      "statement": "Payment for services under the Granite Fork Subcontractor Agreement is due Net 10.",
+      "value": "Net 10",
+      "aliases": [
+        "net ten (10) days",
+        "ten (10) days from the invoice date"
+      ],
+      "valueType": "text",
+      "sectionHint": "Payment Terms",
+      "isException": false,
+      "differsFrom": [
+        "carrier-brightwater#02",
+        "carrier-ashgrove-haulage#02",
+        "carrier-juniper-bend#02"
+      ],
+      "entityIds": [
+        "car-granite-fork-intermodal"
+      ]
+    },
+    {
+      "factId": "carrier-granite-fork-intermodal#03",
+      "docSlug": "carrier-granite-fork-intermodal",
+      "category": "fee",
+      "statement": "Detention under the Granite Fork Subcontractor Agreement is charged at $45.00 per hour after 4 hours free time at pickup or delivery.",
+      "value": "$45.00 per hour after 4 hours free time",
+      "aliases": [
+        "$45.00/hr after 4 hours free time",
+        "forty-five dollars per hour after four (4) hours free time"
+      ],
+      "valueType": "text",
+      "sectionHint": "Fees & Accessorials",
+      "isException": false,
+      "differsFrom": [
+        "carrier-brightwater#03",
+        "carrier-ashgrove-haulage#03",
+        "carrier-juniper-bend#03"
+      ],
+      "entityIds": [
+        "car-granite-fork-intermodal"
+      ]
+    },
+    {
+      "factId": "carrier-granite-fork-intermodal#04",
+      "docSlug": "carrier-granite-fork-intermodal",
+      "category": "threshold",
+      "statement": "Free time at pickup and delivery under the Granite Fork Subcontractor Agreement is 4 hours.",
+      "value": "4 hours",
+      "aliases": [
+        "four (4) hours",
+        "four hours"
+      ],
+      "valueType": "days",
+      "sectionHint": "Fees & Accessorials",
+      "isException": false,
+      "differsFrom": [
+        "carrier-brightwater#04",
+        "carrier-ashgrove-haulage#04",
+        "carrier-juniper-bend#04"
+      ],
+      "entityIds": [
+        "car-granite-fork-intermodal"
+      ]
+    },
+    {
+      "factId": "carrier-granite-fork-intermodal#05",
+      "docSlug": "carrier-granite-fork-intermodal",
+      "category": "liability_cap",
+      "statement": "Under the Granite Fork Subcontractor Agreement, cargo liability is limited to $400,000.00 per occurrence, except for hazmat shipments.",
+      "value": "$400,000.00",
+      "aliases": [
+        "$400,000",
+        "$400,000.00 per occurrence",
+        "four hundred thousand dollars"
+      ],
+      "valueType": "money",
+      "sectionHint": "Insurance & Liability",
+      "isException": true,
+      "differsFrom": [
+        "carrier-brightwater#05",
+        "carrier-ashgrove-haulage#05",
+        "carrier-juniper-bend#05"
+      ],
+      "entityIds": [
+        "car-granite-fork-intermodal"
+      ]
+    },
+    {
+      "factId": "carrier-granite-fork-intermodal#06",
+      "docSlug": "carrier-granite-fork-intermodal",
+      "category": "term_and_termination",
+      "statement": "Either party may terminate the Granite Fork Subcontractor Agreement for convenience with 45 days' written notice.",
+      "value": "45 days",
+      "aliases": [
+        "forty-five (45) days",
+        "45 calendar days' written notice"
+      ],
+      "valueType": "days",
+      "sectionHint": "Term and Termination",
+      "isException": false,
+      "differsFrom": [
+        "carrier-brightwater#06",
+        "carrier-ashgrove-haulage#06",
+        "carrier-juniper-bend#06"
+      ],
+      "entityIds": [
+        "car-granite-fork-intermodal"
+      ]
+    },
+    {
+      "factId": "carrier-granite-fork-intermodal#07",
+      "docSlug": "carrier-granite-fork-intermodal",
+      "category": "other",
+      "statement": "The Granite Fork Subcontractor Agreement is governed by the laws of the State of Illinois and venue is Cook County, Illinois.",
+      "value": "Governing law: Illinois; venue: Cook County, Illinois",
+      "aliases": [
+        "Illinois governing law with venue in Cook County, Illinois",
+        "governed by Illinois law and Cook County venue"
+      ],
+      "valueType": "text",
+      "sectionHint": "General Provisions",
+      "isException": false,
+      "differsFrom": [],
+      "entityIds": [
+        "car-granite-fork-intermodal"
+      ]
+    },
+    {
+      "factId": "hr-pto-holidays#01",
+      "docSlug": "hr-pto-holidays",
+      "category": "policy_rule",
+      "statement": "Employees accrue PTO at a rate of 0.58 days per biweekly pay period under the Paid Time Off and Holidays policy.",
+      "value": "0.58 days per biweekly pay period",
+      "aliases": [
+        "0.58 days per pay period",
+        "0.58 days per bi-weekly pay period",
+        "0.58 days / biweekly"
+      ],
+      "valueType": "days",
+      "sectionHint": "PTO Accrual",
+      "isException": false,
+      "differsFrom": [],
+      "entityIds": []
+    },
+    {
+      "factId": "hr-pto-holidays#02",
+      "docSlug": "hr-pto-holidays",
+      "category": "policy_rule",
+      "statement": "Employees are eligible for 15.00 days of PTO per year under the Paid Time Off and Holidays policy.",
+      "value": "15.00 days per year",
+      "aliases": [
+        "15 days per year",
+        "fifteen (15) days per year"
+      ],
+      "valueType": "days",
+      "sectionHint": "Annual Accrual",
+      "isException": false,
+      "differsFrom": [
+        "hr-attendance-leave#01"
+      ],
+      "entityIds": []
+    },
+    {
+      "factId": "hr-pto-holidays#03",
+      "docSlug": "hr-pto-holidays",
+      "category": "threshold",
+      "statement": "The maximum PTO carryover from one year to the next is 5.00 days.",
+      "value": "5.00 days",
+      "aliases": [
+        "5 days",
+        "five (5) days"
+      ],
+      "valueType": "days",
+      "sectionHint": "Carryover Policy",
+      "isException": false,
+      "differsFrom": [],
+      "entityIds": []
+    },
+    {
+      "factId": "hr-pto-holidays#04",
+      "docSlug": "hr-pto-holidays",
+      "category": "policy_rule",
+      "statement": "The Company observes 10.00 paid holidays per year under the Paid Time Off and Holidays policy.",
+      "value": "10.00 days per year",
+      "aliases": [
+        "10 paid holidays per year",
+        "ten (10) days per year"
+      ],
+      "valueType": "days",
+      "sectionHint": "Holidays",
+      "isException": false,
+      "differsFrom": [],
+      "entityIds": [
+        "wh-chicago-west",
+        "wh-joliet-south"
+      ]
+    },
+    {
+      "factId": "hr-pto-holidays#05",
+      "docSlug": "hr-pto-holidays",
+      "category": "policy_rule",
+      "statement": "Employees become eligible for PTO after 90 days of continuous employment.",
+      "value": "90 days",
+      "aliases": [
+        "ninety (90) days",
+        "90-day eligibility period"
+      ],
+      "valueType": "days",
+      "sectionHint": "Eligibility",
+      "isException": false,
+      "differsFrom": [
+        "hr-attendance-leave#02",
+        "hr-remote-hybrid-work#02"
+      ],
+      "entityIds": []
+    },
+    {
+      "factId": "hr-pto-holidays#06",
+      "docSlug": "hr-pto-holidays",
+      "category": "exception",
+      "statement": "PTO accrual is prorated during the first 12 months of employment, except as otherwise required by law.",
+      "value": "PTO accrual is prorated during the first 12 months of employment",
+      "aliases": [
+        "first-year accrual is prorated",
+        "accrual prorated first 12 months"
+      ],
+      "valueType": "text",
+      "sectionHint": "Exceptions and Proration",
+      "isException": true,
+      "differsFrom": [],
+      "entityIds": []
+    },
+    {
+      "factId": "hr-remote-hybrid-work#01",
+      "docSlug": "hr-remote-hybrid-work",
+      "category": "policy_rule",
+      "statement": "Eligible employees may work remotely for up to 2 days per week under the Remote and Hybrid Work policy.",
+      "value": "Up to 2 days remote work per week",
+      "aliases": [
+        "two (2) days remote per week",
+        "2 remote days per week"
+      ],
+      "valueType": "text",
+      "sectionHint": "Hybrid Schedule",
+      "isException": false,
+      "differsFrom": [],
+      "entityIds": []
+    },
+    {
+      "factId": "hr-remote-hybrid-work#02",
+      "docSlug": "hr-remote-hybrid-work",
+      "category": "policy_rule",
+      "statement": "Employees become eligible for remote or hybrid work after 180 days of continuous employment.",
+      "value": "180 days",
+      "aliases": [
+        "one hundred eighty (180) days",
+        "180-day eligibility period"
+      ],
+      "valueType": "days",
+      "sectionHint": "Eligibility",
+      "isException": false,
+      "differsFrom": [
+        "hr-pto-holidays#05",
+        "hr-attendance-leave#02"
+      ],
+      "entityIds": []
+    },
+    {
+      "factId": "hr-remote-hybrid-work#03",
+      "docSlug": "hr-remote-hybrid-work",
+      "category": "fee",
+      "statement": "Ridgeline will reimburse approved remote-work equipment purchases up to a cap of $300.00 per employee.",
+      "value": "$300.00",
+      "aliases": [
+        "$300",
+        "three hundred dollars"
+      ],
+      "valueType": "money",
+      "sectionHint": "Equipment and Reimbursement",
+      "isException": false,
+      "differsFrom": [],
+      "entityIds": []
+    },
+    {
+      "factId": "hr-remote-hybrid-work#04",
+      "docSlug": "hr-remote-hybrid-work",
+      "category": "notice_period",
+      "statement": "Employees must provide 7 business days' notice to change an approved hybrid work schedule.",
+      "value": "7 business days",
+      "aliases": [
+        "seven (7) business days",
+        "7 business-day notice"
+      ],
+      "valueType": "days",
+      "sectionHint": "Schedule Changes and Notice",
+      "isException": false,
+      "differsFrom": [],
+      "entityIds": []
+    },
+    {
+      "factId": "hr-remote-hybrid-work#05",
+      "docSlug": "hr-remote-hybrid-work",
+      "category": "exception",
+      "statement": "Drivers, warehouse staff, and other roles that require on-site presence are not eligible for remote or hybrid work under this policy.",
+      "value": "Drivers, warehouse staff, and other on-site roles are not eligible for remote or hybrid work",
+      "aliases": [
+        "operations and warehouse staff excluded",
+        "drivers and on-site personnel are ineligible"
+      ],
+      "valueType": "text",
+      "sectionHint": "Eligibility Exceptions",
+      "isException": true,
+      "differsFrom": [],
+      "entityIds": [
+        "wh-chicago-west",
+        "wh-joliet-south",
+        "wh-minneapolis-north"
+      ]
+    },
+    {
+      "factId": "hr-travel-expense#01",
+      "docSlug": "hr-travel-expense",
+      "category": "rate",
+      "statement": "The per diem for meals and incidental expenses is $55.00 per day under the Business Travel and Expense Reimbursement policy.",
+      "value": "$55.00",
+      "aliases": [
+        "$55",
+        "$55.00/day",
+        "$55.00 per day",
+        "fifty-five dollars per day"
+      ],
+      "valueType": "money",
+      "sectionHint": "Per Diem",
+      "isException": false,
+      "differsFrom": [],
+      "entityIds": []
+    },
+    {
+      "factId": "hr-travel-expense#02",
+      "docSlug": "hr-travel-expense",
+      "category": "rate",
+      "statement": "Mileage for personal vehicle use on business travel is reimbursed at $0.67 per mile.",
+      "value": "$0.67",
+      "aliases": [
+        "$0.67/mile",
+        "$0.67 per mile",
+        "sixty-seven cents per mile"
+      ],
+      "valueType": "money",
+      "sectionHint": "Mileage Reimbursement",
+      "isException": false,
+      "differsFrom": [],
+      "entityIds": []
+    },
+    {
+      "factId": "hr-travel-expense#03",
+      "docSlug": "hr-travel-expense",
+      "category": "threshold",
+      "statement": "Receipts are required for all expenses over $25.00 when submitting travel expense reports.",
+      "value": "$25.00",
+      "aliases": [
+        "$25",
+        "twenty-five dollars"
+      ],
+      "valueType": "money",
+      "sectionHint": "Receipts and Documentation",
+      "isException": false,
+      "differsFrom": [],
+      "entityIds": []
+    },
+    {
+      "factId": "hr-travel-expense#04",
+      "docSlug": "hr-travel-expense",
+      "category": "notice_period",
+      "statement": "Expense reports must be submitted within 30 days of trip completion to be eligible for reimbursement.",
+      "value": "30 days",
+      "aliases": [
+        "thirty (30) days",
+        "within 30 days"
+      ],
+      "valueType": "days",
+      "sectionHint": "Submission Timeline",
+      "isException": false,
+      "differsFrom": [],
+      "entityIds": []
+    },
+    {
+      "factId": "hr-travel-expense#05",
+      "docSlug": "hr-travel-expense",
+      "category": "exception",
+      "statement": "Overnight lodging charges above $300.00 require pre-approval by the VP, Sales & Commercial, Liam Granger.",
+      "value": "Overnight lodging above $300.00 requires pre-approval by the VP, Sales & Commercial",
+      "aliases": [
+        "lodging over $300 requires VP pre-approval",
+        "pre-approval required for lodging > $300.00"
+      ],
+      "valueType": "text",
+      "sectionHint": "Pre-Approval Exceptions",
+      "isException": true,
+      "differsFrom": [],
+      "entityIds": []
+    },
+    {
+      "factId": "hr-travel-expense#06",
+      "docSlug": "hr-travel-expense",
+      "category": "payment_terms",
+      "statement": "Reimbursements for approved travel expenses are paid Net 30 from the date of receipt of a complete expense report.",
+      "value": "Net 30",
+      "aliases": [
+        "net thirty (30) days",
+        "thirty (30) days from receipt of a complete expense report"
+      ],
+      "valueType": "text",
+      "sectionHint": "Reimbursement Payment Terms",
+      "isException": false,
+      "differsFrom": [],
+      "entityIds": []
+    },
+    {
+      "factId": "hr-conduct-at-will#01",
+      "docSlug": "hr-conduct-at-will",
+      "category": "term_and_termination",
+      "statement": "Employment with Ridgeline Freight, LLC is at-will and may be terminated by either the Company or the employee at any time, with or without cause.",
+      "value": "Employment is at-will",
+      "aliases": [
+        "at-will employment",
+        "employment may be terminated at any time"
+      ],
+      "valueType": "text",
+      "sectionHint": "Employment Status",
+      "isException": false,
+      "differsFrom": [],
+      "entityIds": []
+    },
+    {
+      "factId": "hr-conduct-at-will#02",
+      "docSlug": "hr-conduct-at-will",
+      "category": "other",
+      "statement": "This policy is governed by the laws of the State of Illinois and venue for disputes is Cook County, Illinois.",
+      "value": "Governing law: Illinois; venue: Cook County, Illinois",
+      "aliases": [
+        "governed by Illinois law; venue in Cook County, IL",
+        "Illinois law and Cook County venue"
+      ],
+      "valueType": "text",
+      "sectionHint": "Governing Law and Venue",
+      "isException": false,
+      "differsFrom": [],
+      "entityIds": []
+    },
+    {
+      "factId": "hr-conduct-at-will#03",
+      "docSlug": "hr-conduct-at-will",
+      "category": "notice_period",
+      "statement": "Ridgeline requests that employees provide 14 days' notice before voluntary resignation, but such notice is not required because employment is at-will.",
+      "value": "14 days' notice requested but not required",
+      "aliases": [
+        "two weeks' notice requested but not required",
+        "14-day requested notice"
+      ],
+      "valueType": "days",
+      "sectionHint": "Resignation and Notice",
+      "isException": true,
+      "differsFrom": [],
+      "entityIds": []
+    },
+    {
+      "factId": "hr-conduct-at-will#04",
+      "docSlug": "hr-conduct-at-will",
+      "category": "policy_rule",
+      "statement": "Employees must disclose any actual or potential conflicts of interest within 10 days of becoming aware of them.",
+      "value": "10 days",
+      "aliases": [
+        "ten (10) days",
+        "10-day disclosure period"
+      ],
+      "valueType": "days",
+      "sectionHint": "Conflicts of Interest",
+      "isException": false,
+      "differsFrom": [],
+      "entityIds": []
+    },
+    {
+      "factId": "hr-conduct-at-will#05",
+      "docSlug": "hr-conduct-at-will",
+      "category": "policy_rule",
+      "statement": "Ridgeline follows a progressive discipline approach, up to and including termination, for violations of the Code of Conduct.",
+      "value": "Progressive discipline up to and including termination",
+      "aliases": [
+        "progressive disciplinary steps",
+        "discipline up to termination"
+      ],
+      "valueType": "text",
+      "sectionHint": "Discipline and Enforcement",
+      "isException": false,
+      "differsFrom": [],
+      "entityIds": []
+    },
+    {
+      "factId": "hr-driver-hours-safety#01",
+      "docSlug": "hr-driver-hours-safety",
+      "category": "policy_rule",
+      "statement": "Drivers must not exceed 11 hours of driving time following 10 consecutive hours off and may not exceed 14 total hours on duty in a work period.",
+      "value": "11 hours driving; 10 consecutive hours off; 14 hours on duty",
+      "aliases": [
+        "11 hours driving time; 14-hour duty window; 10-hour rest",
+        "11/14/10 driving/rest limits"
+      ],
+      "valueType": "text",
+      "sectionHint": "Hours and Duty Limits",
+      "isException": false,
+      "differsFrom": [],
+      "entityIds": []
+    },
+    {
+      "factId": "hr-driver-hours-safety#02",
+      "docSlug": "hr-driver-hours-safety",
+      "category": "policy_rule",
+      "statement": "Drivers must obtain at least 10 consecutive hours off between duty periods before resuming driving.",
+      "value": "10 consecutive hours off",
+      "aliases": [
+        "10 hours off",
+        "ten (10) consecutive hours rest"
+      ],
+      "valueType": "text",
+      "sectionHint": "Rest Requirements",
+      "isException": false,
+      "differsFrom": [],
+      "entityIds": []
+    },
+    {
+      "factId": "hr-driver-hours-safety#03",
+      "docSlug": "hr-driver-hours-safety",
+      "category": "threshold",
+      "statement": "Drivers are paid detention only after two (2) hours of free time at pickup and delivery.",
+      "value": "Two (2) hours of free time at pickup and delivery",
+      "aliases": [
+        "2 hours free time",
+        "two hours free time at pickup/delivery"
+      ],
+      "valueType": "text",
+      "sectionHint": "Detention and Free Time",
+      "isException": false,
+      "differsFrom": [],
+      "entityIds": []
+    },
+    {
+      "factId": "hr-driver-hours-safety#04",
+      "docSlug": "hr-driver-hours-safety",
+      "category": "rate",
+      "statement": "Drivers receive detention pay at a rate of $45.00 per hour after free time has elapsed.",
+      "value": "$45.00",
+      "aliases": [
+        "$45",
+        "$45/hr",
+        "$45.00 per hour",
+        "forty-five dollars per hour"
+      ],
+      "valueType": "money",
+      "sectionHint": "Accessorial Charges - Detention",
+      "isException": false,
+      "differsFrom": [],
+      "entityIds": []
+    },
+    {
+      "factId": "hr-driver-hours-safety#05",
+      "docSlug": "hr-driver-hours-safety",
+      "category": "fee",
+      "statement": "Layover pay is $150.00 per layover day when a driver is held overnight through no fault of the driver.",
+      "value": "$150.00",
+      "aliases": [
+        "$150",
+        "$150 per layover day",
+        "one hundred fifty dollars per layover day"
+      ],
+      "valueType": "money",
+      "sectionHint": "Layover Pay",
+      "isException": false,
+      "differsFrom": [],
+      "entityIds": []
+    },
+    {
+      "factId": "hr-driver-hours-safety#06",
+      "docSlug": "hr-driver-hours-safety",
+      "category": "fee",
+      "statement": "Ridgeline will reimburse lumper fees up to $150.00 with receipts, except for hazmat shipments.",
+      "value": "$150.00",
+      "aliases": [
+        "$150",
+        "up to $150",
+        "one hundred fifty dollars"
+      ],
+      "valueType": "money",
+      "sectionHint": "Lumper Fees and Exceptions",
+      "isException": true,
+      "differsFrom": [],
+      "entityIds": []
+    },
+    {
+      "factId": "hr-driver-hours-safety#07",
+      "docSlug": "hr-driver-hours-safety",
+      "category": "notice_period",
+      "statement": "Drivers must report Over, Short & Damaged (OSD) claims within 24 hours of delivery.",
+      "value": "24 hours",
+      "aliases": [
+        "within 24 hours",
+        "24-hour reporting requirement"
+      ],
+      "valueType": "text",
+      "sectionHint": "OSD Reporting",
+      "isException": false,
+      "differsFrom": [],
+      "entityIds": []
+    },
+    {
+      "factId": "hr-attendance-leave#01",
+      "docSlug": "hr-attendance-leave",
+      "category": "policy_rule",
+      "statement": "Employees accrue 6.00 days of paid sick leave per year under the Attendance and Leaves of Absence policy.",
+      "value": "6.00 days per year",
+      "aliases": [
+        "6 days per year",
+        "six (6) days per year"
+      ],
+      "valueType": "days",
+      "sectionHint": "Sick Leave Accrual",
+      "isException": false,
+      "differsFrom": [
+        "hr-pto-holidays#02"
+      ],
+      "entityIds": []
+    },
+    {
+      "factId": "hr-attendance-leave#02",
+      "docSlug": "hr-attendance-leave",
+      "category": "policy_rule",
+      "statement": "Employees become eligible for sick leave after 30 days of continuous employment.",
+      "value": "30 days",
+      "aliases": [
+        "thirty (30) days",
+        "30-day eligibility period"
+      ],
+      "valueType": "days",
+      "sectionHint": "Eligibility for Leave",
+      "isException": false,
+      "differsFrom": [
+        "hr-pto-holidays#05",
+        "hr-remote-hybrid-work#02"
+      ],
+      "entityIds": []
+    },
+    {
+      "factId": "hr-attendance-leave#03",
+      "docSlug": "hr-attendance-leave",
+      "category": "policy_rule",
+      "statement": "Employees may take up to 12 weeks (84 days) of unpaid family leave in a rolling 12-month period under this policy.",
+      "value": "84 days",
+      "aliases": [
+        "12 weeks",
+        "twelve (12) weeks",
+        "84-day family leave"
+      ],
+      "valueType": "days",
+      "sectionHint": "Family and Medical Leave",
+      "isException": false,
+      "differsFrom": [],
+      "entityIds": []
+    },
+    {
+      "factId": "hr-attendance-leave#04",
+      "docSlug": "hr-attendance-leave",
+      "category": "rate",
+      "statement": "The Company provides jury duty pay up to $500.00 per week while an employee is serving on jury duty.",
+      "value": "$500.00",
+      "aliases": [
+        "$500",
+        "$500/week",
+        "$500.00 per week",
+        "five hundred dollars per week"
+      ],
+      "valueType": "money",
+      "sectionHint": "Jury Duty Pay",
+      "isException": false,
+      "differsFrom": [],
+      "entityIds": []
+    },
+    {
+      "factId": "hr-attendance-leave#05",
+      "docSlug": "hr-attendance-leave",
+      "category": "notice_period",
+      "statement": "Employees must notify their manager at least 2 hours before a scheduled shift if they will be unable to report to work.",
+      "value": "2 hours",
+      "aliases": [
+        "two hours' notice",
+        "notify at least 2 hours before shift"
+      ],
+      "valueType": "text",
+      "sectionHint": "Absence Notification",
+      "isException": false,
+      "differsFrom": [],
+      "entityIds": []
+    },
+    {
+      "factId": "hr-attendance-leave#06",
+      "docSlug": "hr-attendance-leave",
+      "category": "exception",
+      "statement": "Absences that fall on federal holidays do not count against attendance point totals under this policy.",
+      "value": "Absences on federal holidays are excluded from attendance points",
+      "aliases": [
+        "federal holiday absences excluded",
+        "holidays excluded from attendance points"
+      ],
+      "valueType": "text",
+      "sectionHint": "Attendance Exceptions",
+      "isException": true,
+      "differsFrom": [],
+      "entityIds": []
+    },
+    {
+      "factId": "sop-inbound-receiving#01",
+      "docSlug": "sop-inbound-receiving",
+      "category": "policy_rule",
+      "statement": "SOP — Inbound Receiving and Dock Scheduling specifies that carriers have 60 minutes of free time for unloading at Ridgeline Freight Warehouse - Chicago West.",
+      "value": "60 minutes",
+      "aliases": [
+        "1 hour",
+        "60 min"
+      ],
+      "valueType": "days",
+      "sectionHint": "Receiving / Free Time",
+      "isException": false,
+      "differsFrom": [],
+      "entityIds": [
+        "wh-chicago-west"
+      ]
+    },
+    {
+      "factId": "sop-inbound-receiving#02",
+      "docSlug": "sop-inbound-receiving",
+      "category": "fee",
+      "statement": "SOP — Inbound Receiving and Dock Scheduling charges a detention fee of $75.00 per hour after the free unloading time at Ridgeline Freight Warehouse - Chicago West.",
+      "value": "$75.00",
+      "aliases": [
+        "$75",
+        "$75.00/hour",
+        "$75 per hour",
+        "seventy-five dollars per hour"
+      ],
+      "valueType": "money",
+      "sectionHint": "Accessorial Charges / Detention",
+      "isException": false,
+      "differsFrom": [],
+      "entityIds": [
+        "wh-chicago-west"
+      ]
+    },
+    {
+      "factId": "sop-inbound-receiving#03",
+      "docSlug": "sop-inbound-receiving",
+      "category": "notice_period",
+      "statement": "SOP — Inbound Receiving and Dock Scheduling requires dock appointment requests to be submitted at least 48 hours before the scheduled inbound delivery at Ridgeline Freight Warehouse - Joliet.",
+      "value": "48 hours",
+      "aliases": [
+        "two days",
+        "48 hrs"
+      ],
+      "valueType": "days",
+      "sectionHint": "Scheduling / Appointment Notice",
+      "isException": false,
+      "differsFrom": [],
+      "entityIds": [
+        "wh-joliet-south"
+      ]
+    },
+    {
+      "factId": "sop-inbound-receiving#04",
+      "docSlug": "sop-inbound-receiving",
+      "category": "fee",
+      "statement": "SOP — Inbound Receiving and Dock Scheduling assesses a standard third‑party lumper fee of $125.00 on inbound shipments, except for Harbor Point Foods, Inc.",
+      "value": "$125.00",
+      "aliases": [
+        "$125",
+        "one hundred twenty-five dollars"
+      ],
+      "valueType": "money",
+      "sectionHint": "Accessorial Charges / Lumper",
+      "isException": true,
+      "differsFrom": [],
+      "entityIds": [
+        "cust-harbor-point-foods",
+        "wh-chicago-west"
+      ]
+    },
+    {
+      "factId": "sop-inbound-receiving#05",
+      "docSlug": "sop-inbound-receiving",
+      "category": "policy_rule",
+      "statement": "SOP — Inbound Receiving and Dock Scheduling sets inbound receiving hours at Ridgeline Freight Warehouse - Chicago West from 08:00 to 18:00, excluding federal holidays.",
+      "value": "08:00 to 18:00, excluding federal holidays",
+      "aliases": [
+        "8:00 AM to 6:00 PM, excluding federal holidays",
+        "08:00–18:00 (no federal holidays)"
+      ],
+      "valueType": "text",
+      "sectionHint": "Receiving / Hours",
+      "isException": false,
+      "differsFrom": [],
+      "entityIds": [
+        "wh-chicago-west"
+      ]
+    },
+    {
+      "factId": "sop-inbound-receiving#06",
+      "docSlug": "sop-inbound-receiving",
+      "category": "fee",
+      "statement": "SOP — Inbound Receiving and Dock Scheduling applies a Truck Ordered Not Used (TONU) fee of $250.00 if a dispatched truck is canceled with less than 2 hours' notice.",
+      "value": "$250.00",
+      "aliases": [
+        "$250",
+        "two hundred fifty dollars"
+      ],
+      "valueType": "money",
+      "sectionHint": "Accessorial Charges / TONU",
+      "isException": false,
+      "differsFrom": [],
+      "entityIds": [
+        "wh-joliet-south"
+      ]
+    },
+    {
+      "factId": "sop-inbound-receiving#07",
+      "docSlug": "sop-inbound-receiving",
+      "category": "policy_rule",
+      "statement": "SOP — Inbound Receiving and Dock Scheduling requires drivers to comply with hours‑of‑service limits and to notify Operations when approaching hours‑of‑service thresholds.",
+      "value": "Drivers must comply with hours-of-service requirements and notify Operations when approaching hours-of-service limits",
+      "aliases": [
+        "drivers must follow hours-of-service and notify Ops when near limits",
+        "HOS compliance required; notify Operations when approaching limits"
+      ],
+      "valueType": "text",
+      "sectionHint": "Safety / Driver Requirements",
+      "isException": false,
+      "differsFrom": [],
+      "entityIds": [
+        "car-ashgrove-haulage",
+        "car-brightwater"
+      ]
+    },
+    {
+      "factId": "sop-outbound-pick-pack#01",
+      "docSlug": "sop-outbound-pick-pack",
+      "category": "policy_rule",
+      "statement": "SOP — Outbound Pick, Pack and Ship provides carriers 45 minutes of free time for loading at Ridgeline Freight Warehouse - Joliet.",
+      "value": "45 minutes",
+      "aliases": [
+        "45 min",
+        "three quarters of an hour (45 minutes)"
+      ],
+      "valueType": "days",
+      "sectionHint": "Loading / Free Time",
+      "isException": false,
+      "differsFrom": [],
+      "entityIds": [
+        "wh-joliet-south"
+      ]
+    },
+    {
+      "factId": "sop-outbound-pick-pack#02",
+      "docSlug": "sop-outbound-pick-pack",
+      "category": "fee",
+      "statement": "SOP — Outbound Pick, Pack and Ship charges detention at $85.00 per hour after outbound free time at Ridgeline Freight Warehouse - Joliet.",
+      "value": "$85.00",
+      "aliases": [
+        "$85",
+        "$85.00/hour",
+        "$85 per hour",
+        "eighty-five dollars per hour"
+      ],
+      "valueType": "money",
+      "sectionHint": "Accessorial Charges / Detention",
+      "isException": false,
+      "differsFrom": [
+        "sop-inbound-receiving#02"
+      ],
+      "entityIds": [
+        "wh-joliet-south"
+      ]
+    },
+    {
+      "factId": "sop-outbound-pick-pack#03",
+      "docSlug": "sop-outbound-pick-pack",
+      "category": "policy_rule",
+      "statement": "SOP — Outbound Pick, Pack and Ship requires pick, pack and staging requests for same‑day shipment to be received by 3:00 PM local time at Ridgeline Freight Warehouse - Joliet.",
+      "value": "15:00 (3:00 PM) local time",
+      "aliases": [
+        "3:00 PM",
+        "15:00"
+      ],
+      "valueType": "text",
+      "sectionHint": "Cutoff Times / Same-Day Shipping",
+      "isException": false,
+      "differsFrom": [],
+      "entityIds": [
+        "wh-joliet-south"
+      ]
+    },
+    {
+      "factId": "sop-outbound-pick-pack#04",
+      "docSlug": "sop-outbound-pick-pack",
+      "category": "fee",
+      "statement": "SOP — Outbound Pick, Pack and Ship applies a TONU fee of $200.00 unless the Customer provides written notice at least 24 hours prior to the scheduled pickup.",
+      "value": "$200.00",
+      "aliases": [
+        "$200",
+        "two hundred dollars"
+      ],
+      "valueType": "money",
+      "sectionHint": "Accessorial Charges / TONU",
+      "isException": true,
+      "differsFrom": [],
+      "entityIds": [
+        "cust-lakeshore-retail",
+        "wh-joliet-south"
+      ]
+    },
+    {
+      "factId": "sop-outbound-pick-pack#05",
+      "docSlug": "sop-outbound-pick-pack",
+      "category": "rate",
+      "statement": "SOP — Outbound Pick, Pack and Ship sets a minimum outbound charge of $45.00 per shipment at Ridgeline Freight Warehouse - Joliet.",
+      "value": "$45.00",
+      "aliases": [
+        "$45",
+        "forty-five dollars"
+      ],
+      "valueType": "money",
+      "sectionHint": "Rates / Minimum Charge",
+      "isException": false,
+      "differsFrom": [],
+      "entityIds": [
+        "wh-joliet-south"
+      ]
+    },
+    {
+      "factId": "sop-outbound-pick-pack#06",
+      "docSlug": "sop-outbound-pick-pack",
+      "category": "policy_rule",
+      "statement": "SOP — Outbound Pick, Pack and Ship states that orders not picked within 12 hours of scheduled pick time will be escalated to Operations.",
+      "value": "12 hours",
+      "aliases": [
+        "twelve hours"
+      ],
+      "valueType": "days",
+      "sectionHint": "Escalation / Exceptions",
+      "isException": false,
+      "differsFrom": [],
+      "entityIds": [
+        "wh-joliet-south"
+      ]
+    },
+    {
+      "factId": "sop-hazmat-handling#01",
+      "docSlug": "sop-hazmat-handling",
+      "category": "notice_period",
+      "statement": "SOP — Hazardous Materials Handling requires hazardous shipments to be approved and documented at least 72 hours before scheduled pickup.",
+      "value": "72 hours",
+      "aliases": [
+        "three days",
+        "72 hrs"
+      ],
+      "valueType": "days",
+      "sectionHint": "Acceptance / Notice Requirements",
+      "isException": false,
+      "differsFrom": [],
+      "entityIds": [
+        "cust-marlowe-finch-medical"
+      ]
+    },
+    {
+      "factId": "sop-hazmat-handling#02",
+      "docSlug": "sop-hazmat-handling",
+      "category": "fee",
+      "statement": "SOP — Hazardous Materials Handling charges a hazmat handling fee of $200.00 per shipment, except for shipments moved by Juniper Bend Logistics.",
+      "value": "$200.00",
+      "aliases": [
+        "$200",
+        "two hundred dollars per shipment"
+      ],
+      "valueType": "money",
+      "sectionHint": "Fees / Hazmat Handling",
+      "isException": true,
+      "differsFrom": [],
+      "entityIds": [
+        "car-juniper-bend"
+      ]
+    },
+    {
+      "factId": "sop-hazmat-handling#03",
+      "docSlug": "sop-hazmat-handling",
+      "category": "threshold",
+      "statement": "SOP — Hazardous Materials Handling requires reefer hazmat shipments to be maintained between 36°F and 46°F while in Ridgeline custody.",
+      "value": "36°F to 46°F",
+      "aliases": [
+        "36-46 °F",
+        "between 36°F and 46°F"
+      ],
+      "valueType": "text",
+      "sectionHint": "Temperature Control / Hazmat Reefer",
+      "isException": false,
+      "differsFrom": [],
+      "entityIds": [
+        "wh-minneapolis-north"
+      ]
+    },
+    {
+      "factId": "sop-hazmat-handling#04",
+      "docSlug": "sop-hazmat-handling",
+      "category": "policy_rule",
+      "statement": "SOP — Hazardous Materials Handling mandates that all hazmat loads be placarded and accompanied by complete hazmat paperwork during transport.",
+      "value": "Placarding and complete hazmat paperwork required during transport",
+      "aliases": [
+        "Placards required; HAZMAT documentation must accompany load",
+        "hazmat placards and paperwork required"
+      ],
+      "valueType": "text",
+      "sectionHint": "Transport / Documentation",
+      "isException": false,
+      "differsFrom": [],
+      "entityIds": [
+        "car-granite-fork-intermodal"
+      ]
+    },
+    {
+      "factId": "sop-hazmat-handling#05",
+      "docSlug": "sop-hazmat-handling",
+      "category": "notice_period",
+      "statement": "SOP — Hazardous Materials Handling requires any over, short or damaged (OSD) condition for a hazmat shipment to be reported within 48 hours of delivery for acceptance of investigation.",
+      "value": "48 hours",
+      "aliases": [
+        "two days",
+        "48 hrs"
+      ],
+      "valueType": "days",
+      "sectionHint": "OSD / Reporting for Hazmat",
+      "isException": false,
+      "differsFrom": [],
+      "entityIds": [
+        "wh-minneapolis-north"
+      ]
+    },
+    {
+      "factId": "sop-hazmat-handling#06",
+      "docSlug": "sop-hazmat-handling",
+      "category": "other",
+      "statement": "SOP — Hazardous Materials Handling states that governing law for disputes is Illinois and venue is Cook County, IL.",
+      "value": "Governing law: Illinois; venue: Cook County, IL",
+      "aliases": [
+        "Illinois law; Cook County venue",
+        "Governing law is Illinois, venue Cook County"
+      ],
+      "valueType": "text",
+      "sectionHint": "Legal / Governing Law",
+      "isException": false,
+      "differsFrom": [],
+      "entityIds": [
+        "wh-minneapolis-north"
+      ]
+    },
+    {
+      "factId": "sop-osd-exceptions#01",
+      "docSlug": "sop-osd-exceptions",
+      "category": "notice_period",
+      "statement": "SOP — Delivery Exceptions and OS&D Claims requires customers to report OS&D and delivery exceptions within 5 business days of delivery.",
+      "value": "5 business days",
+      "aliases": [
+        "five business days"
+      ],
+      "valueType": "days",
+      "sectionHint": "Claims / Reporting Window",
+      "isException": false,
+      "differsFrom": [],
+      "entityIds": [
+        "wh-minneapolis-north"
+      ]
+    },
+    {
+      "factId": "sop-osd-exceptions#02",
+      "docSlug": "sop-osd-exceptions",
+      "category": "threshold",
+      "statement": "SOP — Delivery Exceptions and OS&D Claims states that monetary discrepancies under $100.00 do not trigger formal claims.",
+      "value": "$100.00",
+      "aliases": [
+        "$100",
+        "one hundred dollars"
+      ],
+      "valueType": "money",
+      "sectionHint": "Claims / Thresholds",
+      "isException": false,
+      "differsFrom": [],
+      "entityIds": [
+        "wh-chicago-west"
+      ]
+    },
+    {
+      "factId": "sop-osd-exceptions#03",
+      "docSlug": "sop-osd-exceptions",
+      "category": "policy_rule",
+      "statement": "SOP — Delivery Exceptions and OS&D Claims requires Ridgeline to complete routine OS&D investigations within 30 calendar days of claim submission.",
+      "value": "30 calendar days",
+      "aliases": [
+        "thirty (30) calendar days",
+        "30 days"
+      ],
+      "valueType": "days",
+      "sectionHint": "Claims / Resolution Timeline",
+      "isException": false,
+      "differsFrom": [],
+      "entityIds": [
+        "wh-chicago-west"
+      ]
+    },
+    {
+      "factId": "sop-osd-exceptions#04",
+      "docSlug": "sop-osd-exceptions",
+      "category": "fee",
+      "statement": "SOP — Delivery Exceptions and OS&D Claims bills lumper fees to the consignee, except that lumper fees for Cedar Valley Beverages will be absorbed by Ridgeline Freight, LLC.",
+      "value": "Lumper fees billed to consignee, except Cedar Valley Beverages (billed to Ridgeline)",
+      "aliases": [
+        "Lumper fees billed to consignee except Cedar Valley Beverages",
+        "Cedar Valley Beverages lumper fees absorbed by Ridgeline"
+      ],
+      "valueType": "text",
+      "sectionHint": "Accessorial Billing / Lumper",
+      "isException": true,
+      "differsFrom": [],
+      "entityIds": [
+        "cust-cedar-valley-beverages",
+        "wh-chicago-west"
+      ]
+    },
+    {
+      "factId": "sop-osd-exceptions#05",
+      "docSlug": "sop-osd-exceptions",
+      "category": "policy_rule",
+      "statement": "SOP — Delivery Exceptions and OS&D Claims requires photographs of damaged goods to be captured and submitted within 24 hours of delivery.",
+      "value": "24 hours",
+      "aliases": [
+        "within 24 hours",
+        "twenty-four (24) hours"
+      ],
+      "valueType": "days",
+      "sectionHint": "OSD / Evidence Requirements",
+      "isException": false,
+      "differsFrom": [],
+      "entityIds": [
+        "wh-chicago-west"
+      ]
+    },
+    {
+      "factId": "sop-osd-exceptions#06",
+      "docSlug": "sop-osd-exceptions",
+      "category": "fee",
+      "statement": "SOP — Delivery Exceptions and OS&D Claims applies a detention fee of $95.00 per hour after free time for shipments subject to an OS&D investigation.",
+      "value": "$95.00",
+      "aliases": [
+        "$95",
+        "$95.00/hour",
+        "$95 per hour",
+        "ninety-five dollars per hour"
+      ],
+      "valueType": "money",
+      "sectionHint": "Accessorial Charges / Detention (OSD)",
+      "isException": false,
+      "differsFrom": [
+        "sop-inbound-receiving#02",
+        "sop-outbound-pick-pack#02"
+      ],
+      "entityIds": [
+        "wh-chicago-west"
+      ]
+    },
+    {
+      "factId": "rate-ltl-midwest#01",
+      "docSlug": "rate-ltl-midwest",
+      "category": "date",
+      "statement": "Rate Sheet — Regional LTL, Midwest Lanes (2026): The effective date of this rate sheet is 04/01/2026.",
+      "value": "04/01/2026",
+      "aliases": [
+        "April 1, 2026"
+      ],
+      "valueType": "date",
+      "sectionHint": "Effective Date",
+      "isException": false,
+      "differsFrom": [],
+      "entityIds": []
+    },
+    {
+      "factId": "rate-ltl-midwest#02",
+      "docSlug": "rate-ltl-midwest",
+      "category": "payment_terms",
+      "statement": "Rate Sheet — Regional LTL, Midwest Lanes (2026): Payment terms are Net 30.",
+      "value": "Net 30",
+      "aliases": [
+        "net thirty (30) days",
+        "thirty (30) days from the invoice date"
+      ],
+      "valueType": "text",
+      "sectionHint": "Payment Terms",
+      "isException": false,
+      "differsFrom": [
+        "rate-ftl-dry-van#02"
+      ],
+      "entityIds": [
+        "cust-lakeshore-retail",
+        "cust-harbor-point-foods"
+      ]
+    },
+    {
+      "factId": "rate-ltl-midwest#03",
+      "docSlug": "rate-ltl-midwest",
+      "category": "rate",
+      "statement": "Rate Sheet — Regional LTL, Midwest Lanes (2026): Minimum charge per shipment is $150.00.",
+      "value": "$150.00",
+      "aliases": [
+        "$150",
+        "one hundred fifty dollars"
+      ],
+      "valueType": "money",
+      "sectionHint": "Rates - Minimum Charge",
+      "isException": false,
+      "differsFrom": [
+        "rate-ftl-dry-van#03"
+      ],
+      "entityIds": [
+        "cust-lakeshore-retail"
+      ]
+    },
+    {
+      "factId": "rate-ltl-midwest#04",
+      "docSlug": "rate-ltl-midwest",
+      "category": "rate",
+      "statement": "Rate Sheet — Regional LTL, Midwest Lanes (2026): The published rate for Chicago, IL to Milwaukee, WI (92 miles) is $22.50 per CWT.",
+      "value": "$22.50",
+      "aliases": [
+        "$22.50/cwt",
+        "$22.50 per CWT",
+        "twenty-two dollars and fifty cents per hundredweight"
+      ],
+      "valueType": "money",
+      "sectionHint": "Rates by Lane",
+      "isException": false,
+      "differsFrom": [],
+      "entityIds": [
+        "lane-chi-mke"
+      ]
+    },
+    {
+      "factId": "rate-ltl-midwest#05",
+      "docSlug": "rate-ltl-midwest",
+      "category": "liability_cap",
+      "statement": "Rate Sheet — Regional LTL, Midwest Lanes (2026): Liability for loss or damage is limited to $2.00 per pound, except for hazmat shipments.",
+      "value": "$2.00",
+      "aliases": [
+        "$2",
+        "$2.00/lb",
+        "$2.00 per pound",
+        "two dollars per pound"
+      ],
+      "valueType": "money",
+      "sectionHint": "Liability and Claims",
+      "isException": true,
+      "differsFrom": [
+        "rate-ftl-dry-van#05"
+      ],
+      "entityIds": [
+        "cust-harbor-point-foods",
+        "lane-chi-dsm"
+      ]
+    },
+    {
+      "factId": "rate-ltl-midwest#06",
+      "docSlug": "rate-ltl-midwest",
+      "category": "fee",
+      "statement": "Rate Sheet — Regional LTL, Midwest Lanes (2026): Free detention time at pickup and delivery is 2 hours; thereafter the charge is $50.00 per hour.",
+      "value": "Free time: 2 hours; charge thereafter: $50.00 per hour",
+      "aliases": [
+        "2 hours free then $50.00/hr",
+        "two hours free then fifty dollars per hour"
+      ],
+      "valueType": "text",
+      "sectionHint": "Accessorials - Detention",
+      "isException": false,
+      "differsFrom": [
+        "rate-accessorials#03"
+      ],
+      "entityIds": [
+        "wh-chicago-west",
+        "wh-joliet-south"
+      ]
+    },
+    {
+      "factId": "rate-ltl-midwest#07",
+      "docSlug": "rate-ltl-midwest",
+      "category": "rate",
+      "statement": "Rate Sheet — Regional LTL, Midwest Lanes (2026): Fuel surcharge applied to linehaul is 3.0% when the national diesel average is between $3.00 and $3.49 per gallon.",
+      "value": "3.0% when diesel is $3.00–$3.49/gal",
+      "aliases": [
+        "3.0%",
+        "three percent fuel surcharge for $3.00–$3.49 diesel"
+      ],
+      "valueType": "percent",
+      "sectionHint": "Fuel Surcharge",
+      "isException": false,
+      "differsFrom": [],
+      "entityIds": [
+        "lane-chi-mke"
+      ]
+    },
+    {
+      "factId": "rate-ftl-dry-van#01",
+      "docSlug": "rate-ftl-dry-van",
+      "category": "date",
+      "statement": "Rate Sheet — Full Truckload Dry Van (2026): The effective date of this rate sheet is 04/01/2026.",
+      "value": "04/01/2026",
+      "aliases": [
+        "April 1, 2026"
+      ],
+      "valueType": "date",
+      "sectionHint": "Effective Date",
+      "isException": false,
+      "differsFrom": [],
+      "entityIds": []
+    },
+    {
+      "factId": "rate-ftl-dry-van#02",
+      "docSlug": "rate-ftl-dry-van",
+      "category": "payment_terms",
+      "statement": "Rate Sheet — Full Truckload Dry Van (2026): Payment terms are Net 45.",
+      "value": "Net 45",
+      "aliases": [
+        "net forty-five (45) days",
+        "forty-five (45) days from the invoice date"
+      ],
+      "valueType": "text",
+      "sectionHint": "Payment Terms",
+      "isException": false,
+      "differsFrom": [
+        "rate-ltl-midwest#02",
+        "rate-accessorials#02"
+      ],
+      "entityIds": [
+        "cust-northline-auto",
+        "cust-prairie-wind-mfg"
+      ]
+    },
+    {
+      "factId": "rate-ftl-dry-van#03",
+      "docSlug": "rate-ftl-dry-van",
+      "category": "rate",
+      "statement": "Rate Sheet — Full Truckload Dry Van (2026): Minimum charge per full truckload is $950.00.",
+      "value": "$950.00",
+      "aliases": [
+        "$950",
+        "nine hundred fifty dollars"
+      ],
+      "valueType": "money",
+      "sectionHint": "Rates - Minimum Charge",
+      "isException": false,
+      "differsFrom": [
+        "rate-ltl-midwest#03"
+      ],
+      "entityIds": [
+        "cust-northline-auto"
+      ]
+    },
+    {
+      "factId": "rate-ftl-dry-van#04",
+      "docSlug": "rate-ftl-dry-van",
+      "category": "rate",
+      "statement": "Rate Sheet — Full Truckload Dry Van (2026): The published per-mile rate for Chicago, IL to Minneapolis, MN (410 miles) is $2.10 per mile.",
+      "value": "$2.10",
+      "aliases": [
+        "$2.10/mi",
+        "$2.10 per mile",
+        "two dollars ten cents per mile"
+      ],
+      "valueType": "money",
+      "sectionHint": "Rates by Lane",
+      "isException": false,
+      "differsFrom": [],
+      "entityIds": [
+        "lane-chi-msp",
+        "car-juniper-bend"
+      ]
+    },
+    {
+      "factId": "rate-ftl-dry-van#05",
+      "docSlug": "rate-ftl-dry-van",
+      "category": "liability_cap",
+      "statement": "Rate Sheet — Full Truckload Dry Van (2026): Cargo liability is limited to $125,000.00 unless the Customer declares a higher value in writing prior to shipment.",
+      "value": "$125,000.00",
+      "aliases": [
+        "$125,000",
+        "one hundred twenty-five thousand dollars"
+      ],
+      "valueType": "money",
+      "sectionHint": "Liability and Claims",
+      "isException": true,
+      "differsFrom": [
+        "rate-ltl-midwest#05"
+      ],
+      "entityIds": [
+        "cust-prairie-wind-mfg",
+        "cust-marlowe-finch-medical"
+      ]
+    },
+    {
+      "factId": "rate-ftl-dry-van#06",
+      "docSlug": "rate-ftl-dry-van",
+      "category": "fee",
+      "statement": "Rate Sheet — Full Truckload Dry Van (2026): Truck Ordered Not Used (TONU) fee is $850.00, except when loads are cancelled more than 4 hours before scheduled pickup.",
+      "value": "$850.00",
+      "aliases": [
+        "$850",
+        "eight hundred fifty dollars"
+      ],
+      "valueType": "money",
+      "sectionHint": "Accessorials - TONU",
+      "isException": true,
+      "differsFrom": [],
+      "entityIds": [
+        "cust-northline-auto",
+        "car-ashgrove-haulage"
+      ]
+    },
+    {
+      "factId": "rate-ftl-dry-van#07",
+      "docSlug": "rate-ftl-dry-van",
+      "category": "rate",
+      "statement": "Rate Sheet — Full Truckload Dry Van (2026): Fuel surcharge applied to linehaul is 5.5% when the national diesel average is between $3.50 and $3.99 per gallon.",
+      "value": "5.5% when diesel is $3.50–$3.99/gal",
+      "aliases": [
+        "5.5%",
+        "five point five percent fuel surcharge for $3.50–$3.99 diesel"
+      ],
+      "valueType": "percent",
+      "sectionHint": "Fuel Surcharge",
+      "isException": false,
+      "differsFrom": [],
+      "entityIds": [
+        "lane-chi-msp"
+      ]
+    },
+    {
+      "factId": "rate-accessorials#01",
+      "docSlug": "rate-accessorials",
+      "category": "fee",
+      "statement": "Accessorial Fee Schedule (2026): Standard lumper fee is $125.00 per stop, except where the third-party receipt documents a different actual cost.",
+      "value": "$125.00",
+      "aliases": [
+        "$125",
+        "$125.00 per stop",
+        "one hundred twenty-five dollars per stop"
+      ],
+      "valueType": "money",
+      "sectionHint": "Lumper Fees",
+      "isException": true,
+      "differsFrom": [],
+      "entityIds": [
+        "cust-cedar-valley-beverages",
+        "wh-joliet-south"
+      ]
+    },
+    {
+      "factId": "rate-accessorials#02",
+      "docSlug": "rate-accessorials",
+      "category": "payment_terms",
+      "statement": "Accessorial Fee Schedule (2026): Payment for accessorial charges follows Net 15.",
+      "value": "Net 15",
+      "aliases": [
+        "net fifteen (15) days",
+        "fifteen (15) days from the invoice date"
+      ],
+      "valueType": "text",
+      "sectionHint": "Payment Terms - Accessorials",
+      "isException": false,
+      "differsFrom": [
+        "rate-ftl-dry-van#02"
+      ],
+      "entityIds": [
+        "cust-cedar-valley-beverages"
+      ]
+    },
+    {
+      "factId": "rate-accessorials#03",
+      "docSlug": "rate-accessorials",
+      "category": "fee",
+      "statement": "Accessorial Fee Schedule (2026): Free detention time is 1 hour at pickup and delivery; thereafter the charge is $60.00 per hour.",
+      "value": "Free time: 1 hour; charge thereafter: $60.00 per hour",
+      "aliases": [
+        "1 hour free then $60.00/hr",
+        "one hour free then sixty dollars per hour"
+      ],
+      "valueType": "text",
+      "sectionHint": "Detention",
+      "isException": false,
+      "differsFrom": [
+        "rate-ltl-midwest#06"
+      ],
+      "entityIds": [
+        "wh-chicago-west",
+        "wh-minneapolis-north"
+      ]
+    },
+    {
+      "factId": "rate-accessorials#04",
+      "docSlug": "rate-accessorials",
+      "category": "fee",
+      "statement": "Accessorial Fee Schedule (2026): Liftgate service is $75.00 per occurrence.",
+      "value": "$75.00",
+      "aliases": [
+        "$75",
+        "$75.00 per occurrence",
+        "seventy-five dollars per occurrence"
+      ],
+      "valueType": "money",
+      "sectionHint": "Liftgate",
+      "isException": false,
+      "differsFrom": [],
+      "entityIds": [
+        "cust-lakeshore-retail",
+        "car-brightwater"
+      ]
+    },
+    {
+      "factId": "rate-accessorials#05",
+      "docSlug": "rate-accessorials",
+      "category": "fee",
+      "statement": "Accessorial Fee Schedule (2026): Inside delivery is charged at $40.00 per pallet.",
+      "value": "$40.00",
+      "aliases": [
+        "$40",
+        "$40/pallet",
+        "$40.00 per pallet",
+        "forty dollars per pallet"
+      ],
+      "valueType": "money",
+      "sectionHint": "Inside Delivery",
+      "isException": false,
+      "differsFrom": [],
+      "entityIds": [
+        "cust-lakeshore-retail"
+      ]
+    },
+    {
+      "factId": "rate-accessorials#06",
+      "docSlug": "rate-accessorials",
+      "category": "fee",
+      "statement": "Accessorial Fee Schedule (2026): Hazardous materials handling fee is $200.00 per shipment unless the Customer provides complete hazmat paperwork at least 24 hours before pickup.",
+      "value": "$200.00",
+      "aliases": [
+        "$200",
+        "$200.00 per shipment",
+        "two hundred dollars per shipment"
+      ],
+      "valueType": "money",
+      "sectionHint": "Hazmat Handling",
+      "isException": true,
+      "differsFrom": [],
+      "entityIds": [
+        "cust-marlowe-finch-medical"
+      ]
+    },
+    {
+      "factId": "rate-fuel-surcharge#01",
+      "docSlug": "rate-fuel-surcharge",
+      "category": "date",
+      "statement": "Fuel Surcharge Table (2026): The fuel surcharge table is effective 04/01/2026.",
+      "value": "04/01/2026",
+      "aliases": [
+        "April 1, 2026"
+      ],
+      "valueType": "date",
+      "sectionHint": "Effective Date",
+      "isException": false,
+      "differsFrom": [],
+      "entityIds": []
+    },
+    {
+      "factId": "rate-fuel-surcharge#02",
+      "docSlug": "rate-fuel-surcharge",
+      "category": "rate",
+      "statement": "Fuel Surcharge Table (2026): When the national diesel average is between $3.00 and $3.49 per gallon, the fuel surcharge is 3.0%.",
+      "value": "3.0% for $3.00–$3.49/gal",
+      "aliases": [
+        "3%",
+        "three percent fuel surcharge for $3.00–$3.49 diesel"
+      ],
+      "valueType": "percent",
+      "sectionHint": "Fuel Surcharge Table - Tier 1",
+      "isException": false,
+      "differsFrom": [],
+      "entityIds": []
+    },
+    {
+      "factId": "rate-fuel-surcharge#03",
+      "docSlug": "rate-fuel-surcharge",
+      "category": "rate",
+      "statement": "Fuel Surcharge Table (2026): When the national diesel average is between $3.50 and $3.99 per gallon, the fuel surcharge is 5.5%.",
+      "value": "5.5% for $3.50–$3.99/gal",
+      "aliases": [
+        "5.5%",
+        "five point five percent fuel surcharge for $3.50–$3.99 diesel"
+      ],
+      "valueType": "percent",
+      "sectionHint": "Fuel Surcharge Table - Tier 2",
+      "isException": false,
+      "differsFrom": [],
+      "entityIds": []
+    },
+    {
+      "factId": "rate-fuel-surcharge#04",
+      "docSlug": "rate-fuel-surcharge",
+      "category": "rate",
+      "statement": "Fuel Surcharge Table (2026): When the national diesel average is $4.00 to $4.49 per gallon, the fuel surcharge is 7.5%.",
+      "value": "7.5% for $4.00–$4.49/gal",
+      "aliases": [
+        "7.5%",
+        "seven point five percent fuel surcharge for $4.00–$4.49 diesel"
+      ],
+      "valueType": "percent",
+      "sectionHint": "Fuel Surcharge Table - Tier 3",
+      "isException": false,
+      "differsFrom": [],
+      "entityIds": []
+    },
+    {
+      "factId": "rate-fuel-surcharge#05",
+      "docSlug": "rate-fuel-surcharge",
+      "category": "rate",
+      "statement": "Fuel Surcharge Table (2026): When the national diesel average is $4.50 per gallon or higher, the fuel surcharge is 10.0%.",
+      "value": "10.0% for $4.50+/gal",
+      "aliases": [
+        "10%",
+        "ten percent fuel surcharge for $4.50 and above diesel"
+      ],
+      "valueType": "percent",
+      "sectionHint": "Fuel Surcharge Table - Tier 4",
+      "isException": false,
+      "differsFrom": [],
+      "entityIds": []
+    },
+    {
+      "factId": "rate-fuel-surcharge#06",
+      "docSlug": "rate-fuel-surcharge",
+      "category": "policy_rule",
+      "statement": "Fuel Surcharge Table (2026): Fuel surcharge is applied to linehaul and to accessorials except lumper fees and third-party direct charges.",
+      "value": "Apply to linehaul and accessorials; exclude lumper fees and third-party direct charges",
+      "aliases": [
+        "applies to linehaul and accessorials (excluding lumper fees)",
+        "fuel surcharge not applied to lumper and third‑party direct charges"
+      ],
+      "valueType": "text",
+      "sectionHint": "Application and Exceptions",
+      "isException": true,
+      "differsFrom": [],
+      "entityIds": [
+        "wh-joliet-south",
+        "wh-minneapolis-north"
+      ]
+    }
+  ]
+}

@@ -36,5 +36,18 @@ export const registrySchema = z.object({
   facts: z.array(factSchema),
 });
 
+// OpenAI strict mode needs every property to be required and rejects "default".
+const generatedFactSchema = factSchema.extend({
+  sectionHint: z.string(),
+  isException: z.boolean(),
+  differsFrom: z.array(z.string()),
+  entityIds: z.array(z.string()),
+});
+
+export const generatedRegistrySchema = z.strictObject({
+  version: z.string(),
+  facts: z.array(generatedFactSchema),
+});
+
 export type Fact = z.infer<typeof factSchema>;
 export type Registry = z.infer<typeof registrySchema>;

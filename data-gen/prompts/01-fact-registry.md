@@ -80,7 +80,8 @@ Requirements for the whole set:
    category.
 3. Include exceptions: at least one fact per document type with "isException": true and a qualifier
    such as "except for hazmat shipments", "unless the Customer provides written notice", "excluding
-   federal holidays". Put the qualifier inside "statement" and inside "value" when it changes the value.
+   federal holidays". Put the qualifier inside "statement". When "valueType" is "money", "value" is
+   the amount alone ($45.00): units such as "per hour" and qualifiers go in "statement" and "aliases".
 4. US context: Illinois governing law and venue (Cook County), at-will employment, PTO accrual per pay
    period, FMCSA-style hours-of-service language without citing regulation numbers, accessorial and
    detention charges, lumper fees, TONU.
@@ -98,7 +99,9 @@ Requirements for the whole set:
 - Schema valid; 5–8 facts per slug; all slugs from the catalog present.
 - ≥ 8 `differsFrom` links across the full registry; ≥ 4 `isException`.
 - Regex checks: money `^\$\d{1,3}(,\d{3})*\.\d{2}$`; date `^\d{2}/\d{2}/\d{4}$`; no ISO dates.
-- Every `entityIds` entry exists in `world.json`; names in statements appear in the world bible.
+- Aliases: a whole-dollar amount lists its short form (`$12,500`), a date its long form (`April 15, 2026`).
+- `differsFrom` targets exist, share the category and the document type, and hold another value.
+- Every `entityIds` entry exists in `world.json`; names with a legal suffix (LLC, Inc., Corp., Ltd.) in statements appear in the world bible.
 - Blocklist (`data-gen/blocklist.txt`) hits = 0.
 
 ## Example (one valid fact)
