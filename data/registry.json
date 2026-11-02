@@ -3037,11 +3037,11 @@
       "factId": "rate-ftl-dry-van#03",
       "docSlug": "rate-ftl-dry-van",
       "category": "rate",
-      "statement": "Rate Sheet — Full Truckload Dry Van (2026): Minimum charge per full truckload is $950.00.",
-      "value": "$950.00",
+      "statement": "Rate Sheet — Full Truckload Dry Van (2026): Minimum charge per full truckload is $350.00.",
+      "value": "$350.00",
       "aliases": [
-        "$950",
-        "nine hundred fifty dollars"
+        "$350",
+        "three hundred fifty dollars"
       ],
       "valueType": "money",
       "sectionHint": "Rates - Minimum Charge",
@@ -3250,6 +3250,21 @@
       "entityIds": [
         "cust-marlowe-finch-medical"
       ]
+    },
+    {
+      "factId": "rate-accessorials#07",
+      "docSlug": "rate-accessorials",
+      "category": "date",
+      "statement": "Accessorial Fee Schedule (2026): The effective date of this fee schedule is 04/01/2026.",
+      "value": "04/01/2026",
+      "aliases": [
+        "April 1, 2026"
+      ],
+      "valueType": "date",
+      "sectionHint": "Effective Date",
+      "isException": false,
+      "differsFrom": [],
+      "entityIds": []
     },
     {
       "factId": "rate-fuel-surcharge#01",

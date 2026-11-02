@@ -28,22 +28,23 @@ Output JSON:
   "intro": "one or two sentences on applicability (no numbers unless from FACTS)",
   "tables": [
     { "title": "string", "columns": ["Lane", "Origin", "Destination", "Miles", "Min Charge", "Rate / Mile"],
-      "rows": [["L-01", "Chicago, IL", "Milwaukee, WI", "92", "$425.00", "$2.85"]] }
+      "rows": [["lane-chi-mke", "Chicago, IL", "Milwaukee, WI", "92", "$350.00", "$2.85"]] }
   ],
   "notes": ["string"]
 }
 
 Rules by kind:
-- ltl: one table per weight class group (3 tables max), columns [Lane, Origin, Destination, Miles, "<500 lb", "500-1,999 lb", "2,000-4,999 lb", "Min Charge"]; rates per cwt as $xx.xx.
-- ftl: one table, columns [Lane, Origin, Destination, Miles, Equipment, Min Charge, Rate / Mile]; 10 lanes from WORLD; dry van and reefer rows.
-- accessorials: one table, columns [Service, Unit, Charge, Notes]; include detention, layover, TONU, lumper, liftgate, inside delivery, residential, hazmat handling, redelivery, storage.
-- fuel_surcharge: one table, columns [DOE Diesel Price Range (per gallon), Surcharge (% of linehaul)] with 12–16 contiguous steps; include a note on the weekly update basis without naming a real index URL.
+- ltl: one table, columns [Lane, Origin, Destination, Miles, "<500 lb", "500-1,999 lb", "2,000-4,999 lb", "Min Charge"]; one row per lane in WORLD, with the WORLD id in the Lane cell; rates per cwt as $xx.xx, falling as weight rises; the minimum charge from FACTS on every row; a lane rate from FACTS goes in that lane's "<500 lb" cell.
+- ftl: one table, columns [Lane, Origin, Destination, Miles, Equipment, Min Charge, Rate / Mile]; for each of the 10 lanes in WORLD, one "Dry van" row and one "Reefer" row, with the WORLD id in the Lane cell; the minimum charge from FACTS on every row; a lane rate from FACTS goes in that lane's "Dry van" row. For each equipment type, Rate / Mile falls or stays the same as miles grow (short lanes cost more per mile), while Rate / Mile × Miles still grows.
+- accessorials: one table, columns [Service, Unit, Charge, Notes]; include detention, layover, TONU, lumper, liftgate, inside delivery, residential, hazmat handling, redelivery, storage. A service with an amount in FACTS has exactly that amount in its Charge cell.
+- fuel_surcharge: one table, columns [DOE Diesel Price Range (per gallon), Surcharge (% of linehaul)] with 14 contiguous steps, written as "$3.00–$3.49" and, for the last step only, "$4.50 and above". Each surcharge tier in FACTS is one step with exactly that range and percentage, and is also one note using its "value". Add ten lower steps, $0.10 wide, from "$2.00–$2.09" to "$2.90–$2.99", with surcharges below the first FACTS tier. Surcharges strictly increase with price. Include a note on the weekly update basis without naming a real index URL.
 
 General rules:
-1. Money as $1,234.56; percentages as 12.5%; miles as integers; weights with "lb".
-2. All FACTS values appear exactly once in a cell or note. Other numbers must be plausible and internally
+1. Money as $1,234.56, always with cents; percentages as 12.5%; miles as integers; weights with "lb".
+2. All FACTS values appear verbatim at least once in a cell or note. A fact with a condition or exception
+   states it in the same table row or note as its value. Other numbers must be plausible and internally
    consistent (longer lanes cost more; reefer ≥ dry van).
-3. ≤ 25 rows per table; ≤ 3 tables.
+3. ≤ 25 rows per table; ≤ 3 tables. No "|" character or line break in a cell.
 4. No real company names, URLs or addresses.
 5. JSON only.
 ```
@@ -62,8 +63,10 @@ General rules:
 
 ## Validation rules
 - Schema valid; every row has exactly `columns.length` cells.
-- Every fact alias found in cells or notes (normalized).
-- Money/percent/date regexes as in prompt 01; lane ids and city pairs exist in `world.json`.
+- Every fact value found in cells or notes (normalized), since a short alias such as `$2` would match `$22.50`.
+- Money/date regexes as in prompt 01; lane ids, city pairs and miles match `world.json`.
+- Minimum charges and lane rates sit in the cells named above; reefer ≥ dry van; longer lanes cost more; on FTL a longer lane never has a higher Rate / Mile.
+- Fuel steps are contiguous and strictly increasing, and each FACTS tier is one step.
 - After rendering to DOCX and re-parsing with the ingestion parser (mammoth tables → Markdown), every fact alias is still found.
 
 ## Example (valid output, truncated)

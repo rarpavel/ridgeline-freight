@@ -9,11 +9,11 @@ const TARGET_WORDS = 1800;
 // Standalone numbers up to this one are ordinary prose and list numbering.
 const MAX_UNCHECKED_NUMBER = 12;
 
-const EXCEPTION_WORDS = /\b(except|unless|excluding|excluded|other than|only if)\b/;
+const EXCEPTION_WORDS = /\b(except|unless|exclude|excludes|excluding|excluded|other than|only if)\b/;
 const SENTENCE_END = /(?<=[.!?])\s+|\n+/;
 const HEADING_LINE = /^#+ .*$/gm;
-const MONEY = /\$\d[\d,]*(?:\.\d+)?/g;
-const DATE = /\b\d{2}\/\d{2}\/\d{4}\b/g;
+export const MONEY = /\$\d[\d,]*(?:\.\d+)?/g;
+const DATE =/\b\d{2}\/\d{2}\/\d{4}\b/g;
 const PERCENT = /\b\d+(?:\.\d+)?%/g;
 const NUMBER = /(?<![\d$.,/])\b\d[\d,]*\b(?![\d.,/%]*\d)/g;
 
@@ -90,7 +90,6 @@ function checkStructure(markdown: string, title: string): string[] {
 
 export function checkDocument(markdown: string, input: DocumentInput): DocumentReport {
   const { title, facts, blocklist, allowedText } = input;
-  const normalized = normalizeText(markdown);
   const wordCount = markdown.split(/\s+/).filter((word) => /[a-z0-9]/i.test(word)).length;
   const sectionCount = markdown.match(/^## /gm)?.length ?? 0;
 
@@ -107,6 +106,29 @@ export function checkDocument(markdown: string, input: DocumentInput): DocumentR
       `${wordCount} words, expected ${MIN_WORDS}-${MAX_WORDS}: ${change} of boilerplate, keeping every fact`,
     );
   }
+  const factCheck = checkFactMentions(markdown, facts, blocklist);
+  errors.push(...factCheck.errors);
+  for (const token of findUnknownTokens(markdown, allowedText)) {
+    errors.push(`${token} is not in FACTS or WORLD: remove it or use qualitative wording`);
+  }
+
+  return {
+    errors,
+    warnings: findUnknownNumbers(markdown, allowedText).map((token) => `unexpected number ${token}`),
+    exceptionSentences: factCheck.exceptionSentences,
+    wordCount,
+    sectionCount,
+  };
+}
+
+// Shared with rate sheets: every fact present, exceptions stated next to their value, no forbidden text.
+export function checkFactMentions(
+  markdown: string,
+  facts: Fact[],
+  blocklist: string[],
+): Pick<DocumentReport, 'errors' | 'exceptionSentences'> {
+  const normalized = normalizeText(markdown);
+  const errors: string[] = [];
   for (const fact of facts) {
     if (!mentionsFact(normalized, fact)) {
       errors.push(`missing fact ${fact.factId}: state "${fact.statement}" with the value "${fact.value}"`);
@@ -114,9 +136,6 @@ export function checkDocument(markdown: string, input: DocumentInput): DocumentR
   }
   for (const name of findBlocklistHits(markdown, blocklist)) errors.push(`blocklisted name: ${name}`);
   for (const label of findForbiddenPatterns(markdown)) errors.push(`forbidden pattern: ${label}`);
-  for (const token of findUnknownTokens(markdown, allowedText)) {
-    errors.push(`${token} is not in FACTS or WORLD: remove it or use qualitative wording`);
-  }
 
   const exceptionSentences: DocumentReport['exceptionSentences'] = [];
   for (const fact of facts.filter((candidate) => candidate.isException)) {
@@ -126,12 +145,5 @@ export function checkDocument(markdown: string, input: DocumentInput): DocumentR
       errors.push(`${fact.factId}: state the exception in the same sentence as "${fact.value}": "${fact.statement}"`);
     }
   }
-
-  return {
-    errors,
-    warnings: findUnknownNumbers(markdown, allowedText).map((token) => `unexpected number ${token}`),
-    exceptionSentences,
-    wordCount,
-    sectionCount,
-  };
+  return { errors, exceptionSentences };
 }

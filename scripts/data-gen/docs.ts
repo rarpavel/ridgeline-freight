@@ -17,6 +17,7 @@ import {
   generateChecked,
   parsePromptTemplate,
   parseTypeGuidance,
+  readOption,
 } from './document-generation';
 import { loadRegistryDeps } from './load-registry-deps';
 
@@ -45,11 +46,6 @@ async function completeText(prompt: string): Promise<string> {
     throw new Error(`Model returned no full text, finish reason: ${choice?.finish_reason ?? 'none'}`);
   }
   return choice.message.content;
-}
-
-function readOption(name: string): string | undefined {
-  const index = process.argv.indexOf(name);
-  return index === -1 ? undefined : process.argv[index + 1];
 }
 
 // Runs at most `limit` tasks at a time so a full run stays under the provider's rate limits.
