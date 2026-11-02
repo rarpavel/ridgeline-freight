@@ -105,6 +105,7 @@ Name check (web search, 2026-11-02): no exact matches for any customer or carrie
 ## 5. Generation pipeline
 
 ```
+pnpm datagen:check              → calls both providers, parses JSON with zod, prints the prompt version
 pnpm datagen:world              → data/world.json              (prompt 01 part A; then hand-edit)
 pnpm datagen:registry           → data/registry.json           (prompt 01 part B)  + validate-registry
 pnpm datagen:docs               → data/generated/md/<slug>.md  (prompt 02; rate sheets: prompt 03 → JSON tables → Markdown tables)
@@ -114,6 +115,8 @@ pnpm datagen:questions          → data/eval/questions.json     (prompt 04; dif
 ```
 
 Document, registry and rate-sheet generation use the `openai` client (`src/server/llm/client.ts`) with `DATAGEN_MODEL` (default `gpt-5-mini`); question generation uses a different model family through `src/server/llm/judge.ts` (`@anthropic-ai/sdk`, `DATAGEN_QUESTIONS_MODEL`, default `claude-haiku-5-5`). Sampling parameters are left at provider defaults. Outputs are committed; regeneration is deliberate (`--force`).
+
+Scripts run with `tsx --conditions=react-server`, so `server-only` resolves outside Next.js, and import `scripts/data-gen/load-env.ts` first, so `.env.local` is parsed the way Next.js parses it. `src/env.ts` still validates every app variable, so `SESSION_SECRET` and `DEMO_ACCOUNTS_JSON` must be set for the scripts too. Zod schemas are in `data-gen/schemas/*.ts`.
 
 ### 5.1 Markdown → DOCX (`docx` library, `scripts/data-gen/render.ts`)
 
