@@ -42,7 +42,7 @@ Last updated: 2026-11-02
 
 ## 4. CI (`ci.yml`)
 
-One workflow on every push/PR: `typecheck` → `lint` → `test` → `test:integration` (Postgres service container). No secrets required. A PR is mergeable only when it is green.
+One workflow (`.github/workflows/ci.yml`, job `ci`) on every PR and every push to `main`: `typecheck` → `lint` → `test` → `test:integration`, on Node 22 with the pnpm store cached. Integration tests run against a `pgvector/pgvector:pg17` service container and read `DATABASE_URL` from the step's env; `globalSetup` waits up to 30 s for `SELECT 1`. No secrets required. A PR is mergeable only when it is green (branch protection on `main`, required check `ci`). Dependabot opens weekly npm update PRs (`.github/dependabot.yml`), which go through the same job.
 
 ## 5. Manual checks before a milestone demo
 
