@@ -278,7 +278,7 @@ describe('migrations', () => {
     vi.stubEnv('SESSION_SECRET', 'test-session-secret-at-least-32-chars');
     vi.stubEnv(
       'DEMO_ACCOUNTS_JSON',
-      JSON.stringify([{ id: 'sales', role: 'sales', passwordHash: 'test-hash' }]),
+      JSON.stringify([{ id: 'sales', role: 'sales', passwordHash: `$2b$10$${'a'.repeat(53)}` }]),
     );
     try {
       const { db, pool } = await import('@/server/db/client');
