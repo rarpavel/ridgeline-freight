@@ -28,4 +28,4 @@ An MVP portfolio project: a RAG assistant over 24 synthetic DOCX documents of a 
 10. Single-turn chat: no history is sent or stored.
 
 ## Workflow
-Tasks are in Notion (Tasks DB, ordered by `Order`). One branch per task (`rag-012-slug`), Conventional Commits, squash-merge, `main` always deployable. Update the `Last updated` line of any doc you change.
+Tasks are in Notion (Tasks DB, ordered by `Order`). Use the `/next-task` skill (`.claude/skills/next-task/SKILL.md`) to take the next unblocked task through In progress → PR → In review; the human merges. One branch per task (`rag-012-slug`), Conventional Commits, squash-merge, `main` always deployable. Update the `Last updated` line of any doc you change.

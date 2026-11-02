@@ -45,6 +45,8 @@ Solo project: PRs are self-reviewed with the checklist; an AI reviewer pass (`/c
 
 ## 6. Picking the next task / blocked tasks
 
+Automated path: run `/next-task` (skill in `.claude/skills/next-task/SKILL.md`) in a fresh Claude Code session; it applies the rules below, stops at In review, and closes the task only after the human merges.
+
 - Take the lowest `Order` task in `Ready` whose `Blocked by` are Done.
 - If blocked: set `Blocked`, write the blocker in the task, create or update a Risk, and take the next unblocked task; never start two tasks in parallel.
 - Scope change discovered mid-task → finish the smallest useful increment, open a new task for the rest.
