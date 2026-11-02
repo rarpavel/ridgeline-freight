@@ -26,14 +26,15 @@ Tables become Markdown tables (the first row is the header; a `|` in a cell is e
 
 ### 1.2 Structural chunker (`src/server/ingest/chunker.ts`, `CHUNKER_VERSION = 'v1'`)
 
-1. Split the normalized text into sections at `##`/`###` headings; a numbered clause (`4.3 …`) inside a section starts a sub-unit.
-2. A chunk is one sub-unit if ≤ 600 tokens (`js-tiktoken`, `o200k_base`); sub-units < 120 tokens merge with the following sub-unit of the same section; sub-units > 600 tokens split at paragraph boundaries with a 50-token overlap.
-3. Tables: one chunk per table (header row repeated if split by rows).
-4. Each chunk records `section_ref` (`4.3`), `section_title`, `char_start/char_end`, `token_count`.
-5. `context_prefix = "<title> — <H2 title> › <H3 title>"` (parts that exist).
-6. Text sent to the embedder and FTS = `context_prefix + "\n" + content`.
+1. Split the normalized text into sub-units at `##`/`###` headings; a numbered clause (`4.3 …`) inside a section starts a sub-unit, and a table is a sub-unit of its own. Heading lines stay in `content`.
+2. A chunk is one sub-unit if ≤ 600 tokens (`js-tiktoken`, `o200k_base`); sub-units > 600 tokens split at paragraph boundaries with an overlap of at most 50 tokens, cutting at word boundaries only inside a paragraph too long for one chunk.
+3. Chunks < 120 tokens merge with the following sub-unit of the same `##` section. What is still short then merges with a neighbouring chunk across sections: the next one first, and into a table only if no text chunk fits (ADR-0017). A chunk stays below 120 tokens only if no neighbour has room, or if the whole document is that short.
+4. Tables: one chunk per table, whole up to 1,080 tokens even above the 600 limit; a short heading or note may merge into it, up to 1,200 tokens. A larger table splits by rows; every part after the first repeats the header rows in `context_prefix`, not in `content`, so offsets still hold (ADR-0017).
+5. Each chunk records `section_ref` (`4.3`, or `null` above the first section), `section_title` (the `###` or `##` title), `char_start/char_end`, `token_count`. `text.slice(char_start, char_end) === content` for every chunk. A merged chunk takes these from its first sub-unit with body text.
+6. `context_prefix = "<title> — <H2 title> › <H3 title>"` (parts that exist).
+7. Text sent to the embedder and FTS = `context_prefix + "\n" + content`.
 
-Expected: 20–40 chunks per contract/policy, 3–6 per rate sheet.
+Actual on the 24-document corpus: 8–13 chunks per contract, policy or SOP (mean ≈ 175 tokens), 1–2 per rate sheet; no table reaches the split limit.
 
 ### 1.3 Embeddings (`src/server/llm/embeddings.ts`)
 
@@ -82,7 +83,7 @@ Default `SIM_FLOOR = 0.30` (placeholder; calibrated on the dev split in M3 by co
   ...chunk content...
   >>>
   ```
-  followed by the question (≤ 500 chars). Single turn; no history.
+  followed by the question (≤ 500 chars). Single turn; no history. A later part of a split table needs the header rows from `context_prefix` in its block (§1.2).
 - `max_tokens: 700`.
 
 ### 2.5 Generation (`generate.ts`)
@@ -107,7 +108,7 @@ One `request_traces` row per request (candidates with scores, gate, prompt versi
 | `rrfK` | 60 | `retrieval_config` | fixed |
 | `finalK` / `perDocCap` | 8 / 3 | `retrieval_config` | dev split |
 | `simFloor` | 0.30 | env `SIM_FLOOR` | dev split |
-| chunk size | 300–600 tokens | `CHUNKER_VERSION` | dev split |
+| chunk size | 120–600 tokens | `CHUNKER_VERSION` | dev split |
 | `max_tokens` | 700 | env | fixed |
 
 Roadmap (not MVP): HNSW index with iterative scans at larger corpus sizes; reranker between fusion and gate; query condensation for follow-ups.
