@@ -22,6 +22,7 @@ Last updated: 2026-11-02
 │   │       └── health/route.ts
 │   ├── components/               # React components (ui/, chat/, viewer/, eval/)
 │   ├── server/                   # server-only code ("server-only" import at top)
+│   │   ├── logger.ts             # pino instance, redaction, error serializer
 │   │   ├── db/                   # drizzle client, schema/*.ts, queries/*.ts
 │   │   ├── ingest/               # parsers/docx.ts, chunker.ts, pipeline.ts
 │   │   ├── rag/                  # retrieve.ts, fuse.ts, gate.ts, prompt.ts, generate.ts, citations.ts, trace.ts, answer.ts, refusal.ts
