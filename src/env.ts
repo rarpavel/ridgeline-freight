@@ -5,7 +5,16 @@ import { z } from 'zod';
 const demoAccountSchema = z.object({
   id: z.string().min(1),
   role: z.enum(['sales', 'hr', 'ops', 'admin']),
-  passwordHash: z.string().min(1),
+  // A bad value must stop the boot: Next.js expands an unescaped $ in .env.local into a shorter
+  // string, which would otherwise only show up later as every login failing.
+  passwordHash: z
+    .string()
+    .regex(
+      /^\$2[aby]\$\d{2}\$[./A-Za-z0-9]{53}$/,
+      'must be a bcrypt hash (pnpm hash-password); in .env.local write every $ as \\$',
+    ),
+  // Shown on the login page: demo credentials are public by design (ADR-0016).
+  demoPassword: z.string().min(1).optional(),
 });
 
 const demoAccountsSchema = z

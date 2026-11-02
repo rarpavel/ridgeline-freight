@@ -27,9 +27,13 @@ Last updated: 2026-11-02
 ## 3. Authentication and sessions
 
 - Login: `POST /api/auth/login { account, password }` → bcrypt compare against `DEMO_ACCOUNTS_JSON` hashes → session `{ account, role, issuedAt }`.
-- Failed logins count toward the IP rate limit; 5 failures in an hour → 429.
-- Logout clears the cookie. Rotating `SESSION_SECRET` invalidates all sessions.
-- Demo passwords are random 12-char strings shown on the login page; hashes are still used so the pattern is production-shaped.
+- A wrong password and an unknown account get the same 401 and pay for the same bcrypt compare, so neither the body nor the timing reveals which accounts exist.
+- Planned, not yet enforced: failed logins count toward the IP rate limit; 5 failures in an hour → 429 (arrives with the rate limiter).
+- Login and logout refuse a POST whose `Origin` is another host, because neither needs an incoming cookie and so `SameSite=Lax` does not protect them.
+- Sessions are stateless. Logout clears the cookie in the browser, but a copy of the cookie stays valid until its 12 h TTL ends. The role is read from the cookie too, so changing or removing an account in `DEMO_ACCOUNTS_JSON` does not affect existing sessions; only rotating `SESSION_SECRET` invalidates them server-side.
+- `proxy.ts` covers `/chat`, `/documents`, `/admin`, `/api/chat`, `/api/documents`, `/api/traces`: pages redirect to `/login?next=<path>` and API routes answer 401; a non-admin on `/admin/*` gets 403. It only redirects: every handler repeats the check with `requireSession()` / `requireRole()`.
+- `next` is resolved like a browser would and falls back to `/chat` if it leaves the site, so the login page cannot be used as an open redirect.
+- Demo passwords are random 12-char strings shown on the login page, stored as `demoPassword` in `DEMO_ACCOUNTS_JSON` (ADR-0016); hashes are still used so the pattern is production-shaped. `pnpm hash-password` generates the value.
 
 ## 4. Authorization (RBAC)
 

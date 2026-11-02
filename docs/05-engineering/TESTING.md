@@ -31,7 +31,7 @@ Last updated: 2026-11-02
 - `retrieval.test.ts`: role filter returns only allowed documents for each role; FTS zero-match path; vector-unavailable fallback.
 - `rbac-leak.test.ts`: with the full demo corpus ingested (fake embedder), for every eval question and every role, no returned document outside `access_roles`; `other_role` questions return zero chunks. **This test must stay green forever.**
 - `guardrails.test.ts`: 21st request in an hour → 429; daily budget reached → 503; windows reset.
-- `auth.test.ts`: wrong password → 401 and counted by the limiter; cookie attributes; `/admin/*` forbidden for non-admin.
+- `auth.test.ts`: wrong password → 401; cookie attributes; `/admin/*` forbidden for non-admin; cross-site login and logout refused. Counting failed logins in the limiter is added here with the rate limiter.
 - `trace.test.ts`: one trace per request with correct counts.
 
 ## 3. Fixtures and determinism

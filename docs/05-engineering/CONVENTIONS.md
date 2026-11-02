@@ -20,9 +20,10 @@ Last updated: 2026-11-02
 │   │       ├── traces/[id]/route.ts
 │   │       ├── auth/login/route.ts, logout/route.ts
 │   │       └── health/route.ts
-│   ├── components/               # React components (ui/, chat/, viewer/, eval/)
+│   ├── components/               # React components (ui/, auth/, chat/, viewer/, eval/)
 │   ├── server/                   # server-only code ("server-only" import at top)
 │   │   ├── logger.ts             # pino instance, redaction, error serializer
+│   │   ├── http.ts               # AppError → JSON error response
 │   │   ├── db/                   # drizzle client, schema/*.ts, queries/*.ts
 │   │   ├── ingest/               # parsers/docx.ts, chunker.ts, pipeline.ts
 │   │   ├── rag/                  # retrieve.ts, fuse.ts, gate.ts, prompt.ts, generate.ts, citations.ts, trace.ts, answer.ts, refusal.ts
@@ -102,6 +103,6 @@ Rule: anything importing `src/server/**` must itself be server-only (route handl
 ## 7. Code style and tooling
 
 - `pnpm` only (`packageManager` field, `engines.node >= 22`). ESLint (flat config, `typescript-eslint` recommended, `react-hooks`), Prettier defaults (100 cols, single quotes). No git hooks.
-- Scripts: `dev`, `build`, `start`, `typecheck`, `lint`, `format`, `test`, `test:integration`, `db:generate`, `db:migrate`, `db:studio`, `ingest`, `eval`, `eval:import`, `datagen:*`.
+- Scripts: `dev`, `build`, `start`, `typecheck`, `lint`, `format`, `test`, `test:integration`, `db:generate`, `db:migrate`, `db:studio`, `hash-password`, `ingest`, `eval`, `eval:import`, `datagen:*`.
 - Dependencies: one line of justification in the PR for every new package; prefer the versions listed in `docs/00-review/SPEC_REVIEW.md §7` or newer patch releases. Exception: TypeScript stays on 6.0.x, because `typescript-eslint` 8.x requires `typescript <6.1`.
 - UI: Tailwind CSS + shadcn/ui initialized at bootstrap (`components.json`, `src/lib/utils.ts` with `cn`, theme tokens as CSS variables) with the primitives `button`, `input`, `textarea`, `badge`, `sheet`, `table`, `skeleton` in `src/components/ui`; add further primitives only in the task that needs them. No other UI frameworks. `shadcn add` generates `import { cn } from "cn"` and installs the `cn` package: change the import to `@/lib/utils` and remove the package, since `cn` here is built on `clsx` + `tailwind-merge`.

@@ -36,6 +36,8 @@ Vercel project env: all variables from `CONVENTIONS.md §6` except the eval/data
 
 The required variables (`DATABASE_URL`, `OPENAI_API_KEY`, `SESSION_SECRET`, `DEMO_ACCOUNTS_JSON`) must be set for both Production and Preview before a build, because `next build` loads `src/env.ts` and fails without them. Optional variables stay unset and use their defaults, except `NEXT_PUBLIC_APP_ENV=production`.
 
+`DEMO_ACCOUNTS_JSON` comes from `pnpm hash-password`, which prints one form for each place. Vercel takes the value as is; `.env.local` needs every `$` written as `\$`, because Next.js expands `$` in env files even inside quotes. `src/env.ts` rejects anything that is not a bcrypt hash, so a wrong value fails the build or boot instead of breaking every login.
+
 ## 5. Smoke check (manual, after each production deploy)
 
 ```
