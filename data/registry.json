@@ -1148,6 +1148,23 @@
       ]
     },
     {
+      "factId": "carrier-brightwater#08",
+      "docSlug": "carrier-brightwater",
+      "category": "date",
+      "statement": "The effective date of the Carrier Agreement — Brightwater Carriers LLC is 02/01/2026.",
+      "value": "02/01/2026",
+      "aliases": [
+        "February 1, 2026"
+      ],
+      "valueType": "date",
+      "sectionHint": "Agreement Date / Term",
+      "isException": false,
+      "differsFrom": [],
+      "entityIds": [
+        "car-brightwater"
+      ]
+    },
+    {
       "factId": "carrier-ashgrove-haulage#01",
       "docSlug": "carrier-ashgrove-haulage",
       "category": "party",
@@ -1288,6 +1305,23 @@
       ],
       "valueType": "text",
       "sectionHint": "General Provisions",
+      "isException": false,
+      "differsFrom": [],
+      "entityIds": [
+        "car-ashgrove-haulage"
+      ]
+    },
+    {
+      "factId": "carrier-ashgrove-haulage#08",
+      "docSlug": "carrier-ashgrove-haulage",
+      "category": "date",
+      "statement": "The effective date of the Carrier Agreement — Ashgrove Haulage LLC is 02/15/2026.",
+      "value": "02/15/2026",
+      "aliases": [
+        "February 15, 2026"
+      ],
+      "valueType": "date",
+      "sectionHint": "Agreement Date / Term",
       "isException": false,
       "differsFrom": [],
       "entityIds": [
@@ -1444,6 +1478,23 @@
       ]
     },
     {
+      "factId": "carrier-juniper-bend#08",
+      "docSlug": "carrier-juniper-bend",
+      "category": "date",
+      "statement": "The effective date of the Carrier Agreement — Juniper Bend Logistics is 03/01/2026.",
+      "value": "03/01/2026",
+      "aliases": [
+        "March 1, 2026"
+      ],
+      "valueType": "date",
+      "sectionHint": "Agreement Date / Term",
+      "isException": false,
+      "differsFrom": [],
+      "entityIds": [
+        "car-juniper-bend"
+      ]
+    },
+    {
       "factId": "carrier-granite-fork-intermodal#01",
       "docSlug": "carrier-granite-fork-intermodal",
       "category": "party",
@@ -1590,6 +1641,23 @@
       ]
     },
     {
+      "factId": "carrier-granite-fork-intermodal#08",
+      "docSlug": "carrier-granite-fork-intermodal",
+      "category": "date",
+      "statement": "The effective date of the Subcontractor Agreement — Granite Fork Intermodal is 03/15/2026.",
+      "value": "03/15/2026",
+      "aliases": [
+        "March 15, 2026"
+      ],
+      "valueType": "date",
+      "sectionHint": "Agreement Date / Term",
+      "isException": false,
+      "differsFrom": [],
+      "entityIds": [
+        "car-granite-fork-intermodal"
+      ]
+    },
+    {
       "factId": "hr-pto-holidays#01",
       "docSlug": "hr-pto-holidays",
       "category": "policy_rule",
@@ -1610,11 +1678,11 @@
       "factId": "hr-pto-holidays#02",
       "docSlug": "hr-pto-holidays",
       "category": "policy_rule",
-      "statement": "Employees are eligible for 15.00 days of PTO per year under the Paid Time Off and Holidays policy.",
-      "value": "15.00 days per year",
+      "statement": "Employees are eligible for 15 days of PTO per year under the Paid Time Off and Holidays policy.",
+      "value": "15 days per year",
       "aliases": [
-        "15 days per year",
-        "fifteen (15) days per year"
+        "fifteen (15) days per year",
+        "15 days of PTO per year"
       ],
       "valueType": "days",
       "sectionHint": "Annual Accrual",
@@ -1628,10 +1696,9 @@
       "factId": "hr-pto-holidays#03",
       "docSlug": "hr-pto-holidays",
       "category": "threshold",
-      "statement": "The maximum PTO carryover from one year to the next is 5.00 days.",
-      "value": "5.00 days",
+      "statement": "The maximum PTO carryover from one year to the next is 5 days.",
+      "value": "5 days",
       "aliases": [
-        "5 days",
         "five (5) days"
       ],
       "valueType": "days",
@@ -1644,11 +1711,11 @@
       "factId": "hr-pto-holidays#04",
       "docSlug": "hr-pto-holidays",
       "category": "policy_rule",
-      "statement": "The Company observes 10.00 paid holidays per year under the Paid Time Off and Holidays policy.",
-      "value": "10.00 days per year",
+      "statement": "The Company observes 10 paid holidays per year under the Paid Time Off and Holidays policy.",
+      "value": "10 paid holidays per year",
       "aliases": [
-        "10 paid holidays per year",
-        "ten (10) days per year"
+        "ten (10) paid holidays per year",
+        "10 days per year"
       ],
       "valueType": "days",
       "sectionHint": "Holidays",
@@ -1691,6 +1758,21 @@
       "valueType": "text",
       "sectionHint": "Exceptions and Proration",
       "isException": true,
+      "differsFrom": [],
+      "entityIds": []
+    },
+    {
+      "factId": "hr-pto-holidays#07",
+      "docSlug": "hr-pto-holidays",
+      "category": "date",
+      "statement": "The effective date of the Employee Handbook — Paid Time Off and Holidays is 01/01/2026.",
+      "value": "01/01/2026",
+      "aliases": [
+        "January 1, 2026"
+      ],
+      "valueType": "date",
+      "sectionHint": "Revision History",
+      "isException": false,
       "differsFrom": [],
       "entityIds": []
     },
@@ -1780,6 +1862,21 @@
         "wh-joliet-south",
         "wh-minneapolis-north"
       ]
+    },
+    {
+      "factId": "hr-remote-hybrid-work#06",
+      "docSlug": "hr-remote-hybrid-work",
+      "category": "date",
+      "statement": "The effective date of the Employee Handbook — Remote and Hybrid Work is 01/15/2026.",
+      "value": "01/15/2026",
+      "aliases": [
+        "January 15, 2026"
+      ],
+      "valueType": "date",
+      "sectionHint": "Revision History",
+      "isException": false,
+      "differsFrom": [],
+      "entityIds": []
     },
     {
       "factId": "hr-travel-expense#01",
@@ -1881,6 +1978,21 @@
       "entityIds": []
     },
     {
+      "factId": "hr-travel-expense#07",
+      "docSlug": "hr-travel-expense",
+      "category": "date",
+      "statement": "The effective date of the Employee Handbook — Business Travel and Expense Reimbursement is 02/01/2026.",
+      "value": "02/01/2026",
+      "aliases": [
+        "February 1, 2026"
+      ],
+      "valueType": "date",
+      "sectionHint": "Revision History",
+      "isException": false,
+      "differsFrom": [],
+      "entityIds": []
+    },
+    {
       "factId": "hr-conduct-at-will#01",
       "docSlug": "hr-conduct-at-will",
       "category": "term_and_termination",
@@ -1956,6 +2068,21 @@
       ],
       "valueType": "text",
       "sectionHint": "Discipline and Enforcement",
+      "isException": false,
+      "differsFrom": [],
+      "entityIds": []
+    },
+    {
+      "factId": "hr-conduct-at-will#06",
+      "docSlug": "hr-conduct-at-will",
+      "category": "date",
+      "statement": "The effective date of the Employee Handbook — Code of Conduct and At-Will Employment is 01/01/2026.",
+      "value": "01/01/2026",
+      "aliases": [
+        "January 1, 2026"
+      ],
+      "valueType": "date",
+      "sectionHint": "Revision History",
       "isException": false,
       "differsFrom": [],
       "entityIds": []
@@ -2077,13 +2204,27 @@
       "entityIds": []
     },
     {
+      "factId": "hr-driver-hours-safety#08",
+      "docSlug": "hr-driver-hours-safety",
+      "category": "date",
+      "statement": "The effective date of the Employee Handbook — Driver Hours and Safety Compliance is 03/01/2026.",
+      "value": "03/01/2026",
+      "aliases": [
+        "March 1, 2026"
+      ],
+      "valueType": "date",
+      "sectionHint": "Revision History",
+      "isException": false,
+      "differsFrom": [],
+      "entityIds": []
+    },
+    {
       "factId": "hr-attendance-leave#01",
       "docSlug": "hr-attendance-leave",
       "category": "policy_rule",
-      "statement": "Employees accrue 6.00 days of paid sick leave per year under the Attendance and Leaves of Absence policy.",
-      "value": "6.00 days per year",
+      "statement": "Employees accrue 6 days of paid sick leave per year under the Attendance and Leaves of Absence policy.",
+      "value": "6 days per year",
       "aliases": [
-        "6 days per year",
         "six (6) days per year"
       ],
       "valueType": "days",
@@ -2177,6 +2318,21 @@
       "valueType": "text",
       "sectionHint": "Attendance Exceptions",
       "isException": true,
+      "differsFrom": [],
+      "entityIds": []
+    },
+    {
+      "factId": "hr-attendance-leave#07",
+      "docSlug": "hr-attendance-leave",
+      "category": "date",
+      "statement": "The effective date of the Employee Handbook — Attendance and Leaves of Absence is 01/15/2026.",
+      "value": "01/15/2026",
+      "aliases": [
+        "January 15, 2026"
+      ],
+      "valueType": "date",
+      "sectionHint": "Revision History",
+      "isException": false,
       "differsFrom": [],
       "entityIds": []
     },
@@ -2311,6 +2467,21 @@
       ]
     },
     {
+      "factId": "sop-inbound-receiving#08",
+      "docSlug": "sop-inbound-receiving",
+      "category": "date",
+      "statement": "The effective date of the SOP — Inbound Receiving and Dock Scheduling is 02/01/2026.",
+      "value": "02/01/2026",
+      "aliases": [
+        "February 1, 2026"
+      ],
+      "valueType": "date",
+      "sectionHint": "Revision History",
+      "isException": false,
+      "differsFrom": [],
+      "entityIds": []
+    },
+    {
       "factId": "sop-outbound-pick-pack#01",
       "docSlug": "sop-outbound-pick-pack",
       "category": "policy_rule",
@@ -2423,6 +2594,21 @@
       ]
     },
     {
+      "factId": "sop-outbound-pick-pack#07",
+      "docSlug": "sop-outbound-pick-pack",
+      "category": "date",
+      "statement": "The effective date of the SOP — Outbound Pick, Pack and Ship is 02/15/2026.",
+      "value": "02/15/2026",
+      "aliases": [
+        "February 15, 2026"
+      ],
+      "valueType": "date",
+      "sectionHint": "Revision History",
+      "isException": false,
+      "differsFrom": [],
+      "entityIds": []
+    },
+    {
       "factId": "sop-hazmat-handling#01",
       "docSlug": "sop-hazmat-handling",
       "category": "notice_period",
@@ -2529,6 +2715,21 @@
       "entityIds": [
         "wh-minneapolis-north"
       ]
+    },
+    {
+      "factId": "sop-hazmat-handling#07",
+      "docSlug": "sop-hazmat-handling",
+      "category": "date",
+      "statement": "The effective date of the SOP — Hazardous Materials Handling is 03/01/2026.",
+      "value": "03/01/2026",
+      "aliases": [
+        "March 1, 2026"
+      ],
+      "valueType": "date",
+      "sectionHint": "Revision History",
+      "isException": false,
+      "differsFrom": [],
+      "entityIds": []
     },
     {
       "factId": "sop-osd-exceptions#01",
@@ -2642,6 +2843,21 @@
       "entityIds": [
         "wh-chicago-west"
       ]
+    },
+    {
+      "factId": "sop-osd-exceptions#07",
+      "docSlug": "sop-osd-exceptions",
+      "category": "date",
+      "statement": "The effective date of the SOP — Delivery Exceptions and OS&D Claims is 03/15/2026.",
+      "value": "03/15/2026",
+      "aliases": [
+        "March 15, 2026"
+      ],
+      "valueType": "date",
+      "sectionHint": "Revision History",
+      "isException": false,
+      "differsFrom": [],
+      "entityIds": []
     },
     {
       "factId": "rate-ltl-midwest#01",

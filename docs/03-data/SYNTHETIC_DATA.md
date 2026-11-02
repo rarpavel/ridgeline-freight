@@ -79,7 +79,7 @@ Rules enforced by `pnpm datagen:validate-registry`:
 
 `pnpm datagen:registry` makes one call per document type and writes the file even when a rule fails, because a failing registry is fixed by hand rather than regenerated. If the file exists, the script writes nothing unless given `--force`, which would discard the hand edits.
 
-The committed registry was generated on 2026-11-02 (`gpt-5-mini`, 162 facts) and hand-edited: money values reduced to the amount, liability caps made unique across documents, TONU facts moved from `penalty` to `fee`, fuel surcharges and the hazmat fee aligned across documents, and `differsFrom` links between incomparable facts removed.
+The committed registry was generated on 2026-11-02 (`gpt-5-mini`, 162 facts) and hand-edited: money values reduced to the amount, liability caps made unique across documents, TONU facts moved from `penalty` to `fee`, fuel surcharges and the hazmat fee aligned across documents, and `differsFrom` links between incomparable facts removed. RAG-012 added one `date` fact to each of the 14 carrier, HR and SOP documents that had none (176 facts now) and rewrote four values such as `15.00 days per year` that the writer model would not reproduce.
 
 ## 4. Document catalog — `data/catalog.json` (24 documents, all DOCX)
 
@@ -126,6 +126,8 @@ pnpm datagen:questions          → data/eval/questions.json     (prompt 04; dif
 
 Document, registry and rate-sheet generation use the `openai` client (`src/server/llm/client.ts`) with `DATAGEN_MODEL` (default `gpt-5-mini`); question generation uses a different model family through `src/server/llm/judge.ts` (`@anthropic-ai/sdk`, `DATAGEN_QUESTIONS_MODEL`, default `claude-haiku-5-5`). Sampling parameters are left at provider defaults. Outputs are committed; regeneration is deliberate (`--force`).
 
+`pnpm datagen:docs` writes the 20 MSA, carrier, HR and SOP documents (rate sheets arrive with RAG-013). Before a file is written it must pass: first line `# <title>`, ≥ 8 `##` sections, 1,200–2,400 words, every fact present, every money, date and percent token found in the facts or the world slice, an exception word in the sentence of an exception fact whose statement has one, no blocklist, URL, email or phone hits. A failing document is retried up to 2 times with the errors in the prompt, and if it still fails it is not written. An existing file is only checked, so a run costs nothing once all files exist; `--force` regenerates and `--only <slug>` limits the run to one document. The report prints each exception sentence for review, and standalone numbers above 12 outside the allowed set as warnings.
+
 Scripts run with `tsx --conditions=react-server`, so `server-only` resolves outside Next.js, and import `scripts/data-gen/load-env.ts` first, so `.env.local` is parsed the way Next.js parses it. `src/env.ts` still validates every app variable, so `SESSION_SECRET` and `DEMO_ACCOUNTS_JSON` must be set for the scripts too. Zod schemas are in `data-gen/schemas/*.ts`.
 
 ### 5.1 Markdown → DOCX (`docx` library, `scripts/data-gen/render.ts`)
@@ -139,7 +141,7 @@ Scripts run with `tsx --conditions=react-server`, so `server-only` resolves outs
 For every document in the catalog:
 1. Extract text with the **same parser ingestion uses** (`src/server/ingest/parsers/docx.ts`), so validation proves what retrieval will see — including table cells.
 2. Normalize: collapse whitespace, unify quotes/dashes, lowercase.
-3. For each fact of the document: pass if any `alias` (normalized) is an exact substring.
+3. For each fact of the document: pass if its `value` (without a final period) or any `alias` (normalized) is an exact substring. The value counts because prompt 02 asks for it verbatim and forbids restating it in another format, so a document rarely contains the aliases of a sentence-long value.
 4. Format checks on the whole text: every date matches `\b\d{2}/\d{2}/\d{4}\b`; every amount matches `\$\d{1,3}(,\d{3})*(\.\d{2})?`; no ISO dates; no `€`/`£`; no `http`, `@`, or phone-like patterns.
 5. Blocklist: `data-gen/blocklist.txt` (real carriers, 3PLs, retailers, manufacturers the model tends to produce).
 6. Output: `data/generated/validation-report.json` with per-document pass/fail and missing facts; non-zero exit on any failure (CI runs it on `data/**` changes).

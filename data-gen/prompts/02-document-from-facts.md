@@ -66,7 +66,7 @@ Markdown text saved to `data/generated/md/<slug>.md`.
 
 ## Validation rules (`pnpm datagen:validate` after rendering, plus pre-render checks)
 - First line is `# <title>`; ≥ 8 `##` headings; word count 1,200–2,400.
-- Every fact alias present (normalized match) in the Markdown **and** in the extracted text after rendering.
+- Every fact present, by its value or any alias (normalized match), in the Markdown **and** in the extracted text after rendering.
 - No number tokens outside the allowed set (facts, world, section numbers, page footers): the script extracts all `\$[\d,\.]+`, `\d{2}/\d{2}/\d{4}`, `\d+(\.\d+)?%` and standalone numbers > 12 and reports any not in the allowed set (manual review of the report; standalone numbers are advisory).
 - Blocklist hits = 0; no `http`, `@`, phone-like patterns.
 
