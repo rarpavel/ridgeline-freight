@@ -1,0 +1,9 @@
+.claude/
+.next/
+data/
+data-gen/
+docs/
+drizzle/
+prompts/
+CLAUDE.md
+pnpm-lock.yaml
