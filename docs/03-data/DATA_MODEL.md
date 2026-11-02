@@ -215,13 +215,13 @@ Retrieval (two statements in one transaction):
 SELECT c.id, c.document_id, 1 - (c.embedding <=> $1::vector) AS sim
 FROM chunks c JOIN documents d ON d.id = c.document_id
 WHERE d.access_roles && $2::text[]
-ORDER BY c.embedding <=> $1::vector LIMIT 20;
+ORDER BY c.embedding <=> $1::vector, c.id LIMIT 20;
 
 -- fts candidates
 SELECT c.id, c.document_id, ts_rank_cd(c.tsv, q) AS score
 FROM chunks c JOIN documents d ON d.id = c.document_id, websearch_to_tsquery('english', $3) q
 WHERE c.tsv @@ q AND d.access_roles && $2::text[]
-ORDER BY score DESC LIMIT 20;
+ORDER BY score DESC, c.id LIMIT 20;
 ```
 
 Rate limit (one statement):
