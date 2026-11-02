@@ -6,7 +6,7 @@ Instructions for AI agents working in this repository. Read the linked docs befo
 An MVP portfolio project: a RAG assistant over 24 synthetic DOCX documents of a fictional US logistics company. Next.js 16 (App Router, TypeScript strict) + Postgres/pgvector; hybrid retrieval with role filtering in SQL; streamed single-turn answers with validated `[n]` citations; evaluation CLI with an independent judge. Spec: `docs/SPEC.md` (v3). Scope is deliberately small; the roadmap is in `docs/SPEC.md §13` — do not build roadmap items unless asked.
 
 ## Stack and commands
-- pnpm, Node ≥ 22, TypeScript strict, Drizzle ORM, `openai` client (`OPENAI_BASE_URL` configurable), `iron-session`, `pino`, `vitest`, `mammoth`, `docx`.
+- pnpm, Node ≥ 22, TypeScript strict, Tailwind CSS + shadcn/ui (`src/components/ui`, add primitives with `pnpm dlx shadcn@latest add <name>`), Drizzle ORM, `openai` client (`OPENAI_BASE_URL` configurable), `iron-session`, `pino`, `vitest`, `mammoth`, `docx`.
 - `pnpm dev` · `pnpm typecheck` · `pnpm lint` · `pnpm test` · `pnpm test:integration` (needs `docker compose up -d`)
 - `pnpm db:generate` / `pnpm db:migrate` (uses `DATABASE_URL_DIRECT`) · `pnpm ingest [--force] [--only <slug>]` · `pnpm eval --split test|dev [--no-judge]` · `pnpm eval:import` · `pnpm datagen:*`
 - Local DB: `docker compose up -d` (pgvector/pgvector:pg17, db `ridgeline`). Env: copy `.env.example` → `.env.local`.

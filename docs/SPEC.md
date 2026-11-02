@@ -46,7 +46,7 @@ eval (CLI)       test-split questions → same answer code path → deterministi
 
 | Layer | Technology | Why |
 |-------|------------|-----|
-| UI + API | Next.js 16 (App Router), TypeScript strict, `proxy.ts` for auth redirects | One repo, the author's stack |
+| UI + API | Next.js 16 (App Router), TypeScript strict, Tailwind CSS + shadcn/ui, `proxy.ts` for auth redirects | One repo, the author's stack; shadcn copies components into the repo instead of adding a UI framework |
 | Database | Postgres 17 + pgvector (Neon in production; `pgvector/pgvector:pg17` container locally and in CI) | Vectors, FTS and the role filter in one SQL query |
 | Data access | Drizzle ORM + drizzle-kit SQL migrations, `pg` | Typed schema, readable migrations |
 | LLM | `openai` npm; chat `gpt-5-mini`; embeddings `text-embedding-3-small` (1536) | Cheap; `baseURL` stays configurable so a private endpoint is a config change |

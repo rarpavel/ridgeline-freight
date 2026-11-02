@@ -103,4 +103,4 @@ Rule: anything importing `src/server/**` must itself be server-only (route handl
 - `pnpm` only (`packageManager` field, `engines.node >= 22`). ESLint (flat config, `typescript-eslint` recommended, `react-hooks`), Prettier defaults (100 cols, single quotes). No git hooks.
 - Scripts: `dev`, `build`, `start`, `typecheck`, `lint`, `format`, `test`, `test:integration`, `db:generate`, `db:migrate`, `db:studio`, `ingest`, `eval`, `eval:import`, `datagen:*`.
 - Dependencies: one line of justification in the PR for every new package; prefer the versions listed in `docs/00-review/SPEC_REVIEW.md §7` or newer patch releases.
-- UI: Tailwind CSS + a few shadcn/ui primitives (button, input, sheet, table, badge); no heavy component frameworks.
+- UI: Tailwind CSS + shadcn/ui initialized at bootstrap (`components.json`, `src/lib/utils.ts` with `cn`, theme tokens as CSS variables) with the primitives `button`, `input`, `textarea`, `badge`, `sheet`, `table`, `skeleton` in `src/components/ui`; add further primitives only in the task that needs them. No other UI frameworks.
