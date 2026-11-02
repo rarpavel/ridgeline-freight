@@ -1,0 +1,113 @@
+# RAG Pipeline
+
+Ingestion (parsing, chunking, context prefixes, embeddings) and query handling (hybrid retrieval, fusion, gate, generation, citation validation). Code lives in `src/server/ingest/` and `src/server/rag/`; the web route and the CLIs call the same functions. Values below are defaults; tuned values are recorded in `eval_runs.retrieval_config`.
+
+Last updated: 2026-11-02
+
+## 1. Ingestion
+
+### 1.1 Parser (`src/server/ingest/parsers/docx.ts`)
+
+`mammoth.convertToHtml` with a style map that keeps Heading 1/2/3, then a small HTML walker produces normalized text:
+
+```
+# Master Service Agreement — Harbor Point Foods, Inc.
+## 1. Definitions
+1.1 "Accessorial Charges" means ...
+## 4. Service Levels
+### 4.3 Late Delivery Penalties
+For each Shipment delivered more than 24 hours after ...
+| Lane | Origin | Destination | Min Charge | Rate / Mile |
+| --- | --- | --- | --- | --- |
+| L-01 | Chicago, IL | Milwaukee, WI | $425.00 | $2.85 |
+```
+
+Tables become Markdown tables (header row + rows); lists become `-`/`1.` lines. `document_texts.sections` is computed from the headings (char offsets). The same parser is used by the data validator (`SYNTHETIC_DATA.md §5.2`).
+
+### 1.2 Structural chunker (`src/server/ingest/chunker.ts`, `CHUNKER_VERSION = 'v1'`)
+
+1. Split the normalized text into sections at `##`/`###` headings; a numbered clause (`4.3 …`) inside a section starts a sub-unit.
+2. A chunk is one sub-unit if ≤ 600 tokens (`js-tiktoken`, `o200k_base`); sub-units < 120 tokens merge with the following sub-unit of the same section; sub-units > 600 tokens split at paragraph boundaries with a 50-token overlap.
+3. Tables: one chunk per table (header row repeated if split by rows).
+4. Each chunk records `section_ref` (`4.3`), `section_title`, `char_start/char_end`, `token_count`.
+5. `context_prefix = "<title> — <H2 title> › <H3 title>"` (parts that exist).
+6. Text sent to the embedder and FTS = `context_prefix + "\n" + content`.
+
+Expected: 20–40 chunks per contract/policy, 3–6 per rate sheet.
+
+### 1.3 Embeddings (`src/server/llm/embeddings.ts`)
+
+- `openai.embeddings.create({ model: EMBEDDING_MODEL, input: batch })`, batches of 64; retry with exponential backoff on 429/5xx (3 attempts); assert `vector.length === 1536` before insert; `embedding_model` stored per chunk.
+
+### 1.4 Idempotency and CLI
+
+`pnpm ingest [--force] [--only <slug>]`:
+- For each catalog entry: compute sha256; if `documents.checksum` and `chunker_version` match → skip.
+- Otherwise in one transaction: upsert `documents`, replace `document_texts`, delete+insert `chunks` (with embeddings).
+- Prints a summary table (slug, chunks, tokens, embedded, skipped) and exits non-zero on any failure.
+
+## 2. Query handling (`src/server/rag/`)
+
+```
+answerQuestion({ question, session }) →
+  guardrails → embedQuery → retrieve → fuse → gate → buildPrompt → generate(stream) → validateCitations → trace
+```
+
+### 2.1 Retrieval (`retrieve.ts`)
+
+One transaction, two statements (`DATA_MODEL.md §3`):
+- Vector: exact cosine scan on `chunks.embedding` with `documents.access_roles && $roles`, top-20, `sim = 1 - distance`.
+- FTS: `websearch_to_tsquery('english', question)`, `ts_rank_cd(tsv, query)`, same role filter, top-20. Zero matches is a normal outcome.
+- If the embedding call fails: FTS-only, `retrieval.vectorUnavailable = true` in the trace.
+
+### 2.2 Fusion (`fuse.ts`)
+
+Reciprocal Rank Fusion, `k = 60`: `score(c) = Σ_lists 1 / (k + rank_list(c))`. Sort descending; take the top-8 allowing at most 3 chunks per document (`perDocCap`). Each candidate keeps `vectorRank`, `vectorSim`, `ftsRank`, `ftsScore`, `rrf`, `inPrompt`.
+
+### 2.3 Gate (`gate.ts`)
+
+```
+refuseWithoutLlm = (bestVectorSim < SIM_FLOOR || vectorUnavailable) && ftsCandidates.length === 0
+```
+
+Default `SIM_FLOOR = 0.30` (placeholder; calibrated on the dev split in M3 by comparing best-sim distributions of answerable vs. `no_answer` questions, stored in `retrieval_config.simFloor`). A gate refusal returns the fixed refusal text and makes no model call.
+
+### 2.4 Prompt assembly (`prompt.ts`)
+
+- System prompt: `prompts/rag-system.v1.md` (authored in `data-gen/prompts/05-rag-system-prompt.md`).
+- First user message: context blocks in fused order:
+  ```
+  [1] Document: Harbor Point Foods MSA · Section 4.3 Late Delivery Penalties
+  <<<
+  ...chunk content...
+  >>>
+  ```
+  followed by the question (≤ 500 chars). Single turn; no history.
+- `max_tokens: 700`.
+
+### 2.5 Generation (`generate.ts`)
+
+`openai.chat.completions.create({ stream: true, stream_options: { include_usage: true }, ... })`; tokens forwarded as `delta` SSE events; usage from the final chunk, fallback to `js-tiktoken` counts.
+
+### 2.6 Citation validation (`citations.ts`)
+
+- Regex `\[(\d{1,2})\]` over the full answer; valid if `1 ≤ n ≤ inPrompt.length`; unknown aliases are removed and counted in `citations_dropped`.
+- A refusal is detected when the answer starts with `NO_ANSWER:`; the marker is stripped and the UI shows the refusal state.
+- If `!refused && valid.length === 0` → converted to a refusal (`reason = 'no_valid_citations'`); the generated text is replaced by the fixed refusal text and kept in the trace.
+
+### 2.7 Trace (`trace.ts`)
+
+One `request_traces` row per request (candidates with scores, gate, prompt version, model, tokens, cost from `config/pricing.json`, TTFT, latency, citation counts, refusal, error), written after `done`/`error` and awaited before the handler returns.
+
+## 3. Tuning knobs
+
+| Knob | Default | Where | Tuned on |
+|------|---------|-------|----------|
+| `vectorTopK` / `ftsTopK` | 20 / 20 | `retrieval_config` | dev split |
+| `rrfK` | 60 | `retrieval_config` | fixed |
+| `finalK` / `perDocCap` | 8 / 3 | `retrieval_config` | dev split |
+| `simFloor` | 0.30 | env `SIM_FLOOR` | dev split |
+| chunk size | 300–600 tokens | `CHUNKER_VERSION` | dev split |
+| `max_tokens` | 700 | env | fixed |
+
+Roadmap (not MVP): HNSW index with iterative scans at larger corpus sizes; reranker between fusion and gate; query condensation for follow-ups.
