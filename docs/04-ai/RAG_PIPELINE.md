@@ -61,14 +61,19 @@ answerQuestion({ question, session }) →
 
 ### 2.1 Retrieval (`retrieve.ts`)
 
-One transaction, two statements (`DATA_MODEL.md §3`):
+`retrieveCandidates({ questionEmbedding, question, roles }, { db })` runs one read-only `REPEATABLE READ` transaction, so a concurrent ingest cannot show the two statements different chunks, with two statements (`DATA_MODEL.md §3`):
 - Vector: exact cosine scan on `chunks.embedding` with `documents.access_roles && $roles`, top-20, `sim = 1 - distance`.
 - FTS: `websearch_to_tsquery('english', question)`, `ts_rank_cd(tsv, query)`, same role filter, top-20. Zero matches is a normal outcome.
-- If the embedding call fails: FTS-only, `retrieval.vectorUnavailable = true` in the trace.
+- Both order ties by `chunks.id`, so a run is reproducible. Empty `roles` returns nothing. A failed query becomes `AppError('db_error')`, without the query parameters in its message.
+
+`retrieve({ question, roles }, { db, embed })` embeds the question before the transaction, calls `retrieveCandidates` and `fuseRrf`, and returns `{ candidates, bestSim, ftsMatches, vectorUnavailable }`.
+- If the embedding call fails: a `retrieval.vector_unavailable` warning, FTS-only, `vectorUnavailable = true`, `bestSim = null`; the trace stores the flag as `retrieval.vectorUnavailable`.
+
+Candidates hold ids and scores only; `prompt.ts` needs the chunk text and document title, and that query must carry the same role filter.
 
 ### 2.2 Fusion (`fuse.ts`)
 
-Reciprocal Rank Fusion, `k = 60`: `score(c) = Σ_lists 1 / (k + rank_list(c))`. Sort descending; take the top-8 allowing at most 3 chunks per document (`perDocCap`). Each candidate keeps `vectorRank`, `vectorSim`, `ftsRank`, `ftsScore`, `rrf`, `inPrompt`.
+Reciprocal Rank Fusion, `k = 60`: `score(c) = Σ_lists 1 / (k + rank_list(c))`, ranks starting at 1. Sort descending, exact ties by the better vector rank, then FTS rank; take the top-8 allowing at most 3 chunks per document (`perDocCap`), filling up from lower-ranked chunks of other documents. `fuseRrf` returns every candidate in that order, because the trace records them all; each keeps `vectorRank`, `vectorSim`, `ftsRank`, `ftsScore`, `rrf` (rank and score `null` for a list it is not in) and `inPrompt`.
 
 ### 2.3 Gate (`gate.ts`)
 
