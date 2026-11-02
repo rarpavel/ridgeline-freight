@@ -138,8 +138,14 @@ Scripts run with `tsx --conditions=react-server`, so `server-only` resolves outs
 ### 5.1 Markdown → DOCX (`docx` library, `scripts/data-gen/render.ts`)
 
 - `#` → Title, `##` → Heading 1, `###` → Heading 2 (real `HeadingLevel` styles so mammoth emits `<h1>/<h2>`), paragraphs, numbered lists, Markdown tables → Word tables with a header row.
-- Header: company name; footer: document id. Letter size.
+- Header: company name; footer: document id (the slug). Letter size.
 - Rate sheets: prompt 03 returns JSON tables; the script converts them to Markdown tables inside a short document (title, intro, one `##` section per table, notes) and renders the same way.
+- Lists: `-` and `1.` items, plus one nested level indented by spaces (a block mixes one nested kind only). A numbering gap in the source fails the run, because Word renumbers a list itself.
+- Each source line of a paragraph becomes its own Word paragraph, because address and signature blocks in the generated Markdown have no trailing spaces. A `---` line becomes a paragraph border with no text. A line of underscores stays text.
+- Anything the renderer cannot represent (a `####` heading, a table row with the wrong cell count, a missing or second `#` title) fails the run instead of being dropped. Inline Markdown such as `**bold**` is not parsed; the corpus has none.
+- Deterministic: the same Markdown gives the same bytes, regardless of the clock, time zone or what else the run rendered. The `docx` library stamps the clock into `docProps/core.xml` and into every zip entry, so `markdown-docx.ts` repacks the file with `jszip`, using fixed dates and sorted entries.
+
+`pnpm datagen:render` needs no API keys and costs nothing; `--only <slug>` limits the run to one document. `pnpm datagen:render --fixtures` rebuilds `tests/fixtures/*.docx` from the `.md` next to them, and a unit test fails if a committed fixture differs from a fresh render.
 
 ### 5.2 Validation script (`pnpm datagen:validate`)
 
