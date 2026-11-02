@@ -7,14 +7,13 @@ import { NextResponse } from 'next/server';
 import { env } from '@/env';
 import { db } from '@/server/db/client';
 import { logger } from '@/server/logger';
+import { RAG_SYSTEM_PROMPT_VERSION } from '@/server/rag/prompt';
 
 export const dynamic = 'force-dynamic';
 
 const ROUTE = '/api/health';
 const DB_TIMEOUT_MS = 8_000;
 const GIT_TIMEOUT_MS = 1_000;
-// TODO(RAG-022): replace with the version from the prompt loader.
-const PROMPT_VERSION = 'n/a';
 
 const run = promisify(execFile);
 
@@ -58,7 +57,7 @@ export async function GET() {
       status: isHealthy ? 'ok' : 'error',
       db: dbStatus,
       embeddingModel: env.EMBEDDING_MODEL,
-      promptVersion: PROMPT_VERSION,
+      promptVersion: RAG_SYSTEM_PROMPT_VERSION,
       gitSha,
     },
     { status: isHealthy ? 200 : 503, headers: { 'Cache-Control': 'no-store' } },
