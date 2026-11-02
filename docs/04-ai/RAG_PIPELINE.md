@@ -8,7 +8,7 @@ Last updated: 2026-11-02
 
 ### 1.1 Parser (`src/server/ingest/parsers/docx.ts`)
 
-`mammoth.convertToHtml` with a style map that keeps Heading 1/2/3, then a small HTML walker produces normalized text:
+`parseDocx(buffer)` returns `{ text, sections }`. `mammoth.convertToHtml` with a style map (the renderer writes `#` as Title, `##` as Heading 1, `###` as Heading 2; Heading 3 also becomes `###`), then a small HTML walker produces normalized text, one line per block and no blank lines:
 
 ```
 # Master Service Agreement — Harbor Point Foods, Inc.
@@ -22,7 +22,7 @@ For each Shipment delivered more than 24 hours after ...
 | L-01 | Chicago, IL | Milwaukee, WI | $425.00 | $2.85 |
 ```
 
-Tables become Markdown tables (header row + rows); lists become `-`/`1.` lines. `document_texts.sections` is computed from the headings (char offsets). The same parser is used by the data validator (`SYNTHETIC_DATA.md §5.2`).
+Tables become Markdown tables (the first row is the header; a `|` in a cell is escaped as `\|`); lists become `-`/`1.` lines, nested items indented by three spaces. Inline formatting, page headers and footers, rules and empty paragraphs are dropped, and whitespace inside a line collapses to one space. `document_texts.sections` has one flat entry per heading of any level, in order: `ref` is the leading number (`4.3`, or `''` for an unnumbered heading such as the title or `Notes`), `title` is the rest of the heading, and `text.slice(charStart, charEnd)` is the heading line plus its body up to the line before the next heading, so a `##` section does not include its `###` subsections and sections never overlap. The same parser is used by the data validator (`SYNTHETIC_DATA.md §5.2`).
 
 ### 1.2 Structural chunker (`src/server/ingest/chunker.ts`, `CHUNKER_VERSION = 'v1'`)
 

@@ -153,9 +153,11 @@ For every document in the catalog:
 1. Extract text with the **same parser ingestion uses** (`src/server/ingest/parsers/docx.ts`), so validation proves what retrieval will see — including table cells.
 2. Normalize: collapse whitespace, unify quotes/dashes, lowercase.
 3. For each fact of the document: pass if its `value` (without a final period) or any `alias` (normalized) is an exact substring. The value counts because prompt 02 asks for it verbatim and forbids restating it in another format, so a document rarely contains the aliases of a sentence-long value.
-4. Format checks on the whole text: every date matches `\b\d{2}/\d{2}/\d{4}\b`; every amount matches `\$\d{1,3}(,\d{3})*(\.\d{2})?`; no ISO dates; no `€`/`£`; no `http`, `@`, or phone-like patterns.
+4. Format checks on the whole text: every date matches `\b\d{2}/\d{2}/\d{4}\b` (ISO dates, other slash dates such as `4/1/2026` and written dates such as `April 1, 2026` fail); every amount matches `\$\d{1,3}(,\d{3})*(\.\d{2})?`; no `€`/`£`; no `http`, `@`, or phone-like patterns.
 5. Blocklist: `data-gen/blocklist.txt` (real carriers, 3PLs, retailers, manufacturers the model tends to produce).
-6. Output: `data/generated/validation-report.json` with per-document pass/fail and missing facts; non-zero exit on any failure (CI runs it on `data/**` changes).
+6. Output: `data/generated/validation-report.json` with per-document pass/fail, missing fact ids and errors, committed with the corpus (it has no timestamp, so a rerun on the same corpus changes nothing); non-zero exit on any failure. CI runs it on every push rather than only on `data/**` changes, because a parser change can break it too; it needs no API keys and takes seconds.
+
+If a fact is reported missing only because of formatting, add an alias to the registry instead of loosening the match. The checks are in `scripts/data-gen/corpus-checks.ts`, tested in `tests/unit/validate.test.ts`.
 
 ## 6. Eval questions — `data/eval/questions.json`
 
