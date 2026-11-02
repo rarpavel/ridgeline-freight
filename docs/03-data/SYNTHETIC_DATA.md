@@ -188,7 +188,7 @@ Counts: direct 16, comparison 6, exception 5, no_answer 8, other_role 5 = 40. Sp
 
 No check can tell whether a question is indirect (the ≥ 40% rule), whether a `no_answer` question is really absent from the documents, or whether a `text` answer is right. These are for the manual review.
 
-The committed set was generated on 2026-11-02 (`claude-haiku-5-5`) and has not been reviewed yet (`reviewed: false`).
+The committed set was generated on 2026-11-02 (`claude-haiku-5-5`) and reviewed by an AI agent the same day (`reviewed: true`): 14 questions were edited, one of them replaced. Results are in `data/eval/review.md`. `data/VERSION` is `2026.11-1`.
 
 ## 7. Review effort
 

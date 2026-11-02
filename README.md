@@ -35,3 +35,4 @@ Checks: `pnpm typecheck`, `pnpm lint`, `pnpm test`.
 ## Milestones
 
 - **M0, 2026-11-02:** the app runs in production on Vercel and Neon with sign-in for four demo accounts, a health check and CI.
+- **M1, 2026-11-02:** the data is ready: 24 synthetic DOCX documents pass validation, and 40 reviewed eval questions are split into dev 12 and test 28 (`data/VERSION` 2026.11-1).

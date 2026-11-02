@@ -4,7 +4,7 @@
     "category": "direct",
     "role": "sales",
     "question": "How many days does Harbor Point Foods have to pay us after an invoice goes out?",
-    "expectedAnswer": "Net 30: payment is due 30 days from the invoice date.",
+    "expectedAnswer": "Net 30 (30 days).",
     "expectedDocSlugs": [
       "msa-harbor-point-foods"
     ],
@@ -16,9 +16,9 @@
       "msa-prairie-wind-mfg",
       "msa-cedar-valley-beverages"
     ],
-    "notes": "Payment terms differ across all five customer MSAs, so the customer name must be matched exactly.",
+    "notes": "Payment terms differ across all six customer MSAs, so the customer name must be matched exactly.",
     "split": "test",
-    "reviewed": false,
+    "reviewed": true,
     "datasetVersion": "2026.11-1"
   },
   {
@@ -40,14 +40,14 @@
     ],
     "notes": "Termination notice periods vary widely across MSAs (15 to 120 days), so the answer must be tied to the correct customer.",
     "split": "test",
-    "reviewed": false,
+    "reviewed": true,
     "datasetVersion": "2026.11-1"
   },
   {
     "slug": "direct-03",
     "category": "direct",
     "role": "sales",
-    "question": "What is the most our carriers are answerable for on one Prairie Wind Manufacturing shipment?",
+    "question": "What is the most we can be held answerable for on one Prairie Wind Manufacturing shipment?",
     "expectedAnswer": "$25,000.00 per shipment.",
     "expectedDocSlugs": [
       "msa-prairie-wind-mfg"
@@ -62,7 +62,7 @@
     ],
     "notes": "Liability caps range from $10,000.00 to $500,000.00 across MSAs, so the wrong customer produces a plausible but incorrect figure.",
     "split": "dev",
-    "reviewed": false,
+    "reviewed": true,
     "datasetVersion": "2026.11-1"
   },
   {
@@ -84,7 +84,7 @@
     ],
     "notes": "Lakeshore Retail also uses a flat late fee but at $500.00, so the customer name decides the answer.",
     "split": "test",
-    "reviewed": false,
+    "reviewed": true,
     "datasetVersion": "2026.11-1"
   },
   {
@@ -106,15 +106,15 @@
     ],
     "notes": "Northline's penalty is daily while most other MSAs use weekly or flat structures, so the time unit must be read correctly.",
     "split": "test",
-    "reviewed": false,
+    "reviewed": true,
     "datasetVersion": "2026.11-1"
   },
   {
     "slug": "direct-06",
     "category": "direct",
     "role": "sales",
-    "question": "What published per-mile rate covers a full truckload running from Chicago to Minneapolis?",
-    "expectedAnswer": "$2.10 per mile (Chicago, IL to Minneapolis, MN, 410 miles).",
+    "question": "What published per-mile rate covers a dry van full truckload running from Chicago to Minneapolis?",
+    "expectedAnswer": "$2.10 per mile for a dry van (Chicago, IL to Minneapolis, MN, 410 miles).",
     "expectedDocSlugs": [
       "rate-ftl-dry-van"
     ],
@@ -125,9 +125,9 @@
       "rate-ltl-midwest",
       "rate-accessorials"
     ],
-    "notes": "The LTL Midwest sheet covers overlapping lanes with different pricing structure (per CWT), so the sheet choice matters.",
+    "notes": "The same lane has a reefer row at $2.40 per mile, so the equipment must be read correctly, and the LTL Midwest sheet prices overlapping lanes per CWT.",
     "split": "dev",
-    "reviewed": false,
+    "reviewed": true,
     "datasetVersion": "2026.11-1"
   },
   {
@@ -146,9 +146,9 @@
       "rate-ftl-dry-van",
       "rate-ltl-midwest"
     ],
-    "notes": "The fuel table has four adjacent tiers with similar percentages, so the diesel price band must be matched precisely.",
+    "notes": "The fuel table has 14 adjacent tiers, and $4.20 sits between the 5.5% and 10.0% tiers, so the diesel price band must be matched precisely.",
     "split": "dev",
-    "reviewed": false,
+    "reviewed": true,
     "datasetVersion": "2026.11-1"
   },
   {
@@ -168,7 +168,7 @@
     ],
     "notes": "The LTL Midwest sheet gives 2 free hours and $50.00 per hour, so the accessorial schedule must be cited instead.",
     "split": "test",
-    "reviewed": false,
+    "reviewed": true,
     "datasetVersion": "2026.11-1"
   },
   {
@@ -190,7 +190,7 @@
     ],
     "notes": "Free time differs by carrier (2, 3, 90 minutes, 4 hours), so the dispatcher's carrier must be identified correctly.",
     "split": "test",
-    "reviewed": false,
+    "reviewed": true,
     "datasetVersion": "2026.11-1"
   },
   {
@@ -211,15 +211,15 @@
     ],
     "notes": "Juniper Bend's $60.00 rate is easy to confuse with Ashgrove's $35.00 and Brightwater's $50.00 rates.",
     "split": "test",
-    "reviewed": false,
+    "reviewed": true,
     "datasetVersion": "2026.11-1"
   },
   {
     "slug": "direct-11",
     "category": "direct",
     "role": "ops",
-    "question": "How quickly do we need to pay Granite Fork Intermodal after receiving its invoice?",
-    "expectedAnswer": "Net 10: payment is due 10 days from the invoice date under the Subcontractor Agreement.",
+    "question": "How quickly do we need to pay Granite Fork Intermodal once it sends an invoice?",
+    "expectedAnswer": "Net 10 (10 days) under the Subcontractor Agreement.",
     "expectedDocSlugs": [
       "carrier-granite-fork-intermodal"
     ],
@@ -233,7 +233,7 @@
     ],
     "notes": "Granite Fork's Net 10 is the shortest carrier term, and the document is titled a Subcontractor Agreement rather than a Carrier Agreement.",
     "split": "dev",
-    "reviewed": false,
+    "reviewed": true,
     "datasetVersion": "2026.11-1"
   },
   {
@@ -254,14 +254,14 @@
     ],
     "notes": "The Joliet cutoff sits in the outbound SOP, while inbound receiving covers a different warehouse and different hours.",
     "split": "dev",
-    "reviewed": false,
+    "reviewed": true,
     "datasetVersion": "2026.11-1"
   },
   {
     "slug": "direct-13",
     "category": "direct",
     "role": "ops",
-    "question": "What window does the Chicago West dock accept inbound freight, and are federal holidays excluded?",
+    "question": "During what hours does the Chicago West dock accept inbound freight, and are federal holidays excluded?",
     "expectedAnswer": "08:00 to 18:00, excluding federal holidays.",
     "expectedDocSlugs": [
       "sop-inbound-receiving"
@@ -275,7 +275,7 @@
     ],
     "notes": "Receiving hours are specific to Chicago West, and the Joliet and Twin Cities sites have their own rules in other SOPs.",
     "split": "test",
-    "reviewed": false,
+    "reviewed": true,
     "datasetVersion": "2026.11-1"
   },
   {
@@ -295,7 +295,7 @@
     ],
     "notes": "The PTO policy allots 15 days per year, which is easy to confuse with the 6 days of sick leave in the attendance policy.",
     "split": "test",
-    "reviewed": false,
+    "reviewed": true,
     "datasetVersion": "2026.11-1"
   },
   {
@@ -316,7 +316,7 @@
     ],
     "notes": "The driver pay rate of $45.00 differs from carrier-agreement detention rates and the $95.00 OS&D detention rate.",
     "split": "test",
-    "reviewed": false,
+    "reviewed": true,
     "datasetVersion": "2026.11-1"
   },
   {
@@ -337,7 +337,7 @@
     ],
     "notes": "Holiday count is easy to confuse with the 15 PTO days per year and the 6 sick days per year in neighboring policies.",
     "split": "test",
-    "reviewed": false,
+    "reviewed": true,
     "datasetVersion": "2026.11-1"
   },
   {
@@ -345,7 +345,7 @@
     "category": "comparison",
     "role": "sales",
     "question": "A sales rep prepping for a Lakeshore call asks how long Harbor Point Foods gets to pay us compared with Lakeshore Retail Group.",
-    "expectedAnswer": "Harbor Point Foods, Inc.: Net 30 (30 days from the invoice date). Lakeshore Retail Group: Net 45 (45 days from the invoice date).",
+    "expectedAnswer": "Harbor Point Foods, Inc.: Net 30 (30 days). Lakeshore Retail Group: Net 45 (45 days).",
     "expectedDocSlugs": [
       "msa-harbor-point-foods",
       "msa-lakeshore-retail"
@@ -360,14 +360,14 @@
     ],
     "notes": "Both payment terms are stated as Net X, so the assistant must keep each number tied to the correct customer agreement.",
     "split": "test",
-    "reviewed": false,
+    "reviewed": true,
     "datasetVersion": "2026.11-1"
   },
   {
     "slug": "comparison-02",
     "category": "comparison",
     "role": "sales",
-    "question": "A Northline Auto Parts buyer asks how their per-shipment liability limit compares with Marlowe & Finch's.",
+    "question": "A rep preparing a Northline Auto Parts renewal asks how its per-shipment liability limit compares with Marlowe & Finch's.",
     "expectedAnswer": "Northline Auto Parts: $10,000.00 per shipment. Marlowe & Finch Medical Supply: $500,000.00 per shipment (standard limit; reefer shipments follow a separate, higher liability schedule).",
     "expectedDocSlugs": [
       "msa-northline-auto",
@@ -383,7 +383,7 @@
     ],
     "notes": "The Marlowe & Finch cap is a standard limit that excludes reefer shipments, which the answer must mention to avoid overstating coverage.",
     "split": "dev",
-    "reviewed": false,
+    "reviewed": true,
     "datasetVersion": "2026.11-1"
   },
   {
@@ -406,7 +406,7 @@
     ],
     "notes": "Juniper Bend's free time is expressed in minutes while Brightwater's is in hours, so the answer must normalize the units when comparing.",
     "split": "test",
-    "reviewed": false,
+    "reviewed": true,
     "datasetVersion": "2026.11-1"
   },
   {
@@ -429,14 +429,14 @@
     ],
     "notes": "Ashgrove's notice period is shorter than Juniper Bend's, and the question's wording invites confusion between the two carriers' periods.",
     "split": "test",
-    "reviewed": false,
+    "reviewed": true,
     "datasetVersion": "2026.11-1"
   },
   {
     "slug": "comparison-05",
     "category": "comparison",
     "role": "hr",
-    "question": "A new hire at the Joliet office asks how many days into employment until PTO kicks in, versus until remote work is allowed.",
+    "question": "A new hire at the Joliet warehouse asks how many days into employment until PTO kicks in, versus until remote work is allowed.",
     "expectedAnswer": "PTO eligibility begins after 90 days of continuous employment. Remote or hybrid work eligibility begins after 180 days of continuous employment.",
     "expectedDocSlugs": [
       "hr-pto-holidays",
@@ -451,7 +451,7 @@
     ],
     "notes": "Both eligibility waiting periods are phrased similarly, and the sick leave eligibility of 30 days in the attendance policy is a close distractor.",
     "split": "test",
-    "reviewed": false,
+    "reviewed": true,
     "datasetVersion": "2026.11-1"
   },
   {
@@ -474,7 +474,7 @@
     ],
     "notes": "The question asks for a ranking rather than a raw value, so the assistant must correctly identify which percentage is higher and attribute it to the right customer.",
     "split": "dev",
-    "reviewed": false,
+    "reviewed": true,
     "datasetVersion": "2026.11-1"
   },
   {
@@ -482,7 +482,7 @@
     "category": "exception",
     "role": "sales",
     "question": "Our Harbor Point contact asks whether lumper fees still pass through at cost on hazmat loads.",
-    "expectedAnswer": "No. Lumper fees are charged at actual cost, except for hazmat shipments, where third-party lumper charges are the Customer's responsibility and are not billed by Ridgeline Freight, LLC.",
+    "expectedAnswer": "No. Lumper fees are charged at actual cost, except for hazmat shipments, where third-party lumper charges are the Customer's responsibility.",
     "expectedDocSlugs": [
       "msa-harbor-point-foods"
     ],
@@ -495,7 +495,7 @@
     ],
     "notes": "The hazmat carve-out in the lumper-fee clause is easy to miss when the question focuses on the pass-through rule, and the standard $125.00 lumper fee in rate-accessorials is a tempting wrong source.",
     "split": "test",
-    "reviewed": false,
+    "reviewed": true,
     "datasetVersion": "2026.11-1"
   },
   {
@@ -516,7 +516,7 @@
     ],
     "notes": "The cap is stated as a limit, so the answer depends on reading the container chassis exclusion, and Granite Fork also handles container chassis under a different cap and exception.",
     "split": "dev",
-    "reviewed": false,
+    "reviewed": true,
     "datasetVersion": "2026.11-1"
   },
   {
@@ -537,7 +537,7 @@
     ],
     "notes": "The $150.00 reimbursement cap is the main fact, so the hazmat exclusion must be surfaced even though the question asks only whether a driver gets paid.",
     "split": "dev",
-    "reviewed": false,
+    "reviewed": true,
     "datasetVersion": "2026.11-1"
   },
   {
@@ -556,9 +556,9 @@
       "msa-harbor-point-foods",
       "rate-ftl-dry-van"
     ],
-    "notes": "A reader who only sees the $500,000.00 standard cap may answer yes, while the rate sheet's $125,000.00 default cap for Marlowe & Finch is a close but wrong alternative.",
+    "notes": "A reader who only sees the $500,000.00 standard cap may answer yes, while the general $125,000.00 cargo cap on the FTL rate sheet is a close but wrong alternative.",
     "split": "test",
-    "reviewed": false,
+    "reviewed": true,
     "datasetVersion": "2026.11-1"
   },
   {
@@ -579,7 +579,7 @@
     ],
     "notes": "The answer hinges on comparing the 36-hour cancellation against the 48-hour waiver threshold, while Lakeshore's 24-hour rule and the rate sheet's 4-hour TONU exception are similar but different.",
     "split": "test",
-    "reviewed": false,
+    "reviewed": true,
     "datasetVersion": "2026.11-1"
   },
   {
@@ -596,7 +596,7 @@
     ],
     "notes": "Executive compensation is a plausible HR question about a named officer, but no document in the set records salary or bonus figures.",
     "split": "test",
-    "reviewed": false,
+    "reviewed": true,
     "datasetVersion": "2026.11-1"
   },
   {
@@ -614,7 +614,7 @@
     ],
     "notes": "Retirement benefits are a common HR question, but the handbook excerpts in scope cover PTO, remote work, travel, conduct, driver hours, and attendance only.",
     "split": "test",
-    "reviewed": false,
+    "reviewed": true,
     "datasetVersion": "2026.11-1"
   },
   {
@@ -632,7 +632,7 @@
     ],
     "notes": "The dry van rate sheet has a Chicago to Minneapolis per-mile rate, which is a near match, but no Dallas lane appears anywhere in the documents.",
     "split": "dev",
-    "reviewed": false,
+    "reviewed": true,
     "datasetVersion": "2026.11-1"
   },
   {
@@ -649,14 +649,14 @@
     ],
     "notes": "The LTL rate sheet lists a minimum charge and a lane rate, so a reader may assume discount tiers exist, but none are documented.",
     "split": "dev",
-    "reviewed": false,
+    "reviewed": true,
     "datasetVersion": "2026.11-1"
   },
   {
     "slug": "no_answer-05",
     "category": "no_answer",
     "role": "ops",
-    "question": "An ops coordinator is checking how much cargo insurance deductible Brightwater Carriers has to carry under its agreement.",
+    "question": "An ops coordinator is checking the maximum deductible Brightwater Carriers may have on its cargo insurance under the agreement.",
     "expectedAnswer": null,
     "expectedDocSlugs": [],
     "sourceFactIds": [],
@@ -667,7 +667,7 @@
     ],
     "notes": "The Brightwater agreement states a liability limit, which invites confusion with a deductible, but no deductible amount is recorded.",
     "split": "test",
-    "reviewed": false,
+    "reviewed": true,
     "datasetVersion": "2026.11-1"
   },
   {
@@ -683,26 +683,26 @@
       "hr-driver-hours-safety",
       "sop-hazmat-handling"
     ],
-    "notes": "Carrier qualification is a plausible ops topic, but the documents only cover agreement terms, hours of service, and hazmat handling, not screening.",
+    "notes": "Carrier qualification is a plausible ops topic, but the carrier agreements only require qualified drivers in general terms and name no background check or drug testing steps.",
     "split": "test",
-    "reviewed": false,
+    "reviewed": true,
     "datasetVersion": "2026.11-1"
   },
   {
     "slug": "no_answer-07",
     "category": "no_answer",
     "role": "hr",
-    "question": "A driver held overnight at the Twin Cities warehouse is asking whether a meal stipend is paid on top of layover pay.",
+    "question": "A driver wants to know how much the referral bonus pays when a friend they recommended gets hired.",
     "expectedAnswer": null,
     "expectedDocSlugs": [],
     "sourceFactIds": [],
     "distractorDocSlugs": [
       "hr-driver-hours-safety",
-      "hr-travel-expense"
+      "hr-conduct-at-will"
     ],
-    "notes": "Layover pay is documented, which makes a meal stipend look like a natural extension, but no meal stipend policy exists in the set.",
+    "notes": "Hiring incentives are a plausible HR question, but no document mentions a referral program or any bonus.",
     "split": "test",
-    "reviewed": false,
+    "reviewed": true,
     "datasetVersion": "2026.11-1"
   },
   {
@@ -720,7 +720,7 @@
     ],
     "notes": "Education reimbursement sounds like it could fall under the expense policy, but the travel and expense policy does not cover tuition or training costs.",
     "split": "test",
-    "reviewed": false,
+    "reviewed": true,
     "datasetVersion": "2026.11-1"
   },
   {
@@ -741,7 +741,7 @@
     ],
     "notes": "Sales cannot read carrier agreements, so this carrier-specific free-time term must be refused even though rate sheets contain similar detention terms.",
     "split": "test",
-    "reviewed": false,
+    "reviewed": true,
     "datasetVersion": "2026.11-1"
   },
   {
@@ -762,7 +762,7 @@
     ],
     "notes": "HR cannot read customer MSAs, and the Harbor Point penalty is a percentage that differs from other customers' flat or per-day penalties, making the refusal test sharp.",
     "split": "test",
-    "reviewed": false,
+    "reviewed": true,
     "datasetVersion": "2026.11-1"
   },
   {
@@ -783,7 +783,7 @@
     ],
     "notes": "Sales is role-playing as a customer-facing rep asking about driver hours-of-service, which lives in an HR policy the sales role cannot access, while operational SOPs mention HOS only in passing.",
     "split": "test",
-    "reviewed": false,
+    "reviewed": true,
     "datasetVersion": "2026.11-1"
   },
   {
@@ -804,7 +804,7 @@
     ],
     "notes": "Ops can read carrier agreements and SOPs but not customer MSAs, and the notice period is a termination term that differs across customer contracts.",
     "split": "test",
-    "reviewed": false,
+    "reviewed": true,
     "datasetVersion": "2026.11-1"
   },
   {
@@ -825,7 +825,7 @@
     ],
     "notes": "Ops cannot read the HR travel and expense policy, so the per diem figure must be refused even though the question sounds like a routine operational travel query.",
     "split": "dev",
-    "reviewed": false,
+    "reviewed": true,
     "datasetVersion": "2026.11-1"
   }
 ]
