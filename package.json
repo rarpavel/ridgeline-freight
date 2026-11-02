@@ -26,7 +26,8 @@
     "datagen:docs": "tsx --conditions=react-server scripts/data-gen/docs.ts",
     "datagen:rate-sheets": "tsx --conditions=react-server scripts/data-gen/rate-sheets.ts",
     "datagen:render": "tsx --conditions=react-server scripts/data-gen/render.ts",
-    "datagen:validate": "tsx --conditions=react-server scripts/data-gen/validate.ts"
+    "datagen:validate": "tsx --conditions=react-server scripts/data-gen/validate.ts",
+    "datagen:questions": "tsx --conditions=react-server scripts/data-gen/questions.ts"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "1.3.0",

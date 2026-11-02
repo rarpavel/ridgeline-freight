@@ -32,6 +32,14 @@ export function findFormatErrors(text: string): string[] {
   ];
 }
 
+// Models sometimes wrap a JSON reply in a Markdown code fence.
+export function stripCodeFence(text: string): string {
+  return text
+    .trim()
+    .replace(/^```(?:json)?\s*/, '')
+    .replace(/\s*```$/, '');
+}
+
 export function parseBlocklist(content: string): string[] {
   return content
     .split('\n')
