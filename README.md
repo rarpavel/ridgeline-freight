@@ -31,3 +31,7 @@ pnpm dev
 Open http://localhost:3000/login. The session cookie is always `Secure`; Chrome and Firefox accept that on `localhost`, but Safari may not, so use one of those to sign in locally.
 
 Checks: `pnpm typecheck`, `pnpm lint`, `pnpm test`.
+
+## Milestones
+
+- **M0, 2026-11-02:** the app runs in production on Vercel and Neon with sign-in for four demo accounts, a health check and CI.
