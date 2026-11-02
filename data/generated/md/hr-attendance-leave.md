@@ -38,7 +38,7 @@ Reliable attendance and timely notification are critical to operations.
 
 ## 8. Attendance Exceptions
 The Company recognizes circumstances that warrant exceptions to general attendance rules.
-- Absences on federal holidays are excluded from attendance points; the Company will not count Absences on federal holidays are excluded from attendance points for the purposes of attendance point totals.
+- Absences on federal holidays are excluded from attendance points; the Company will not count these absences toward attendance point totals.
 - Leave taken under protected statutes, approved accommodations, or approved leaves of absence will be treated consistent with law and Company practice and may be excluded from disciplinary attendance calculations.
 
 ## 9. Procedures for Requests, Approvals, and Documentation
@@ -72,7 +72,7 @@ Ridgeline Freight, LLC may monitor attendance patterns to ensure operational rel
 In exceptional circumstances beyond the Company’s control, such as natural disasters or other significant disruptions, the Company may implement temporary operational adjustments to attendance and leave procedures to ensure employee safety and business continuity. Such adjustments will be communicated to employees through official Company channels.
 
 ## 13. Questions and Contacts
-For questions about this policy, employees may contact the following Company officers by title only:
+For questions about this policy, employees may contact the following Company officers:
 - Chief Executive Officer
 - Chief Financial Officer
 - Chief Operating Officer

@@ -19,10 +19,10 @@ This handbook applies to all drivers employed by Ridgeline Freight, LLC and to c
 Ridgeline Freight, LLC is committed to safe, legal, and consistent driver operations. Drivers must meet duty and rest expectations and follow procedures for reporting, reimbursement, and claims. Noncompliance may result in corrective action up to and including termination. The Company adheres to applicable laws and regulations and applies these policies in a consistent manner.
 
 ## 5. Hours and Duty Limits
-Drivers must not exceed 11 hours of driving time following 10 consecutive hours off and may not exceed 14 total hours on duty in a work period. This policy is stated as: 11 hours driving; 10 consecutive hours off; 14 hours on duty. Drivers are required to schedule and manage duty time so that operations remain within these limits.
+Drivers must not exceed 11 hours of driving time following 10 consecutive hours off and may not exceed 14 total hours on duty in a work period. In summary: 11 hours driving; 10 consecutive hours off; 14 hours on duty. Drivers are required to schedule and manage duty time so that operations remain within these limits.
 
 ## 6. Rest Requirements
-Drivers must obtain at least 10 consecutive hours off between duty periods before resuming driving. The requirement is stated as: 10 consecutive hours off. Rest and recovery are essential to safety; drivers and supervisors will plan assignments to allow for the required rest.
+Drivers must obtain at least 10 consecutive hours off between duty periods before resuming driving. Rest and recovery are essential to safety; drivers and supervisors will plan assignments to allow for the required rest.
 
 ## 7. Procedures — Hours, Scheduling, and Approvals
 1. Planning: Dispatch will assign runs and estimated duty windows consistent with Company obligations and the Hours and Duty Limits section. Drivers must notify dispatch promptly of any circumstance that may affect the ability to comply.  
@@ -32,7 +32,7 @@ Drivers must obtain at least 10 consecutive hours off between duty periods befor
 5. Recordkeeping: Drivers must maintain accurate logs and supporting documentation as required by Company policy and applicable law.
 
 ## 8. Detention and Free Time
-Drivers are entitled to Two (2) hours of free time at pickup and delivery before detention pay applies. When delays beyond that time occur, drivers should notify dispatch and document the start and end times of detention.
+Drivers are entitled to two (2) hours of free time at pickup and delivery before detention pay applies. When delays beyond that time occur, drivers should notify dispatch and document the start and end times of detention.
 
 ## 9. Accessorial Charges — Detention
 Detention pay is available to compensate drivers for extended waiting. The Company pays detention at a rate of $45.00 per hour after free time has elapsed. Drivers seeking detention pay must document arrival and release times and submit the documentation per procedure.
@@ -41,7 +41,7 @@ Detention pay is available to compensate drivers for extended waiting. The Compa
 When a driver is held overnight through no fault of the driver, the Company provides layover pay of $150.00 per layover day. Drivers must notify dispatch of the hold and complete any Company incident documentation to qualify.
 
 ## 11. Lumper Fees and Exceptions
-Ridgeline will reimburse lumper fees up to $150.00 with receipts, except for hazmat shipments. Drivers must obtain receipts for lumper services and submit them according to reimbursement procedures. The reimbursement rule includes the exception in the same sentence as stated.
+Ridgeline will reimburse lumper fees up to $150.00 with receipts, except for hazmat shipments. Drivers must obtain receipts for lumper services and submit them according to reimbursement procedures.
 
 ## 12. Procedures — Accessorial Pay and Reimbursement
 1. Documentation: Collect time-stamped documentation or receipts at pickup/delivery for any detention, layover, or lumper fee event.  
@@ -51,7 +51,7 @@ Ridgeline will reimburse lumper fees up to $150.00 with receipts, except for haz
 5. Disputes: If a submission is denied, the driver may request review by an operations manager; further dispute resolution will follow Company dispute procedure.
 
 ## 13. OSD Reporting
-Drivers must report Over, Short & Damaged (OSD) claims within 24 hours of delivery. The reporting requirement is stated as: 24 hours. Reports must include the delivery documentation, photographs where available, and any witness statements. Failure to report within the required timeframe may affect claim resolution and driver eligibility for related reimbursements.
+Drivers must report Over, Short & Damaged (OSD) claims within 24 hours of delivery. Reports must include the delivery documentation, photographs where available, and any witness statements. Failure to report within the required timeframe may affect claim resolution and driver eligibility for related reimbursements.
 
 ## 14. Safety and Compliance Responsibilities
 - Drivers: Operate safely, comply with Hours and Duty Limits, Rest Requirements, and Company procedures; maintain vehicle condition and file reports for defects or incidents.  
@@ -59,7 +59,7 @@ Drivers must report Over, Short & Damaged (OSD) claims within 24 hours of delive
 - Payroll and Finance: Review and process accessorial pay and reimbursements in accordance with submitted documentation and Company policy.
 
 ## 15. Exceptions
-Exceptions to any policy in this handbook require written approval from an authorized Company manager and will be evaluated on a case-by-case basis. Specific exceptions noted in other sections are restated at point of the policy; for example, the lumper reimbursement policy includes the stated exception for hazmat shipments in the same sentence as the reimbursement rule.
+Exceptions to any policy in this handbook require written approval from an authorized Company manager and will be evaluated on a case-by-case basis. An exception that applies to a single rule is stated in the section containing that rule.
 
 ## 16. Compliance, Enforcement, and Employment Relationship
 Compliance with this handbook is a condition of continued employment for drivers. Violations may result in corrective action up to and including termination. Nothing in this handbook guarantees employment for any specific duration. Employment with Ridgeline Freight, LLC is at-will and may be terminated by either the employee or the Company in accordance with applicable law.
@@ -80,7 +80,7 @@ Notices required under this handbook will be delivered in writing to the Company
 This handbook constitutes the complete statement of Ridgeline Freight, LLC policy on driver hours and safety compliance. The Company may amend this handbook at any time; revisions will be communicated to employees. No oral statements may alter the terms set forth in this document.
 
 ## 21. Questions and Contacts
-For questions about policy, procedures, or compliance, contact the following Company officers by title only:  
+For questions about policy, procedures, or compliance, contact the following Company officers:  
 - Chief Executive Officer  
 - Chief Financial Officer  
 - Chief Operating Officer  
@@ -97,13 +97,13 @@ Ridgeline Freight, LLC
 Chicago, IL 60632
 
 Chief Executive Officer
-[signature line]
+Signature: __________________________
 
 Chief Operating Officer
-[signature line]
+Signature: __________________________
 
 Chief Financial Officer
-[signature line]
+Signature: __________________________
 
 VP, Sales & Commercial
-[signature line]
+Signature: __________________________

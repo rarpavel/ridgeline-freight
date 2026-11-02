@@ -108,7 +108,7 @@ Neither party will be liable for failure or delay in performing obligations unde
 
 ## 13. Governing Law and Notices
 ### 13.1 Governing Law
-This Agreement is governed by State of Illinois; venue in Cook County, Illinois.
+This Agreement is governed by the laws of the State of Illinois; venue in Cook County, Illinois.
 
 ### 13.2 Notices
 All notices required or permitted under this Agreement must be in writing and delivered to the addresses in Section 1 or to such other address as a party designates in writing. Notices are effective upon receipt.

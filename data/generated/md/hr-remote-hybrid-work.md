@@ -28,7 +28,7 @@ Drivers, warehouse staff, and other on-site roles are not eligible for remote or
 ## 6. Policy Statement
 Ridgeline Freight, LLC aims to balance employee flexibility with the needs of our customers and operations. Remote and hybrid schedules are intended to support productivity and continuity while ensuring clear lines of communication, data security, and accountability.
 
-Hybrid work schedules must be established in writing and approved by the manager and human resources. As a guideline for hybrid arrangements, the standard allowance is Up to 2 days remote work per week for eligible employees, subject to operational requirements and manager approval.
+Hybrid work schedules must be established in writing and approved by the manager and human resources. As a guideline for hybrid arrangements, the standard allowance is up to 2 days remote work per week for eligible employees, subject to operational requirements and manager approval.
 
 Remote or hybrid arrangements do not change the employee’s duties, obligations, or reporting relationships. Employees remain responsible for meeting performance and availability expectations regardless of work location.
 
@@ -47,7 +47,7 @@ Remote or hybrid arrangements do not change the employee’s duties, obligations
 Ridgeline will reimburse approved remote-work equipment purchases up to a cap of $300.00 per employee. Reimbursement requires prior managerial approval and submission of receipts in accordance with company reimbursement procedures. Company-owned equipment provided for remote work must be used in accordance with company policies and returned upon request.
 
 ### 7.4 Schedule Changes and Notice
-Employees must provide 7 business days notice to change an approved hybrid work schedule. Managers and employees should seek to accommodate reasonable requests, but business needs may require denial or adjustment of requested changes.
+Employees must provide 7 business days' notice to change an approved hybrid work schedule. Managers and employees should seek to accommodate reasonable requests, but business needs may require denial or adjustment of requested changes.
 
 ## 8. Hybrid Work and Scheduling
 Managers and employees must agree on a hybrid schedule that meets job requirements and team needs. Schedules should indicate on-site days, remote days, core hours (when the employee is expected to be available), and preferred communication channels. Any deviation from the approved schedule should be communicated to the manager in advance.
@@ -57,7 +57,7 @@ Remote work should not impede participation in required meetings, training, or c
 ## 9. Data Security and Privacy
 Employees working remotely must adhere to all company security and privacy policies. Expected safeguards include:
 - Using company-approved devices and software for work tasks unless an exception is approved.
-- Maintaining secure Wi‑Fi connections and protecting devices with strong authentication.
+- Maintaining secure Wi-Fi connections and protecting devices with strong authentication.
 - Reporting any suspected security incident immediately to the IT department.
 Employees must not store or transmit sensitive company or customer information outside approved systems.
 
@@ -75,7 +75,7 @@ Ridgeline Freight, LLC operates under the laws of the State of Illinois. Any dis
 Employment with Ridgeline Freight, LLC remains at-will and may be terminated by the employee or the company at any time for any lawful reason. Ridgeline reserves the right to modify, suspend, or terminate remote and hybrid work arrangements and this policy for business reasons. Changes will be communicated to impacted employees.
 
 ## 13. Questions and Contacts
-For questions regarding this handbook or to seek further guidance, contact the following company officers by title only:
+For questions regarding this handbook or to seek further guidance, contact the following company officers:
 - Chief Executive Officer
 - Chief Financial Officer
 - Chief Operating Officer

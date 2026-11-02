@@ -53,7 +53,7 @@ PTO accrual is prorated during the first 12 months of employment. This exception
 ## 10. Compliance, At-Will Employment, Governing Law, and Venue
 Employment at Ridgeline Freight, LLC is on an at-will basis unless expressly stated otherwise in a separate written agreement signed by an authorized Company officer. Nothing in this handbook creates a contract of employment for any specific duration.
 
-This policy will be administered in accordance with applicable law. To the extent governing law is specified, the State of Illinois law governs interpretation and enforcement of this policy, and venue for any disputes will be Cook County, Illinois. The Company will comply with all federal, state and local laws that may modify or supersede portions of this policy.
+This policy will be administered in accordance with applicable law. The laws of the State of Illinois govern interpretation and enforcement of this policy, and venue for any disputes will be Cook County, Illinois. The Company will comply with all federal, state and local laws that may modify or supersede portions of this policy.
 
 ## 11. Manager and Employee Responsibilities
 Managers are responsible for:
@@ -70,7 +70,7 @@ Employees are responsible for:
 Notices under this policy will be provided electronically or in writing by the Company to employees at the usual Company address on file. The Company will not be liable for failure to meet obligations caused by events beyond its reasonable control, including force majeure events. This document, together with any written agreements expressly referenced herein, constitutes the entire Company policy on paid time off and holidays and supersedes prior written or unwritten PTO and holiday policies, subject to any separate agreements required by law.
 
 ## 13. Questions and Contacts
-For questions regarding this policy, employees may contact the following Company officers by title:
+For questions regarding this policy, employees may contact the following Company officers:
 - Chief Executive Officer
 - Chief Financial Officer
 - Chief Operating Officer

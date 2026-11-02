@@ -9,7 +9,7 @@ Broker/Shipper: Ridgeline Freight, LLC
 Headquarters: 1432 Quarrystone Avenue, Chicago, IL 60632
 
 Carrier: Granite Fork Intermodal  
-Carrier principal place of business: State of NE (as represented by Carrier)
+Carrier principal place of business: Nebraska
 
 ## 2. Agreement Date / Term
 ### 2.1 Effective Date

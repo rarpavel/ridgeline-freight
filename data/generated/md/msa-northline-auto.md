@@ -22,7 +22,7 @@ The Agreement commences on the Effective Date and continues until terminated in 
 Carrier shall provide transportation and logistics services for the movement of aftermarket auto parts as requested by Customer, including pickup, line-haul, delivery, and reasonable ancillary services. Services will be performed in accordance with mutually agreed instructions and applicable law.
 
 ### 3.2 Service Levels
-Carrier will exercise commercially reasonable efforts to meet delivery instructions and service levels agreed in writing between the parties for specific lanes or shipments. Service level commitments for particular moves shall be set forth in purchase orders, booking confirmations, or rate sheets referenced in Section 5.
+Carrier will exercise commercially reasonable efforts to meet delivery instructions and service levels agreed in writing between the parties for specific lanes or shipments. Service level commitments for particular moves shall be set forth in purchase orders, booking confirmations, or rate sheets referenced in Section 4.
 
 ## 4. Rates and Billing
 

@@ -45,10 +45,10 @@ Carrier will use commercially reasonable efforts to meet agreed pickup and deliv
 Services will be billed at the rates set forth in the applicable Rate Sheet, which is incorporated by reference into this Agreement. Rate adjustments shall be effective only if set forth in a written amendment signed by both parties or as provided in the Rate Sheet.
 
 ### 5.2 Payment Terms
-Payment Terms: Net 30. Customer shall pay undisputed invoices in accordance with Payment Terms: Net 30. All invoices shall be in a form reasonably acceptable to Carrier and shall include sufficient detail to permit Customer to identify the shipment, date, routing, and charges.
+Payment terms are Net 30. Customer shall pay undisputed invoices within the Net 30 term. All invoices shall be in a form reasonably acceptable to Carrier and shall include sufficient detail to permit Customer to identify the shipment, date, routing, and charges.
 
 ### 5.3 Disputes
-If Customer disputes any portion of an invoice, Customer shall promptly notify Carrier of the dispute and pay the undisputed portion in accordance with Payment Terms: Net 30. Parties will work in good faith to resolve disputed amounts.
+If Customer disputes any portion of an invoice, Customer shall promptly notify Carrier of the dispute and pay the undisputed portion within the Net 30 term. Parties will work in good faith to resolve disputed amounts.
 
 ## 6. Accessorial Charges, Exceptions and Credits
 ### 6.1 Accessorial Charges

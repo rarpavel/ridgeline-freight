@@ -9,9 +9,7 @@ Ridgeline Freight, LLC (the "Carrier" or "Provider")
 
 Marlowe & Finch Medical Supply (the "Customer")
 - Location: Indianapolis, IN
-- Industry: Medical Supply
-- Commodity: medical devices and disposables
-- Volume band: 1k-5k
+- Business: supplier of medical devices and disposables
 
 Each of Ridgeline Freight, LLC and Marlowe & Finch Medical Supply is a “Party” and together the “Parties.”
 
@@ -42,7 +40,7 @@ Customer is responsible for any applicable taxes, duties, or governmental charge
 
 ## 5. Payment Terms and Invoicing
 5.1 Payment Terms
-Customer shall pay Carrier in accordance with Carrier’s invoices under the payment terms: Net 15. Invoices will be issued in a timely manner and will reference the relevant shipment details and charges.
+Customer shall pay Carrier in accordance with Carrier’s invoices on payment terms of Net 15. Invoices will be issued in a timely manner and will reference the relevant shipment details and charges.
 
 5.2 Disputed Charges
 If Customer disputes an invoice, Customer shall notify Carrier promptly and provide supporting information. The Parties shall cooperate to resolve disputes. Undisputed portions of any invoice shall be paid in accordance with the payment terms.

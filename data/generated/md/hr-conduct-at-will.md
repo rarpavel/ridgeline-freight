@@ -51,7 +51,7 @@ Employees who voluntarily resign are asked to make the transition as orderly as 
 ## 9. Discipline and Enforcement
 Ridgeline Freight, LLC follows a consistent disciplinary approach to address conduct that violates policy or performance expectations. The Company will consider the nature and severity of the issue, prior conduct, and other relevant factors.
 
-The Company uses Progressive discipline up to and including termination. Depending on circumstances, disciplinary measures may include counseling, written warnings, suspension, reassignment, or termination.
+The Company uses progressive discipline up to and including termination. Depending on circumstances, disciplinary measures may include counseling, written warnings, suspension, reassignment, or termination.
 
 ## 10. Reporting, Investigation, and Protections
 ### 10.1 Reporting Procedures
@@ -95,12 +95,12 @@ Employees will be asked to sign an acknowledgment confirming receipt and review 
 The interpretation and enforcement of the Company’s policies and any disputes arising from employment with the Company are subject to the following: Governing law: Illinois; venue: Cook County, Illinois.
 
 ## 14. Questions and Contacts
-For questions about this Handbook or related procedures, contact the following Company representatives by title:
+For questions about this Handbook or related procedures, contact the following Company representatives:
 - Chief Executive Officer
 - Chief Financial Officer
 - Chief Operating Officer
 - VP, Sales & Commercial
-- Human Resources (title)
+- Human Resources
 
 Managers, supervisors, and Human Resources are available to help interpret policy and assist employees with compliance and reporting.
 
