@@ -40,12 +40,12 @@ Retention: unbounded in the MVP (demo traffic); prune by hand if the table grows
 Public (no session) and never cached (`Cache-Control: no-store`). `SELECT 1` has an 8 s timeout, so a hung database answers 503 within 9 s.
 
 ```json
-200 { "status": "ok", "db": "ok", "embeddingModel": "text-embedding-3-small", "promptVersion": "n/a", "gitSha": "<40 hex>" }
-503 { "status": "error", "db": "error", "embeddingModel": "text-embedding-3-small", "promptVersion": "n/a", "gitSha": "<40 hex>" }
+200 { "status": "ok", "db": "ok", "embeddingModel": "text-embedding-3-small", "promptVersion": "rag-system@v1#<8 hex>", "gitSha": "<40 hex>" }
+503 { "status": "error", "db": "error", "embeddingModel": "text-embedding-3-small", "promptVersion": "rag-system@v1#<8 hex>", "gitSha": "<40 hex>" }
 ```
 
 - `gitSha`: `VERCEL_GIT_COMMIT_SHA`, else `git rev-parse HEAD`, else `unknown`.
-- `promptVersion`: `n/a` until the prompt loader exists (RAG-022).
+- `promptVersion`: the runtime system prompt, from `RAG_SYSTEM_PROMPT_VERSION` in `src/server/rag/prompt.ts`.
 - The cause of a failure never appears in the response; it is logged as `health.db_error`.
 - Cold start, measured on production on 2026-11-02 (one sample, `aws-us-east-1` with Vercel `iad1`, from a client in Europe): 1.9 s after 10.5 minutes idle, without a retry; 0.9 s for the first request after the deploy.
 

@@ -16,7 +16,7 @@ Last updated: 2026-11-02
 
 | Name | File | Purpose | Inputs | Output | Model |
 |------|------|---------|--------|--------|-------|
-| rag-system | `prompts/rag-system.v1.md` | System prompt for answering with citations, refusal, conflict handling, injection resistance | role name, context blocks `[1..n]`, question | Markdown answer with `[n]` citations, or `NO_ANSWER: …` | `gpt-5-mini` |
+| rag-system | `prompts/rag-system.v1.md` (`rag-system@v1#2b3b95fc`) | System prompt for answering with citations, refusal, conflict handling, injection resistance | role name, context blocks `[1..n]`, question | Markdown answer with `[n]` citations, or `NO_ANSWER: …` | `gpt-5-mini` |
 | judge | `prompts/judge.v1.md` | Score correctness and faithfulness with rationale | question, expected answer, facts, system answer, cited chunks | strict JSON (`correctness`, `faithfulness`, `refusalCorrect`, `rationale`) | `claude-haiku-5-5` |
 | refusal-text | `src/server/rag/refusal.ts` (constant, not a prompt) | Fixed user-facing refusal | — | "I couldn't find this in the documents available to your role." | — |
 

@@ -21,6 +21,7 @@ Last updated: 2026-11-02
 - `gate`: refusal only when both signals are weak; vector-unavailable path.
 - `citations`: alias parsing, unknown alias removal, `NO_ANSWER:` detection, zero-citation → refusal conversion, text otherwise intact.
 - `prompts`: loader hash stability, `{{var}}` rendering, missing variable throws; `prompts/rag-system.v1.md` equals the block in `data-gen/prompts/05-rag-system-prompt.md`.
+- `prompt`: `buildMessages` block numbering and format, table header rows in a block, question cut to 500 chars.
 - `markdown`: rendered answers contain no raw HTML, no links, no images.
 - `docx parser` (fixtures in `tests/fixtures/*.docx`, produced by the data-gen renderer): headings → `##`, tables → Markdown rows, lists.
 - `pricing`: cost math with `asOf`.

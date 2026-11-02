@@ -86,14 +86,18 @@ Default `SIM_FLOOR = 0.30` (placeholder; calibrated on the dev split in M3 by co
 ### 2.4 Prompt assembly (`prompt.ts`)
 
 - System prompt: `prompts/rag-system.v1.md` (authored in `data-gen/prompts/05-rag-system-prompt.md`).
-- First user message: context blocks in fused order:
+- `buildMessages({ role, today, chunks, question })` returns `[system, user]`. `{{role}}` and `{{today}}` (`MM/DD/YYYY`, UTC) are rendered into the system message.
+- User message: context blocks in fused order, then the question (cut to 500 chars):
   ```
+  CONTEXT PASSAGES (the only information you may use):
   [1] Document: Harbor Point Foods MSA · Section 4.3 Late Delivery Penalties
   <<<
   ...chunk content...
   >>>
+
+  QUESTION: ...
   ```
-  followed by the question (≤ 500 chars). Single turn; no history. A later part of a split table needs the header rows from `context_prefix` in its block (§1.2).
+  Single turn; no history. A later part of a split table has the header rows from `context_prefix` at the start of its block (§1.2). A chunk with no section leaves out `· Section …`.
 - `max_tokens: 700`.
 
 ### 2.5 Generation (`generate.ts`)

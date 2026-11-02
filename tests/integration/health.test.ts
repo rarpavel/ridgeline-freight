@@ -63,7 +63,7 @@ describe('GET /api/health', () => {
         status: 'ok',
         db: 'ok',
         embeddingModel: 'test-embedding-model',
-        promptVersion: 'n/a',
+        promptVersion: expect.stringMatching(/^rag-system@v1#[0-9a-f]{8}$/),
         gitSha: SHA,
       });
     } finally {
