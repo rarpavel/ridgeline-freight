@@ -8,8 +8,8 @@ Last updated: 2026-11-02
 
 | | local | production |
 |--|-------|------------|
-| App | `pnpm dev` (http://localhost:3000) | Vercel production from `main` (Git integration) |
-| DB | Docker `pgvector/pgvector:pg17` (`docker-compose.yml`, port 5432 or `POSTGRES_PORT` from `.env`, db `ridgeline`) | Neon Free, main branch, region `us-east-2` (`TO VERIFY` closest to Vercel `iad1`) |
+| App | `pnpm dev` (http://localhost:3000) | https://ridgeline-freight.vercel.app, Vercel production from `main` (Git integration), Next.js preset, Node 22.x |
+| DB | Docker `pgvector/pgvector:pg17` (`docker-compose.yml`, port 5432 or `POSTGRES_PORT` from `.env`, db `ridgeline`) | Neon Free, project `ridgeline-freight`, branch `main`, db `ridgeline`, Postgres 17, region `aws-us-east-1` (N. Virginia, the same area as Vercel `iad1`) |
 | LLM | OpenAI | OpenAI, `DAILY_TOKEN_BUDGET=400000` |
 | Auth | demo accounts | demo accounts |
 
@@ -33,6 +33,8 @@ branch → PR → ci.yml (typecheck, lint, unit, integration) → merge → Verc
 ## 4. Configuration
 
 Vercel project env: all variables from `CONVENTIONS.md §6` except the eval/data-gen ones. No GitHub secrets are needed for CI (tests use a fake embedder and no model calls).
+
+The required variables (`DATABASE_URL`, `OPENAI_API_KEY`, `SESSION_SECRET`, `DEMO_ACCOUNTS_JSON`) must be set for both Production and Preview before a build, because `next build` loads `src/env.ts` and fails without them. Optional variables stay unset and use their defaults, except `NEXT_PUBLIC_APP_ENV=production`.
 
 ## 5. Smoke check (manual, after each production deploy)
 
