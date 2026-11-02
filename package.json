@@ -22,7 +22,8 @@
     "datagen:check": "tsx --conditions=react-server scripts/data-gen/check.ts",
     "datagen:world": "tsx --conditions=react-server scripts/data-gen/world.ts",
     "datagen:registry": "tsx --conditions=react-server scripts/data-gen/registry.ts",
-    "datagen:validate-registry": "tsx --conditions=react-server scripts/data-gen/validate-registry.ts"
+    "datagen:validate-registry": "tsx --conditions=react-server scripts/data-gen/validate-registry.ts",
+    "datagen:docs": "tsx --conditions=react-server scripts/data-gen/docs.ts"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "1.3.0",
