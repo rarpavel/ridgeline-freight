@@ -42,7 +42,7 @@ Last updated: 2026-11-02
 
 ## 4. CI (`ci.yml`)
 
-One workflow (`.github/workflows/ci.yml`, job `ci`) on every PR and every push to `main`: `typecheck` → `lint` → `test` → `test:integration`, on Node 22 with the pnpm store cached. Integration tests run against a `pgvector/pgvector:pg17` service container and read `DATABASE_URL` from the step's env; `globalSetup` waits up to 30 s for `SELECT 1`. No secrets required. Merge a PR only when it is green. GitHub does not enforce this yet: branch protection needs a public repository or GitHub Pro, and this repository is private on the free plan, so a red PR can still be merged by hand. Dependabot opens weekly npm update PRs (`.github/dependabot.yml`), which go through the same job.
+One workflow (`.github/workflows/ci.yml`, job `ci`) on every PR and every push to `main`: `typecheck` → `lint` → `test` → `test:integration`, on Node 22 with the pnpm store cached. Integration tests run against a `pgvector/pgvector:pg17` service container and read `DATABASE_URL` from the step's env; `globalSetup` waits up to 30 s for `SELECT 1`. No secrets required. Merge a PR only when it is green. GitHub does not enforce this yet: branch protection needs a public repository or GitHub Pro, and this repository is private on the free plan, so a red PR can still be merged by hand (accepted in ADR-0015). Dependabot opens weekly npm update PRs (`.github/dependabot.yml`), which go through the same job.
 
 ## 5. Manual checks before a milestone demo
 
