@@ -20,8 +20,9 @@ Retention: unbounded in the MVP (demo traffic); prune by hand if the table grows
 ## 2. Logs
 
 - `pino` JSON to stdout; Vercel keeps runtime logs (Hobby: short retention, `TO VERIFY` current window). Fields per line: `level, time, msg, traceId, route, account, role, durationMs` and event-specific data.
-- Events: `chat.done` (gate, tokens, cost, latency, citations valid/dropped, refused), `chat.error`, `auth.login.fail`, `guardrail.rate_limited`, `guardrail.budget_exhausted`, `ingest.document`, `eval.question`.
+- Events: `chat.done` (gate, tokens, cost, latency, citations valid/dropped, refused), `chat.error`, `auth.login.fail`, `guardrail.rate_limited`, `guardrail.budget_exhausted`, `ingest.document`, `eval.question`, `health.db_error`, `health.git_sha_unavailable`, `db.pool_error`.
 - Redaction: `authorization`, `cookie`, `*.apiKey`, `*.password`.
+- Errors logged as `err` keep only `type`, `message`, `stack`, `code`, and the same fields of nested `cause` and `errors`, because `pg` attaches its client, password included, to its errors.
 
 ## 3. Metrics we look at
 
@@ -33,6 +34,19 @@ Retention: unbounded in the MVP (demo traffic); prune by hand if the table grows
 | Refusal rate and dropped citations | same page; `warn` logs |
 | Quality over versions | `/admin/eval` run comparison |
 | Budget | `usage_daily`, provider dashboard |
+
+### `GET /api/health`
+
+Public (no session) and never cached (`Cache-Control: no-store`). `SELECT 1` has an 8 s timeout, so a hung database answers 503 within 9 s.
+
+```json
+200 { "status": "ok", "db": "ok", "embeddingModel": "text-embedding-3-small", "promptVersion": "n/a", "gitSha": "<40 hex>" }
+503 { "status": "error", "db": "error", "embeddingModel": "text-embedding-3-small", "promptVersion": "n/a", "gitSha": "<40 hex>" }
+```
+
+- `gitSha`: `VERCEL_GIT_COMMIT_SHA`, else `git rev-parse HEAD`, else `unknown`.
+- `promptVersion`: `n/a` until the prompt loader exists (RAG-022).
+- The cause of a failure never appears in the response; it is logged as `health.db_error`.
 
 ## 4. UI "Show sources"
 
