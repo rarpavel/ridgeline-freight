@@ -47,6 +47,7 @@ Public (no session) and never cached (`Cache-Control: no-store`). `SELECT 1` has
 - `gitSha`: `VERCEL_GIT_COMMIT_SHA`, else `git rev-parse HEAD`, else `unknown`.
 - `promptVersion`: `n/a` until the prompt loader exists (RAG-022).
 - The cause of a failure never appears in the response; it is logged as `health.db_error`.
+- Cold start, measured on production on 2026-11-02 (one sample, `aws-us-east-1` with Vercel `iad1`, from a client in Europe): 1.9 s after 10.5 minutes idle, without a retry; 0.9 s for the first request after the deploy.
 
 ## 4. UI "Show sources"
 

@@ -4,6 +4,10 @@
 
 A portfolio MVP: a RAG assistant over 24 synthetic documents of a fictional US logistics company. Specification: [docs/SPEC.md](docs/SPEC.md).
 
+## Demo
+
+Live at https://ridgeline-freight.vercel.app. Only the health check works so far: [/api/health](https://ridgeline-freight.vercel.app/api/health).
+
 ## Run locally
 
 Requires Node 22 or newer, pnpm and Docker with Compose.
