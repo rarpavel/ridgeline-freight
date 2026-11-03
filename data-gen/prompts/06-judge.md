@@ -4,7 +4,7 @@
 Score one system answer for correctness and faithfulness against the reference answer, the source facts and the text of the cited passages, with a mandatory rationale. Copied verbatim into `prompts/judge.v1.md`.
 
 ## Model requirements
-A model from a **different family** than the answer generator: `claude-haiku-5-5` via `@anthropic-ai/sdk`, strict JSON output (parsed with zod; one retry with the validation error appended). `max_tokens` 800.
+A model from a **different family** than the answer generator: `claude-haiku-5-5` via `@anthropic-ai/sdk`, strict JSON output (parsed with zod; one retry with the validation error appended). `max_tokens` 4000: the model's hidden thinking counts against it (`docs/04-ai/EVALUATION.md §4`).
 
 ## Inputs
 - `{{category}}`, `{{question}}`, `{{role}}`.

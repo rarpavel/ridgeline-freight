@@ -16,6 +16,8 @@ import { registrySchema } from '../data-gen/schemas/registry';
 import { describeError } from './data-gen/describe-error';
 
 const COUNT_KEYS: ReadonlySet<string> = new Set(['leakCount', 'needsReview', 'judgeErrors']);
+// The model's hidden thinking counts against the limit (EVALUATION.md §4).
+const JUDGE_MAX_TOKENS = 4000;
 
 function format(key: (typeof METRIC_KEYS)[number], value: number | null): string {
   if (value === null) return '-';
@@ -67,7 +69,8 @@ async function main(): Promise<boolean> {
       ? {}
       : {
           judge: {
-            complete: (prompt, signal) => completeWithClaude({ prompt, signal }),
+            complete: (prompt, signal) =>
+              completeWithClaude({ prompt, signal, maxTokens: JUDGE_MAX_TOKENS }),
             model: env.JUDGE_MODEL,
             factsById: loadFactsById(),
           },
