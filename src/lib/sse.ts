@@ -1,5 +1,7 @@
 export type ChatErrorCode = 'llm_error' | 'db_error' | 'internal';
 
+export type RefusalReason = 'gate' | 'model' | 'no_valid_citations';
+
 export type ChatCitation = {
   n: number;
   chunkId: string;
@@ -20,6 +22,7 @@ export type ChatEvent =
       event: 'done';
       data: {
         refused: boolean;
+        reason: RefusalReason | null;
         usage: { inputTokens: number; outputTokens: number };
         ttftMs: number | null;
         latencyMs: number;

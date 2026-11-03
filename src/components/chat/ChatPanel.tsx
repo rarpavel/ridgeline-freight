@@ -17,8 +17,6 @@ import { AnswerText } from './AnswerText';
 import { ChatBanner } from './ChatBanner';
 import { ChatForm } from './ChatForm';
 
-const REFUSAL_FALLBACK = 'I could not find an answer in the documents available to you.';
-
 export function ChatPanel({ maxQuestionChars }: { maxQuestionChars: number }) {
   const [state, dispatch] = useReducer(chatReducer, INITIAL_CHAT_STATE);
   const [draft, setDraft] = useState('');
@@ -101,8 +99,11 @@ export function ChatPanel({ maxQuestionChars }: { maxQuestionChars: number }) {
               </div>
             )}
             {status === 'done' && refused ? (
-              <div className="border-border text-muted-foreground rounded-md border px-3 py-2 text-sm">
-                <AnswerText text={text || REFUSAL_FALLBACK} citations={[]} />
+              <div
+                className="bg-muted border-border text-muted-foreground rounded-md border px-3 py-2 text-sm"
+                data-testid="answer-refusal"
+              >
+                <AnswerText text={text} citations={[]} />
               </div>
             ) : (
               text !== '' && <AnswerText text={text} citations={citations} />

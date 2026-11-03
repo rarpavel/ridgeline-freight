@@ -78,10 +78,12 @@ Reciprocal Rank Fusion, `k = 60`: `score(c) = Σ_lists 1 / (k + rank_list(c))`, 
 ### 2.3 Gate (`gate.ts`)
 
 ```
-refuseWithoutLlm = (bestVectorSim < SIM_FLOOR || vectorUnavailable) && ftsCandidates.length === 0
+refuseWithoutLlm = (bestSim === null || bestSim < SIM_FLOOR) && ftsMatches === 0
 ```
 
-Default `SIM_FLOOR = 0.30` (placeholder; calibrated on the dev split in M3 by comparing best-sim distributions of answerable vs. `no_answer` questions, stored in `retrieval_config.simFloor`). A gate refusal returns the fixed refusal text and makes no model call.
+`bestSim` is `null` when the embedding call failed (`vectorUnavailable`) or the role can read no chunks. A similarity of exactly `SIM_FLOOR` passes. Default `SIM_FLOOR = 0.30` (placeholder; calibrated on the dev split in M3 by comparing best-sim distributions of answerable vs. `no_answer` questions, stored in `retrieval_config.simFloor`). The floor is read from env in `answer.ts` and passed in, so `gate.ts` stays a pure function.
+
+A gate refusal makes no model call and sends `meta` with `gate: 'refuse'`, the fixed refusal text (`refusal.ts`) as one `delta` and in `citations`, then `done` with `refused: true`, `reason: 'gate'`, zero usage and `ttftMs: null`.
 
 ### 2.4 Prompt assembly (`prompt.ts`)
 
@@ -107,8 +109,9 @@ Default `SIM_FLOOR = 0.30` (placeholder; calibrated on the dev split in M3 by co
 ### 2.6 Citation validation (`citations.ts`)
 
 - Regex `\[(\d{1,2})\]` over the full answer; valid if `1 ≤ n ≤ inPrompt.length`; unknown aliases are removed and counted in `citations_dropped`.
-- A refusal is detected when the answer starts with `NO_ANSWER:`; the marker is stripped and the UI shows the refusal state.
-- If `!refused && valid.length === 0` → converted to a refusal (`reason = 'no_valid_citations'`); the generated text is replaced by the fixed refusal text and kept in the trace.
+- A refusal is detected when the answer starts with `NO_ANSWER:` (`reason = 'model'`); the marker is stripped, every `[n]` in it counts as dropped, the model's reason stays as the text (the fixed refusal text if it gave none), and the UI shows the refusal state.
+- If `!refused && valid.length === 0` → converted to a refusal (`reason = 'no_valid_citations'`); the generated text is replaced by the fixed refusal text. `validateCitations` returns the generated text as `originalText` for the trace (RAG-027); it is not logged.
+- `done.reason` carries `gate`, `model` or `no_valid_citations`, and `null` for an answer.
 
 ### 2.7 Trace (`trace.ts`)
 
