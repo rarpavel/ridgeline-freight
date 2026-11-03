@@ -2,6 +2,7 @@ import 'server-only';
 
 import { z } from 'zod';
 
+import { TruncatedReplyError } from '@/lib/errors';
 import { loadPrompt } from '@/server/prompts/load';
 import { renderPrompt } from '@/server/prompts/render';
 
@@ -94,7 +95,8 @@ function toVerdict(reply: JudgeReply, { expectedAnswer, refused }: JudgeInput): 
 
 /**
  * Never throws: one result the judge could not score must not cost the run (EVALUATION.md §4). A
- * provider failure is not retried here, because the SDK has already retried it.
+ * reply cut off at the token limit is as unusable as invalid JSON and gets the same retry; any other
+ * provider failure does not, because the SDK has already retried it.
  */
 export async function judgeResult(
   input: JudgeInput,
@@ -105,16 +107,14 @@ export async function judgeResult(
   let judgeError = '';
 
   for (let attempt = 0; attempt < MAX_ATTEMPTS; attempt += 1) {
-    let reply: string;
     try {
-      reply = await complete(nextPrompt, signal);
+      const parsed = parseReply(await complete(nextPrompt, signal));
+      if ('data' in parsed) return toVerdict(parsed.data, input);
+      judgeError = parsed.error;
     } catch (err) {
       judgeError = err instanceof Error ? err.message : String(err);
-      break;
+      if (!(err instanceof TruncatedReplyError)) break;
     }
-    const parsed = parseReply(reply);
-    if ('data' in parsed) return toVerdict(parsed.data, input);
-    judgeError = parsed.error;
     nextPrompt = `${prompt}\n\nYour previous reply was rejected: ${judgeError}\nReturn the corrected JSON only.`;
   }
   return { scores: { judgeError }, rationale: null };

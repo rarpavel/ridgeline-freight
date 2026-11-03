@@ -1,5 +1,6 @@
 import { describe, expect, it, vi } from 'vitest';
 
+import { TruncatedReplyError } from '@/lib/errors';
 import { judgeResult, type JudgeInput } from '@/server/eval/judge-runner';
 
 vi.mock('server-only', () => ({}));
@@ -144,7 +145,7 @@ describe('judgeResult', () => {
     });
 
     it('does not retry a provider failure, which the SDK has already retried', async () => {
-      const complete = vi.fn().mockRejectedValue(new Error('Claude stopped early: max_tokens'));
+      const complete = vi.fn().mockRejectedValue(new Error('Connection error.'));
 
       const { scores } = await judgeResult(INPUT, {
         complete,
@@ -152,6 +153,34 @@ describe('judgeResult', () => {
       });
 
       expect(complete).toHaveBeenCalledTimes(1);
+      expect(scores.judgeError).toBe('Connection error.');
+    });
+
+    it('retries a reply cut off at the token limit and uses the second reply', async () => {
+      const complete = vi
+        .fn()
+        .mockRejectedValueOnce(new TruncatedReplyError())
+        .mockResolvedValueOnce(reply());
+
+      const { scores } = await judgeResult(INPUT, {
+        complete,
+        signal: new AbortController().signal,
+      });
+
+      expect(complete).toHaveBeenCalledTimes(2);
+      expect(complete.mock.calls[1]?.[0]).toContain('max_tokens');
+      expect(scores.correctness).toBe(1);
+    });
+
+    it('returns judgeError when the second reply is cut off too', async () => {
+      const complete = vi.fn().mockRejectedValue(new TruncatedReplyError());
+
+      const { scores } = await judgeResult(INPUT, {
+        complete,
+        signal: new AbortController().signal,
+      });
+
+      expect(complete).toHaveBeenCalledTimes(2);
       expect(scores.judgeError).toContain('max_tokens');
     });
   });

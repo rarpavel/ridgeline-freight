@@ -58,7 +58,7 @@ Honest reporting: a missed target is published with the real value and a one-lin
 - Model: `claude-haiku-5-5` (ADR-0009). Inputs: question, expected answer, source facts (value + aliases), the system's answer after citation validation, the text of the cited chunks, the category.
 - Output (strict JSON): `{ correctness, faithfulness, claims[], refusalCorrect, rationale }`; the runner recomputes `faithfulness` from `claims`.
 - Rules: values must match the expected value or an alias; a correct value attributed to the wrong document is `correctness: 0`; exception questions need the qualifier; a refusal on an answerable question is 0.
-- Runner (`src/server/eval/judge-runner.ts`): `max_tokens` 800, no sampling parameters. An invalid reply gets one retry with the error appended. After that, or on a provider error (the SDK has already retried it), the result stores `scores.judgeError` and the run goes on; `--resume` does not judge it again.
+- Runner (`src/server/eval/judge-runner.ts`): `max_tokens` 800, no sampling parameters. An invalid reply, or one cut off at `max_tokens`, gets one retry with the error appended. After that, or on any other provider error (the SDK has already retried it), the result stores `scores.judgeError` and the run goes on; `--resume` does not judge it again.
 - Agreement check: rule C of the rubric follows from what the system did (a refusal is correct exactly when there is no reference answer, and an answer is `null`). A judge who disagrees, or who finds no claims in an answer, sets `scores.needsReview`. The judge's own value is `scores.judgeRefusalCorrect`; `scores.refusalCorrect` stays the deterministic flag.
 - Sanity check in M4: read 10 judged items by hand; note disagreements in this file.
 
