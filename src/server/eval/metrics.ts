@@ -10,6 +10,18 @@ const FUSED_CANDIDATES = 20;
 const ANSWERABLE: readonly Category[] = ['direct', 'comparison', 'exception'];
 const UNANSWERABLE: readonly Category[] = ['no_answer', 'other_role'];
 
+export type JudgeClaim = { claim: string; supported: boolean; citation: number | null };
+
+/** Absent without a judge; only `judgeError` when the judge gave no usable reply. */
+export type JudgeScores = {
+  correctness?: 0 | 1;
+  faithfulness?: number;
+  claims?: JudgeClaim[];
+  judgeRefusalCorrect?: boolean | null;
+  needsReview?: boolean;
+  judgeError?: string;
+};
+
 /** One question's row in `eval_results.scores`. Null means the question is outside the population. */
 export type ResultScores = {
   retrievalHit: boolean | null;
@@ -18,7 +30,7 @@ export type ResultScores = {
   leak: boolean | null;
   citationsValid: number;
   citationsDropped: number;
-};
+} & JudgeScores;
 
 export type ScoredResult = {
   category: Category;
@@ -41,6 +53,10 @@ export const METRIC_KEYS = [
   'latencyP50',
   'latencyP95',
   'costPerQuestion',
+  'correctness',
+  'faithfulness',
+  'needsReview',
+  'judgeErrors',
 ] as const;
 
 export type Metrics = Record<(typeof METRIC_KEYS)[number], number | null> & { questions: number };
@@ -106,8 +122,13 @@ function share(flags: readonly boolean[]): number | null {
   return flags.filter(Boolean).length / flags.length;
 }
 
-function isPresent<T>(value: T | null): value is T {
-  return value !== null;
+function mean(values: readonly number[]): number | null {
+  if (values.length === 0) return null;
+  return values.reduce((sum, value) => sum + value, 0) / values.length;
+}
+
+function isPresent<T>(value: T | null | undefined): value is T {
+  return value !== null && value !== undefined;
 }
 
 function metricsOf(results: readonly ScoredResult[]): Metrics {
@@ -119,6 +140,9 @@ function metricsOf(results: readonly ScoredResult[]): Metrics {
   const latencies = results.map(({ latencyMs }) => latencyMs);
   const costs = results.map(({ costUsd }) => costUsd).filter(isPresent);
   const leaks = results.map(({ scores }) => scores.leak).filter(isPresent);
+  const judged = results.filter(
+    ({ scores }) => isPresent(scores.correctness) || isPresent(scores.judgeError),
+  );
 
   return {
     questions: results.length,
@@ -135,8 +159,15 @@ function metricsOf(results: readonly ScoredResult[]): Metrics {
     ttftP95: percentile(ttfts, 95),
     latencyP50: percentile(latencies, 50),
     latencyP95: percentile(latencies, 95),
-    costPerQuestion:
-      costs.length === 0 ? null : costs.reduce((sum, cost) => sum + cost, 0) / costs.length,
+    costPerQuestion: mean(costs),
+    // Answered only: refusals are already measured by refusalAccuracy and falseRefusalRate, and the
+    // faithfulness of 1 the rubric gives a refusal would inflate the number.
+    correctness: mean(answered.map(({ scores }) => scores.correctness).filter(isPresent)),
+    faithfulness: mean(answered.map(({ scores }) => scores.faithfulness).filter(isPresent)),
+    needsReview:
+      judged.length === 0 ? null : judged.filter(({ scores }) => scores.needsReview).length,
+    judgeErrors:
+      judged.length === 0 ? null : judged.filter(({ scores }) => scores.judgeError).length,
   };
 }
 

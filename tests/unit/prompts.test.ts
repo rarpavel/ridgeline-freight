@@ -39,6 +39,14 @@ describe('loadPrompt', () => {
     expect(block).toBeDefined();
     expect(loadPrompt('rag-system', 3).text).toBe(block);
   });
+
+  it('keeps prompts/judge.v1.md equal to the block in data-gen prompt 06', () => {
+    const source = readFileSync('data-gen/prompts/06-judge.md', 'utf8');
+    const block = /## Prompt\n\n```\n([\s\S]*?)```/.exec(source)?.[1];
+
+    expect(block).toBeDefined();
+    expect(loadPrompt('judge', 1).text).toBe(block);
+  });
 });
 
 describe('renderPrompt', () => {

@@ -17,7 +17,7 @@ Last updated: 2026-11-03
 | Name | File | Purpose | Inputs | Output | Model |
 |------|------|---------|--------|--------|-------|
 | rag-system | `prompts/rag-system.v3.md` (`rag-system@v3#5dc28de8`; rule 9 tightened and rule 11 added, `SECURITY.md` §5) | System prompt for answering with citations, refusal, conflict handling, injection resistance | role name, context blocks `[1..n]`, question | Markdown answer with `[n]` citations, or `NO_ANSWER: …` | `gpt-5-mini` |
-| judge | `prompts/judge.v1.md` | Score correctness and faithfulness with rationale | question, expected answer, facts, system answer, cited chunks | strict JSON (`correctness`, `faithfulness`, `refusalCorrect`, `rationale`) | `claude-haiku-5-5` |
+| judge | `prompts/judge.v1.md` (run by `src/server/eval/judge-runner.ts`) | Score correctness and faithfulness with rationale | category, role, question, expected answer, facts, system answer, refused flag, cited chunks | strict JSON (`correctness`, `faithfulness`, `claims`, `refusalCorrect`, `rationale`) | `claude-haiku-5-5` |
 | refusal-text | `src/server/rag/refusal.ts` (constant, not a prompt) | Fixed user-facing refusal | — | "I couldn't find this in the documents available to your role." | — |
 
 Source texts for `rag-system` and `judge` are authored in `data-gen/prompts/05-rag-system-prompt.md` and `06-judge.md`; the build copies the prompt block into the current `prompts/*.v<N>.md` (task in E5/E8 keeps them in sync; a unit test asserts equality).

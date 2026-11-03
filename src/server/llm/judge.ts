@@ -14,6 +14,7 @@ type CompleteOptions = {
   system?: string;
   model?: string;
   maxTokens?: number;
+  signal?: AbortSignal;
 };
 
 let client: Anthropic | undefined;
@@ -28,12 +29,15 @@ function getClient(): Anthropic {
 }
 
 export async function completeWithClaude(options: CompleteOptions): Promise<string> {
-  const response = await getClient().messages.create({
-    model: options.model ?? env.JUDGE_MODEL,
-    max_tokens: options.maxTokens ?? DEFAULT_MAX_TOKENS,
-    ...(options.system ? { system: options.system } : {}),
-    messages: [{ role: 'user', content: options.prompt }],
-  });
+  const response = await getClient().messages.create(
+    {
+      model: options.model ?? env.JUDGE_MODEL,
+      max_tokens: options.maxTokens ?? DEFAULT_MAX_TOKENS,
+      ...(options.system ? { system: options.system } : {}),
+      messages: [{ role: 'user', content: options.prompt }],
+    },
+    options.signal ? { signal: options.signal } : undefined,
+  );
 
   // A cut-off or refused reply is not usable output, so it must not reach a JSON parser as text.
   if (response.stop_reason === 'max_tokens' || response.stop_reason === 'refusal') {

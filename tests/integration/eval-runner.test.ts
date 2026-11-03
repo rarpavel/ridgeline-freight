@@ -14,7 +14,7 @@ import { documents } from '@/server/db/schema/documents';
 import { evalQuestions, evalResults, evalRuns } from '@/server/db/schema/eval';
 import { requestTraces } from '@/server/db/schema/request-traces';
 import { METRIC_KEYS } from '@/server/eval/metrics';
-import type { RunEvalDeps, RunEvalInput } from '@/server/eval/runner';
+import type { EvalJudge, RunEvalDeps, RunEvalInput } from '@/server/eval/runner';
 import type { StreamChat } from '@/server/rag/generate';
 
 import { createDatabase, dropDatabase } from './helpers/database';
@@ -305,6 +305,127 @@ describe('runEval', () => {
     );
     expect(llm).not.toHaveBeenCalled();
     expect(await appDb.select().from(evalRuns)).toEqual([]);
+  });
+
+  describe('judge', () => {
+    const RATIONALE = 'The value matches the reference and appears in passage [1].';
+
+    function judgeReply(prompt: string) {
+      const refused = prompt.includes('refused=true');
+      return JSON.stringify({
+        correctness: 1,
+        faithfulness: 0.9,
+        claims: refused
+          ? []
+          : [
+              { claim: 'A fact', supported: true, citation: 1 },
+              { claim: 'Another fact', supported: false, citation: null },
+            ],
+        refusalCorrect: refused ? true : null,
+        rationale: RATIONALE,
+      });
+    }
+
+    function judgeWith(
+      complete: EvalJudge['complete'] = async (prompt) => judgeReply(prompt),
+    ): EvalJudge {
+      return { complete, model: 'fake-judge', factsById: new Map() };
+    }
+
+    it('scores every result, keeps the rationale and aggregates over the answered', async () => {
+      const complete = vi.fn<EvalJudge['complete']>(async (prompt) => judgeReply(prompt));
+
+      const { runId, metrics } = await start({ split: 'dev' }, { judge: judgeWith(complete) });
+
+      expect(complete).toHaveBeenCalledTimes(3);
+      const results = await resultsOf(runId);
+      for (const result of results) {
+        expect(result.scores.correctness).toBe(1);
+        expect(result.scores.faithfulness).toBe(result.refused ? 1 : 0.5);
+        expect(result.scores.needsReview).toBe(false);
+        expect(result.judgeRationale).toBe(RATIONALE);
+      }
+      expect((await runRow(runId)).judgeModel).toBe('fake-judge');
+      expect(metrics?.overall).toMatchObject({
+        correctness: 1,
+        faithfulness: 0.5,
+        needsReview: 0,
+        judgeErrors: 0,
+      });
+    });
+
+    it('gives the judge the text of the cited chunk, and none for a refusal', async () => {
+      const complete = vi.fn<EvalJudge['complete']>(async (prompt) => judgeReply(prompt));
+
+      await start({ split: 'dev' }, { judge: judgeWith(complete) });
+
+      const prompts = complete.mock.calls.map(([prompt]) => prompt);
+      const answered = prompts.filter((prompt) => prompt.includes('refused=false'));
+      expect(answered).toHaveLength(1);
+      expect(answered[0]).toContain('"n":1,"document":"msa-harbor","section":"1 Terms"');
+      expect(answered[0]).toContain('Late delivery terms of msa-harbor.');
+      for (const prompt of prompts.filter((text) => text.includes('refused=true'))) {
+        expect(prompt).toContain('(the only evidence the system may rely on): []');
+      }
+    });
+
+    it('keeps the run going when the judge gives no usable reply', async () => {
+      const complete = vi.fn<EvalJudge['complete']>(async () => 'not json');
+
+      const { runId, failures, metrics } = await start(
+        { split: 'dev' },
+        { judge: judgeWith(complete) },
+      );
+
+      expect(failures).toEqual([]);
+      expect(complete).toHaveBeenCalledTimes(6);
+      for (const result of await resultsOf(runId)) {
+        expect(result.scores.judgeError).toEqual(expect.any(String));
+        expect(result.scores.retrievalHit === null || result.scores.retrievalHit).toBe(true);
+        expect(result.judgeRationale).toBeNull();
+      }
+      expect(metrics?.overall).toMatchObject({ correctness: null, judgeErrors: 3 });
+    });
+
+    it('leaves a question interrupted during the judge to --resume', async () => {
+      const abort = new AbortController();
+      const complete = vi.fn<EvalJudge['complete']>(async () => {
+        abort.abort();
+        throw new Error('Request was aborted.');
+      });
+
+      const { runId, metrics } = await start(
+        { split: 'dev' },
+        { judge: judgeWith(complete), signal: abort.signal },
+      );
+
+      expect(metrics).toBeNull();
+      expect(await resultsOf(runId)).toEqual([]);
+    });
+
+    it('fails before the run on a source fact that is not in the registry', async () => {
+      const missing = path.join(fixtureDir, 'missing-fact.json');
+      await writeFile(
+        missing,
+        JSON.stringify([
+          questionFixture('direct-01', 'dev', { sourceFactIds: ['no-such-fact#01'] }),
+        ]),
+      );
+
+      await expect(
+        start({ split: 'dev' }, { questionsPath: missing, judge: judgeWith() }),
+      ).rejects.toThrow('no-such-fact#01');
+      expect(await appDb.select().from(evalRuns)).toEqual([]);
+    });
+
+    it('refuses to resume a run with a different judge, so a run is not half judged', async () => {
+      const { runId } = await start({ split: 'dev' });
+      await appDb.update(evalRuns).set({ finishedAt: null }).where(eq(evalRuns.id, runId));
+
+      await expect(start({ resumeRunId: runId }, { judge: judgeWith() })).rejects.toThrow(
+        'judgeModel',
+      );
+    });
   });
 
   describe('resume', () => {

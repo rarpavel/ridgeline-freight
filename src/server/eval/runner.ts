@@ -6,7 +6,7 @@ import { and, eq } from 'drizzle-orm';
 import { DrizzleQueryError } from 'drizzle-orm/errors';
 
 import { env } from '@/env';
-import type { ChatEvent } from '@/lib/sse';
+import type { ChatCitation, ChatEvent } from '@/lib/sse';
 import type { Role } from '@/server/auth/session';
 import type { db as appDb } from '@/server/db/client';
 import { documents } from '@/server/db/schema/documents';
@@ -20,10 +20,17 @@ import { requestTraces } from '@/server/db/schema/request-traces';
 import { answerQuestion } from '@/server/rag/answer';
 import { DEFAULT_FUSE_OPTIONS } from '@/server/rag/fuse';
 import type { StreamChat } from '@/server/rag/generate';
-import { RAG_SYSTEM_PROMPT_VERSION } from '@/server/rag/prompt';
-import { FTS_TOP_K, VECTOR_TOP_K, type EmbedQuery } from '@/server/rag/retrieve';
+import { formatBody, RAG_SYSTEM_PROMPT_VERSION } from '@/server/rag/prompt';
+import { FTS_TOP_K, loadPromptChunks, VECTOR_TOP_K, type EmbedQuery } from '@/server/rag/retrieve';
 
 import { importEvalQuestions } from './import-questions';
+import {
+  judgeResult,
+  type CitedPassage,
+  type CompleteJudge,
+  type JudgeFact,
+  type JudgeVerdict,
+} from './judge-runner';
 import { aggregateMetrics, scoreResult, type Category, type RunMetrics } from './metrics';
 
 const CONCURRENCY = 2;
@@ -34,10 +41,18 @@ export type Split = 'dev' | 'test';
 export type RunEvalInput =
   { split: Split; label?: string; simFloor?: number } | { resumeRunId: string };
 
+export type EvalJudge = {
+  complete: CompleteJudge;
+  model: string;
+  factsById: ReadonlyMap<string, JudgeFact>;
+};
+
 export type RunEvalDeps = {
   db: typeof appDb;
   embed: EmbedQuery;
   llm: StreamChat;
+  /** Absent with `--no-judge`: the run records deterministic metrics only. */
+  judge?: EvalJudge;
   signal: AbortSignal;
   gitSha: string;
   datasetVersion: string;
@@ -59,18 +74,20 @@ type Question = typeof evalQuestions.$inferSelect;
 type Run = Pick<typeof evalRuns.$inferSelect, 'id' | 'split' | 'retrievalConfig'>;
 type AccessRoles = ReadonlyMap<string, readonly string[]>;
 
-function currentRunConfig() {
+function currentRunConfig({ judge }: RunEvalDeps) {
   return {
     model: env.CHAT_MODEL,
     embeddingModel: env.EMBEDDING_MODEL,
+    judgeModel: judge?.model ?? null,
     promptVersion: RAG_SYSTEM_PROMPT_VERSION,
   };
 }
 
 async function startRun(
   { split, label, simFloor }: { split: Split; label?: string; simFloor?: number },
-  { db, gitSha, datasetVersion }: RunEvalDeps,
+  deps: RunEvalDeps,
 ): Promise<Run> {
+  const { db, gitSha, datasetVersion } = deps;
   const retrievalConfig: RetrievalConfig = {
     ...DEFAULT_FUSE_OPTIONS,
     vectorTopK: VECTOR_TOP_K,
@@ -79,22 +96,20 @@ async function startRun(
   };
   const [run] = await db
     .insert(evalRuns)
-    .values({ label, split, ...currentRunConfig(), retrievalConfig, gitSha, datasetVersion })
+    .values({ label, split, ...currentRunConfig(deps), retrievalConfig, gitSha, datasetVersion })
     .returning();
   if (!run) throw new Error('Could not create the eval run');
   return run;
 }
 
 /** Results from different code, models, prompts or datasets would not describe one system. */
-async function loadRunToResume(
-  runId: string,
-  { db, gitSha, datasetVersion }: RunEvalDeps,
-): Promise<Run> {
+async function loadRunToResume(runId: string, deps: RunEvalDeps): Promise<Run> {
+  const { db, gitSha, datasetVersion } = deps;
   const [run] = await db.select().from(evalRuns).where(eq(evalRuns.id, runId));
   if (!run) throw new Error(`Eval run ${runId} not found`);
   if (run.finishedAt) throw new Error(`Eval run ${runId} is already finished`);
 
-  const expected = { ...currentRunConfig(), gitSha, datasetVersion };
+  const expected = { ...currentRunConfig(deps), gitSha, datasetVersion };
   for (const [name, value] of Object.entries(expected)) {
     const stored = run[name as keyof typeof expected];
     if (stored !== value) {
@@ -155,14 +170,71 @@ async function loadAccessRoles(
   return accessRolesBySlug;
 }
 
+/** Before the run, like the documents above: a judge without its facts would grade against nothing. */
+function checkFacts(questions: readonly Question[], { judge }: RunEvalDeps): void {
+  if (!judge) return;
+  const missing = new Set(
+    questions.flatMap(({ sourceFactIds }) =>
+      sourceFactIds.filter((factId) => !judge.factsById.has(factId)),
+    ),
+  );
+  if (missing.size > 0)
+    throw new Error(`Source facts not in the registry: ${[...missing].join(', ')}`);
+}
+
+/** The text the model saw, read under the question's role (CLAUDE.md rule 1), in citation order. */
+async function loadCitedPassages(
+  citations: readonly ChatCitation[],
+  role: Role,
+  { db }: RunEvalDeps,
+): Promise<CitedPassage[]> {
+  const loaded = await loadPromptChunks(
+    { chunkIds: citations.map(({ chunkId }) => chunkId), roles: [role] },
+    { db },
+  );
+  const byId = new Map(loaded.map((chunk) => [chunk.chunkId, chunk]));
+  return citations.flatMap(({ n, chunkId }) => {
+    const chunk = byId.get(chunkId);
+    if (!chunk) return [];
+    const section = [chunk.sectionRef, chunk.sectionTitle].filter(Boolean).join(' ');
+    return [{ n, document: chunk.documentTitle, section, text: formatBody(chunk) }];
+  });
+}
+
+async function judgeQuestion(
+  question: Question,
+  { answer, refused, citations }: { answer: string; refused: boolean; citations: ChatCitation[] },
+  judge: EvalJudge,
+  deps: RunEvalDeps,
+): Promise<JudgeVerdict> {
+  const role = question.role as Role;
+  const verdict = await judgeResult(
+    {
+      category: question.category as Category,
+      question: question.question,
+      role,
+      expectedAnswer: question.expectedAnswer,
+      facts: question.sourceFactIds.flatMap((factId) => judge.factsById.get(factId) ?? []),
+      answer,
+      refused,
+      citedPassages: await loadCitedPassages(citations, role, deps),
+    },
+    { complete: judge.complete, signal: deps.signal },
+  );
+  // Ctrl-C reads as a judge error from here: this question goes back to `--resume` instead.
+  if (deps.signal.aborted) throw new Error('interrupted');
+  return verdict;
+}
+
 async function runQuestion(
   question: Question,
   { run, accessRolesBySlug }: { run: Run; accessRolesBySlug: AccessRoles },
-  { db, embed, llm, signal }: RunEvalDeps,
+  deps: RunEvalDeps,
 ): Promise<void> {
+  const { db, embed, llm, judge, signal } = deps;
   let traceId: string | null = null;
   let answer = '';
-  let citedChunkIds: string[] = [];
+  let citations: ChatCitation[] = [];
   let finished: Extract<ChatEvent, { event: 'done' }>['data'] | null = null;
 
   const events = answerQuestion(
@@ -176,7 +248,7 @@ async function runQuestion(
     if (event.event === 'meta') traceId = event.data.traceId;
     if (event.event === 'citations') {
       answer = event.data.text;
-      citedChunkIds = event.data.valid.map(({ chunkId }) => chunkId);
+      citations = event.data.valid;
     }
     if (event.event === 'done') finished = event.data;
     if (event.event === 'error') throw new Error(event.data.code);
@@ -196,6 +268,10 @@ async function runQuestion(
 
   const { refused, ttftMs, latencyMs, costUsd } = finished;
   const { candidates } = trace.retrieval;
+  // Refusals too: the rubric scores them, and the check against the refusal flag needs them.
+  const verdict = judge
+    ? await judgeQuestion(question, { answer, refused, citations }, judge, deps)
+    : null;
   await db
     .insert(evalResults)
     .values({
@@ -203,22 +279,26 @@ async function runQuestion(
       questionId: question.id,
       answer,
       refused,
-      citedChunkIds,
+      citedChunkIds: citations.map(({ chunkId }) => chunkId),
       retrieved: candidates,
-      scores: scoreResult(
-        {
-          category: question.category as Category,
-          role: question.role,
-          expectedDocSlugs: question.expectedDocSlugs,
-        },
-        {
-          refused,
-          candidates,
-          citationsValid: trace.citationsValid,
-          citationsDropped: trace.citationsDropped,
-          accessRolesBySlug,
-        },
-      ),
+      scores: {
+        ...scoreResult(
+          {
+            category: question.category as Category,
+            role: question.role,
+            expectedDocSlugs: question.expectedDocSlugs,
+          },
+          {
+            refused,
+            candidates,
+            citationsValid: trace.citationsValid,
+            citationsDropped: trace.citationsDropped,
+            accessRolesBySlug,
+          },
+        ),
+        ...verdict?.scores,
+      },
+      judgeRationale: verdict?.rationale ?? null,
       ttftMs,
       latencyMs,
       costUsd,
@@ -284,6 +364,7 @@ export async function runEval(input: RunEvalInput, deps: RunEvalDeps): Promise<R
 
   const questions = await loadQuestions(target.split, deps);
   const accessRolesBySlug = await loadAccessRoles(questions, deps);
+  checkFacts(questions, deps);
 
   // Created only now, so a bad dataset leaves no empty run behind.
   const run = 'id' in target ? target : await startRun(target, deps);
