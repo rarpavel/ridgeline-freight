@@ -1,6 +1,6 @@
 # ADR-0004: Hybrid retrieval with RRF and exact vector scan; refusal gate on similarity and citations
 
-Status: Accepted · Date: 2026-11-02
+Status: Accepted, FTS query and gate signal replaced by ADR-0019 · Date: 2026-11-02
 
 ## Context
 RRF scores depend only on ranks and cannot drive a refusal threshold. At ~700 chunks a vector index is unnecessary and filtered HNSW would lose recall by post-filtering.

@@ -14,7 +14,7 @@ import type { RetrievalResult } from './retrieve';
 export type RequestTrace = typeof requestTraces.$inferInsert;
 
 export function toTraceRetrieval(
-  { candidates, bestSim, ftsMatches, vectorUnavailable }: RetrievalResult,
+  { candidates, bestSim, ftsMatches, ftsAllTermsMatches, vectorUnavailable }: RetrievalResult,
   simFloor: number,
 ): TraceRetrieval {
   return {
@@ -22,6 +22,7 @@ export function toTraceRetrieval(
     bestSim,
     simFloor,
     ftsMatches,
+    ftsAllTermsMatches,
     vectorUnavailable,
   };
 }

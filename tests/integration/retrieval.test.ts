@@ -8,6 +8,7 @@ import { afterAll, beforeAll, describe, expect, it, vi } from 'vitest';
 import { AppError } from '@/lib/errors';
 import { chunks } from '@/server/db/schema/chunks';
 import { documents } from '@/server/db/schema/documents';
+import { refuseWithoutLlm } from '@/server/rag/gate';
 import {
   loadPromptChunks,
   retrieve,
@@ -203,6 +204,87 @@ describe('retrieval', () => {
       },
     );
 
+    it('finds a chunk for a question with words the corpus does not have', async () => {
+      const { fts, ftsAllTermsMatches } = await retrieveCandidates(
+        {
+          questionEmbedding: null,
+          question: 'What is the late delivery penalty in the Harbor Point Foods MSA?',
+          roles: ['sales'],
+        },
+        { db },
+      );
+
+      expect(slugsOf(fts)).toEqual(['msa-alpha']);
+      expect(ftsAllTermsMatches).toBe(0);
+    });
+
+    it('ranks the chunk matching more of the question first', async () => {
+      const { fts } = await retrieveCandidates(
+        {
+          questionEmbedding: null,
+          question: 'Which late delivery penalty applies to a payment?',
+          roles: ['sales'],
+        },
+        { db },
+      );
+      const [late, payment] = FIXTURES[0]?.contents ?? [];
+      const contentOf = async (chunkId: string | undefined) => {
+        const [loaded] = await loadPromptChunks(
+          { chunkIds: chunkId ? [chunkId] : [], roles: ['sales'] },
+          { db },
+        );
+        return loaded?.content;
+      };
+
+      expect(fts).toHaveLength(2);
+      expect(await contentOf(fts[0]?.chunkId)).toBe(late);
+      expect(await contentOf(fts[1]?.chunkId)).toBe(payment);
+    });
+
+    it('applies the role filter to a question matching any word', async () => {
+      const question =
+        'PTO accrual, parental leave, late delivery penalties, dock step, lane rates';
+
+      for (const role of ROLES) {
+        const { fts, ftsAllTermsMatches } = await retrieveCandidates(
+          { questionEmbedding: null, question, roles: [role] },
+          { db },
+        );
+
+        expect(slugsOf(fts).length).toBeGreaterThan(0);
+        expect(slugsOf(fts).every((slug) => allowedSlugs(role).includes(slug))).toBe(true);
+        expect(ftsAllTermsMatches).toBe(0);
+      }
+    });
+
+    it('applies the role filter to the all-terms count', async () => {
+      const count = async (role: (typeof ROLES)[number]) =>
+        (
+          await retrieveCandidates(
+            { questionEmbedding: null, question: 'PTO accrual', roles: [role] },
+            { db },
+          )
+        ).ftsAllTermsMatches;
+
+      expect(await count('hr')).toBe(1);
+      expect(await count('sales')).toBe(0);
+    });
+
+    it.each([
+      "what's the driver's penalty?",
+      'a & b | c ! d',
+      'back\\slash and ""quotes""',
+      "'; DROP TABLE chunks; --",
+      '(penalty) <-> late:* !payment',
+      'late-delivery',
+      '4.3 L-01 a/b user@example.com',
+      '🚚 penalty',
+    ])('builds a valid query from %j', async (question) => {
+      await expect(
+        retrieveCandidates({ questionEmbedding: null, question, roles: ['sales'] }, { db }),
+      ).resolves.toMatchObject({ vectorUnavailable: true });
+    });
+
     it('returns nothing for no roles', async () => {
       const { vector, fts } = await retrieveCandidates(
         { questionEmbedding: axis(0), question: 'fixture policy', roles: [] },
@@ -283,6 +365,7 @@ describe('retrieval', () => {
         candidates: [],
         bestSim: null,
         ftsMatches: 0,
+        ftsAllTermsMatches: 0,
         vectorUnavailable: true,
         embeddingTokens: null,
       });
@@ -304,6 +387,45 @@ describe('retrieval', () => {
       expect(result.ftsMatches).toBe(20);
       expect(result.vectorUnavailable).toBe(false);
       expect(result.candidates.some((c) => c.vectorRank !== null && c.ftsRank !== null)).toBe(true);
+    });
+
+    describe('gate signals', () => {
+      const SIM_FLOOR = 0.3;
+      // No fixture chunk sits on this axis, so every similarity is 0.
+      const embedOffTopic = embedAs(DIMENSIONS - 1);
+      const refused = async (question: string, role: (typeof ROLES)[number]) => {
+        const result = await retrieve({ question, roles: [role] }, { db, embed: embedOffTopic });
+        return { result, refused: refuseWithoutLlm(result, SIM_FLOOR) };
+      };
+
+      it('refuses a question with no word in the corpus', async () => {
+        const { result, refused: isRefused } = await refused(
+          'zebra quantum violin recipe',
+          'admin',
+        );
+
+        expect(result.ftsMatches).toBe(0);
+        expect(isRefused).toBe(true);
+      });
+
+      it('still refuses an off-topic question that shares one word with the corpus', async () => {
+        const { result, refused: isRefused } = await refused(
+          'Which payment app has the best zebra violin recipes?',
+          'sales',
+        );
+
+        expect(result.ftsMatches).toBeGreaterThan(0);
+        expect(result.ftsAllTermsMatches).toBe(0);
+        expect(isRefused).toBe(true);
+      });
+
+      it('lets an exact keyword query through at low similarity', async () => {
+        const { result, refused: isRefused } = await refused('PTO accrual', 'hr');
+
+        expect(result.bestSim).toBeLessThan(SIM_FLOOR);
+        expect(result.ftsAllTermsMatches).toBeGreaterThan(0);
+        expect(isRefused).toBe(false);
+      });
     });
   });
 

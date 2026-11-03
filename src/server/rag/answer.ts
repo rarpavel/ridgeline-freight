@@ -91,6 +91,7 @@ export async function* answerQuestion(
       bestSim: null,
       simFloor: env.SIM_FLOOR,
       ftsMatches: 0,
+      ftsAllTermsMatches: 0,
       vectorUnavailable: false,
     },
   };
@@ -98,7 +99,7 @@ export async function* answerQuestion(
 
   try {
     const result = await retrieve({ question, roles }, { db, embed });
-    const { candidates, bestSim, ftsMatches, embeddingTokens } = result;
+    const { candidates, bestSim, ftsAllTermsMatches, embeddingTokens } = result;
     const retrieval = toTraceRetrieval(result, env.SIM_FLOOR);
     trace.retrieval = retrieval;
     const embeddingUsage: ModelUsage[] = [];
@@ -118,7 +119,7 @@ export async function* answerQuestion(
       model: env.CHAT_MODEL,
     };
 
-    if (refuseWithoutLlm({ bestSim, ftsMatches }, env.SIM_FLOOR)) {
+    if (refuseWithoutLlm({ bestSim, ftsAllTermsMatches }, env.SIM_FLOOR)) {
       const usage: TokenUsage = { inputTokens: 0, outputTokens: 0 };
       trace.gate = 'refuse_gate';
       trace.refused = true;

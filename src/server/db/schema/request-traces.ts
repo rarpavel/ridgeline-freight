@@ -32,6 +32,8 @@ export type TraceRetrieval = {
   bestSim: number | null;
   simFloor: number;
   ftsMatches: number;
+  /** Absent from traces written before ADR-0019. */
+  ftsAllTermsMatches?: number;
   vectorUnavailable: boolean;
 };
 

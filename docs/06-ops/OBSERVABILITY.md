@@ -11,8 +11,10 @@ Written once per chat request and once per eval question (`source = 'eval'`, fro
 ```json
 { "candidates": [{ "chunkId": "…", "documentId": "…", "slug": "msa-harbor-point-foods", "sectionRef": "4.3",
     "vectorRank": 1, "vectorSim": 0.61, "ftsRank": 3, "ftsScore": 0.12, "rrf": 0.0323, "inPrompt": true, "cited": true }],
-  "bestSim": 0.61, "simFloor": 0.30, "ftsMatches": 4, "vectorUnavailable": false }
+  "bestSim": 0.61, "simFloor": 0.30, "ftsMatches": 20, "ftsAllTermsMatches": 0, "vectorUnavailable": false }
 ```
+
+`ftsMatches` is the length of the any-word FTS list, at most 20; `ftsAllTermsMatches` is the count the gate reads (ADR-0019), and it is absent from older traces.
 
 `inPrompt` means the model was given the chunk, so it is false for every candidate of a gate refusal.
 

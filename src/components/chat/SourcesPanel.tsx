@@ -86,6 +86,7 @@ function TraceView({ trace }: { trace: TraceDetails }) {
         <Fact label="Best sim" value={formatScore(retrieval.bestSim)} />
         <Fact label="Sim floor" value={formatScore(retrieval.simFloor)} />
         <Fact label="FTS matches" value={String(retrieval.ftsMatches)} />
+        <Fact label="FTS all terms" value={String(retrieval.ftsAllTermsMatches ?? '—')} />
         <Fact
           label="Citations"
           value={`${trace.citationsValid} valid / ${trace.citationsDropped} dropped`}
