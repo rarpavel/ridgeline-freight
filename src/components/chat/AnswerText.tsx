@@ -19,8 +19,13 @@ function CitationChip({ citation }: { citation: ChatCitation }) {
       variant="secondary"
       className="inline h-auto overflow-visible rounded-md align-baseline break-words whitespace-normal [box-decoration-break:clone]"
     >
-      {/* The viewer arrives with RAG-029; until then there is nothing to prefetch. */}
-      <Link href={`/documents/${encodeURIComponent(documentId)}?${query}`} prefetch={false}>
+      {/* A new tab: the answer lives only in this page's state, and leaving would lose it. */}
+      <Link
+        href={`/documents/${encodeURIComponent(documentId)}?${query}`}
+        target="_blank"
+        rel="noopener"
+        prefetch={false}
+      >
         [{n}] {title}
         {section}
       </Link>
