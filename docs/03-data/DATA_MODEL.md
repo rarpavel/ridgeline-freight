@@ -151,7 +151,7 @@ CREATE TABLE eval_results (
   refused          boolean NOT NULL,
   cited_chunk_ids  uuid[] NOT NULL DEFAULT '{}',
   retrieved        jsonb NOT NULL,                             -- [{chunkId, documentId, slug, sectionRef, vectorRank, vectorSim, ftsRank, ftsScore, rrf, inPrompt, cited}]
-  scores           jsonb NOT NULL,                             -- {retrievalHit, retrievalHit20, refusalCorrect, leak, citationsValid, citationsDropped}; RAG-036 adds correctness, faithfulness
+  scores           jsonb NOT NULL,                             -- {retrievalHit, retrievalHit20, refusalCorrect, leak, citationsValid, citationsDropped}; with the judge: correctness, faithfulness, claims, judgeRefusalCorrect, needsReview, or judgeError
   judge_rationale  text,
   ttft_ms          int,
   latency_ms       int NOT NULL,

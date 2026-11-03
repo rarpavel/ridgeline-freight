@@ -3,7 +3,7 @@ import 'server-only';
 import Anthropic from '@anthropic-ai/sdk';
 
 import { env } from '@/env';
-import { AppError } from '@/lib/errors';
+import { AppError, TruncatedReplyError } from '@/lib/errors';
 
 // The SDK retries 408, 409, 429, 5xx and connection errors with exponential backoff.
 const MAX_RETRIES = 3;
@@ -14,6 +14,7 @@ type CompleteOptions = {
   system?: string;
   model?: string;
   maxTokens?: number;
+  signal?: AbortSignal;
 };
 
 let client: Anthropic | undefined;
@@ -28,16 +29,20 @@ function getClient(): Anthropic {
 }
 
 export async function completeWithClaude(options: CompleteOptions): Promise<string> {
-  const response = await getClient().messages.create({
-    model: options.model ?? env.JUDGE_MODEL,
-    max_tokens: options.maxTokens ?? DEFAULT_MAX_TOKENS,
-    ...(options.system ? { system: options.system } : {}),
-    messages: [{ role: 'user', content: options.prompt }],
-  });
+  const response = await getClient().messages.create(
+    {
+      model: options.model ?? env.JUDGE_MODEL,
+      max_tokens: options.maxTokens ?? DEFAULT_MAX_TOKENS,
+      ...(options.system ? { system: options.system } : {}),
+      messages: [{ role: 'user', content: options.prompt }],
+    },
+    options.signal ? { signal: options.signal } : undefined,
+  );
 
   // A cut-off or refused reply is not usable output, so it must not reach a JSON parser as text.
-  if (response.stop_reason === 'max_tokens' || response.stop_reason === 'refusal') {
-    throw new AppError('llm_error', `Claude stopped early: ${response.stop_reason}`);
+  if (response.stop_reason === 'max_tokens') throw new TruncatedReplyError();
+  if (response.stop_reason === 'refusal') {
+    throw new AppError('llm_error', 'Claude stopped early: refusal');
   }
 
   return response.content.flatMap((block) => (block.type === 'text' ? [block.text] : [])).join('');

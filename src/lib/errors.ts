@@ -34,3 +34,11 @@ export class AppError extends Error {
     this.safeMessage = safeMessage;
   }
 }
+
+/** The model hit its token limit: unlike a provider failure, asking again can give a whole reply. */
+export class TruncatedReplyError extends AppError {
+  constructor() {
+    super('llm_error', 'Claude stopped early: max_tokens');
+    this.name = 'TruncatedReplyError';
+  }
+}

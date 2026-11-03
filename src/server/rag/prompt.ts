@@ -39,7 +39,10 @@ function formatHeader(alias: number, { documentTitle, sectionRef, sectionTitle }
 
 // Only a later part of a split table has lines after the first in its prefix: the header rows,
 // which the chunker keeps out of `content` so offsets hold (ADR-0017).
-function formatBody({ contextPrefix, content }: PromptChunk) {
+export function formatBody({
+  contextPrefix,
+  content,
+}: Pick<PromptChunk, 'contextPrefix' | 'content'>) {
   const newline = contextPrefix.indexOf('\n');
   return newline === -1 ? content : `${contextPrefix.slice(newline + 1)}\n${content}`;
 }

@@ -59,6 +59,51 @@ function scoresOf(overrides: Partial<ScoredResult['scores']>): ScoredResult['sco
   return { ...scored('direct').scores, ...overrides };
 }
 
+describe('judge metrics', () => {
+  const judged = { claims: [], judgeRefusalCorrect: null, needsReview: false };
+
+  it('are null when nothing was judged', () => {
+    expect(aggregateMetrics([scored('direct')]).overall).toMatchObject({
+      correctness: null,
+      faithfulness: null,
+      needsReview: null,
+      judgeErrors: null,
+    });
+  });
+
+  it('average correctness and faithfulness over the answered only', () => {
+    const { overall } = aggregateMetrics([
+      scored('direct', { scores: scoresOf({ ...judged, correctness: 1, faithfulness: 1 }) }),
+      scored('direct', { scores: scoresOf({ ...judged, correctness: 0, faithfulness: 0.5 }) }),
+      scored('no_answer', {
+        refused: true,
+        scores: scoresOf({ ...judged, correctness: 1, faithfulness: 1 }),
+      }),
+    ]);
+
+    expect(overall.correctness).toBe(0.5);
+    expect(overall.faithfulness).toBe(0.75);
+  });
+
+  it('count flagged results and judge errors over all results, leaving errors out of the means', () => {
+    const { overall, byCategory } = aggregateMetrics([
+      scored('direct', { scores: scoresOf({ ...judged, correctness: 1, faithfulness: 1 }) }),
+      scored('direct', { scores: scoresOf({ judgeError: 'Bad JSON' }) }),
+      scored('no_answer', {
+        refused: true,
+        scores: scoresOf({ ...judged, correctness: 0, faithfulness: 1, needsReview: true }),
+      }),
+    ]);
+
+    expect(overall).toMatchObject({ correctness: 1, needsReview: 1, judgeErrors: 1 });
+    expect(byCategory.no_answer).toMatchObject({
+      correctness: null,
+      needsReview: 1,
+      judgeErrors: 0,
+    });
+  });
+});
+
 describe('scoreResult', () => {
   const answerable = {
     category: 'direct' as const,
