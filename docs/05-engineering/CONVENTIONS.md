@@ -2,7 +2,7 @@
 
 Repository layout, naming, TypeScript rules, error handling, logging and environment variables. `CLAUDE.md` summarizes this for AI agents; this file is the long form.
 
-Last updated: 2026-11-02
+Last updated: 2026-11-03
 
 ## 1. Repository layout
 
@@ -90,8 +90,8 @@ Rule: anything importing `src/server/**` must itself be server-only (route handl
 | `EMBEDDING_MODEL` | no | `text-embedding-3-small` | embeddings |
 | `SESSION_SECRET` | yes | ≥ 32 random chars | iron-session |
 | `DEMO_ACCOUNTS_JSON` | yes | `[{"id":"sales","role":"sales","passwordHash":"$2b$…"}, …]` | auth |
-| `SIM_FLOOR` | no | `0.30` | gate |
-| `MAX_QUESTION_CHARS` / `MAX_OUTPUT_TOKENS` | no | `500` / `700` | guardrails |
+| `SIM_FLOOR` | no | `0.45` | gate |
+| `MAX_QUESTION_CHARS` / `MAX_OUTPUT_TOKENS` | no | `500` / `1500` | guardrails |
 | `RATE_LIMIT_ACCOUNT_PER_HOUR` / `RATE_LIMIT_IP_PER_HOUR` | no | `20` / `40` | guardrails |
 | `DAILY_TOKEN_BUDGET` | no | `400000` | guardrails |
 | `ANTHROPIC_API_KEY` / `JUDGE_MODEL` | eval, data-gen | `claude-haiku-5-5` | judge, question generation |

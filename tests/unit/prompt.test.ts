@@ -138,6 +138,6 @@ describe('buildMessages', () => {
 
 describe('RAG_SYSTEM_PROMPT_VERSION', () => {
   it('has the form recorded in traces', () => {
-    expect(RAG_SYSTEM_PROMPT_VERSION).toMatch(/^rag-system@v1#[0-9a-f]{8}$/);
+    expect(RAG_SYSTEM_PROMPT_VERSION).toMatch(/^rag-system@v2#[0-9a-f]{8}$/);
   });
 });
