@@ -6,7 +6,7 @@ A portfolio MVP: a RAG assistant over 24 synthetic documents of a fictional US l
 
 ## Demo
 
-Live at https://ridgeline-freight.vercel.app. It has sign-in, a health check at [/api/health](https://ridgeline-freight.vercel.app/api/health) and a chat that streams answers with citations. Citation links lead to a 404 until the document viewer is added.
+Live at https://ridgeline-freight.vercel.app. It has sign-in, a health check at [/api/health](https://ridgeline-freight.vercel.app/api/health), a chat that streams answers with citations, and a document viewer: a citation opens its document with the cited passage highlighted, and the original DOCX can be downloaded.
 
 Sign in at [/login](https://ridgeline-freight.vercel.app/login) with one of four demo accounts: `sales`, `hr`, `ops` or `admin`. Their passwords are listed on that page, because these are public demo credentials and all the data is synthetic.
 
