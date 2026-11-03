@@ -160,6 +160,7 @@ Not built: local model support, OCR and PDF parsing, a CI evaluation gate, a pro
 - **M1, 2026-11-02:** the data is ready: 24 synthetic DOCX documents pass validation, and 40 reviewed eval questions are split into dev 12 and test 28 (`data/VERSION` 2026.11-1).
 - **M2, 2026-11-03:** production answers questions from the indexed corpus (24 documents, 423 chunks) with streamed text and citation chips, checked with one question for each of the four roles.
 - **M3, 2026-11-03:** production refuses what the documents the role can read do not answer (`SIM_FLOOR` 0.45, calibrated on the dev split), a citation opens the document viewer with the passage highlighted, and Show sources reads the request trace. Checked for each of the four roles, with no other role's document among the candidates of the `sales`, `hr` and `ops` requests.
+- **M4, 2026-11-03:** the test run is published with an independent judge and shown at `/admin/eval`, which is closed to other roles, and the README, 2-minute video and case study are done. Production has the guardrails and security headers: 20 requests under one account passed and the 21st got 429, and a 501-character question got 400. The daily budget counts usage in production, while its 503 is covered by integration tests only.
 
 ## License
 
