@@ -20,6 +20,7 @@
     "db:studio": "drizzle-kit studio",
     "hash-password": "tsx scripts/hash-password.ts",
     "ingest": "tsx --conditions=react-server scripts/ingest.ts",
+    "eval": "tsx --conditions=react-server scripts/eval.ts",
     "eval:import": "tsx --conditions=react-server scripts/eval-import.ts",
     "datagen:check": "tsx --conditions=react-server scripts/data-gen/check.ts",
     "datagen:world": "tsx --conditions=react-server scripts/data-gen/world.ts",

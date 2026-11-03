@@ -2,7 +2,7 @@
 
 Dataset design, metrics, judge rubric, targets and how to run. The eval CLI uses the same retrieval and generation code as the chat route, so the numbers describe the product.
 
-Last updated: 2026-11-02
+Last updated: 2026-11-03
 
 ## 1. Dataset
 
@@ -66,10 +66,14 @@ Honest reporting: a missed target is published with the real value and a one-lin
 pnpm eval --split test --label "m4-baseline"
 pnpm eval --split dev  --sim-floor 0.28          # tuning
 pnpm eval --split test --no-judge                # deterministic metrics only, no Anthropic key needed
-pnpm eval --resume <runId>
+pnpm eval --resume <runId> --no-judge
 ```
 
-Behavior: imports questions if missing, resolves `expectedDocSlugs` → ids, runs questions with 2-way concurrency, writes `eval_results` as it goes, computes aggregates at the end, prints a table and the run id. Requires `OPENAI_API_KEY`, and `ANTHROPIC_API_KEY` unless `--no-judge`.
+Behavior: imports questions if this dataset version has none, stops before creating a run if an `expectedDocSlugs` document is not ingested, runs questions with 2-way concurrency, writes `eval_results` as it goes, computes aggregates at the end, prints a table and the run id. Requires `OPENAI_API_KEY`, and `ANTHROPIC_API_KEY` unless `--no-judge`; a missing key stops the CLI before the run. Until the judge lands (RAG-036), a run with the key still records deterministic metrics only and says so.
+
+Each question is answered by `answerQuestion` with `source: 'eval'`, under the account `eval` and the question's role, so traces are real and `eval_results.trace_id` links to them. `retrieved` holds every fused candidate, best first; `retrievalHitRate@20` reads the first 20. A metric whose population is empty is `null`, not 0, `leakCount` included. `citationValidity` follows the population above: an answer converted to a refusal for having no valid citation leaves it, and each alias counts once per answer. `retrievalHitRate` reads what reached the prompt, so a gate refusal counts as a miss and `retrievalHitRate@20` shows whether retrieval found the document. Percentiles use the nearest rank; `costPerQuestion` averages the questions with a known cost. `eval_runs.metrics` is `{ overall, byCategory }`, each holding the metrics above plus `questions`.
+
+A question that fails (model or database error) does not stop the others. The run then stays open: `finished_at` and `metrics` stay null, the CLI exits 1 and prints the `--resume` command. Ctrl-C does the same and cancels the questions in flight. `--resume` skips questions with a result and reuses the split, label and `simFloor` of the run; it refuses a finished run, and one whose git commit, model, embedding model, prompt version or dataset version has changed. It cannot see a re-ingest on the same commit, so don't re-ingest between the two. Questions edited under the same `data/VERSION` are not re-imported: bump the version, or run `pnpm eval:import`.
 
 Cost per full test run: 28 × (≈ 4k input + 0.5k output tokens on `gpt-5-mini`) + judge ≈ **$0.10**.
 
