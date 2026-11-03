@@ -136,6 +136,7 @@ Roadmap: a committed injection test corpus with automated tests and an `injectio
 | Daily tokens (global) | `DAILY_TOKEN_BUDGET` (default 400k ≈ $0.30 on `gpt-5-mini`) | `usage_daily` check before the model call |
 | Failed logins per IP | 5 / hour | `rate_limits` (`login:<sha256>`) |
 | Provider spend, OpenAI | $20 / month, seen 2026-11-03; the dashboard marks it "Limit not enforced", so it does not stop spending | dashboard, manual |
+| Provider spend, Anthropic | no limit set as of 2026-11-03; the key is used only by the CLIs, not in production | none yet |
 
 `/api/chat` checks in this order, each before anything is spent: session, question length (400 with no database query), IP limit, account limit, daily budget. Windows are whole UTC hours and the budget day is a UTC day. The `ip:` and `acct:` counts include refused requests. An unreachable database stops the request with 503 `db_error`: the limits fail closed.
 
