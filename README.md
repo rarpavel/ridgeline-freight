@@ -76,7 +76,9 @@ An admin can also open [/admin/eval](https://ridgeline-freight.vercel.app/admin/
 
 ## What it does
 
-![Chat with a cited answer and the Show sources panel](docs/assets/chat-sources.png)
+![A streamed answer with a citation chip](docs/assets/chat-answer.png)
+
+![The Show sources panel with scores, cost and latency](docs/assets/chat-sources.png)
 
 - **Citations you can check:** every claim carries a numbered citation, and one click opens the document with the passage highlighted.
 - **Refuses instead of guessing:** enforced by a retrieval gate, a model refusal and citation validation, not only by the prompt. An answer with no valid citation becomes a refusal.
