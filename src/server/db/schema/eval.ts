@@ -12,7 +12,7 @@ import {
 } from 'drizzle-orm/pg-core';
 
 import type { TraceCandidate } from './request-traces';
-import type { ResultScores } from '@/server/eval/metrics';
+import type { ResultScores, RunMetrics } from '@/server/eval/metrics';
 
 export type RetrievalConfig = {
   k: number;
@@ -54,7 +54,7 @@ export const evalRuns = pgTable('eval_runs', {
   datasetVersion: text('dataset_version').notNull(),
   startedAt: timestamp('started_at', { withTimezone: true }).notNull().defaultNow(),
   finishedAt: timestamp('finished_at', { withTimezone: true }),
-  metrics: jsonb('metrics'),
+  metrics: jsonb('metrics').$type<RunMetrics>(),
 });
 
 export const evalResults = pgTable(
