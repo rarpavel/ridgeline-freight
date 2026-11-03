@@ -6,7 +6,7 @@ A portfolio MVP: a RAG assistant over 24 synthetic documents of a fictional US l
 
 ## Demo
 
-Live at https://ridgeline-freight.vercel.app. So far it has sign-in and a health check, [/api/health](https://ridgeline-freight.vercel.app/api/health); chat comes later.
+Live at https://ridgeline-freight.vercel.app. It has sign-in, a health check at [/api/health](https://ridgeline-freight.vercel.app/api/health) and a chat that streams answers with citations. Citation links lead to a 404 until the document viewer is added.
 
 Sign in at [/login](https://ridgeline-freight.vercel.app/login) with one of four demo accounts: `sales`, `hr`, `ops` or `admin`. Their passwords are listed on that page, because these are public demo credentials and all the data is synthetic.
 
@@ -40,3 +40,4 @@ Checks: `pnpm typecheck`, `pnpm lint`, `pnpm test`.
 
 - **M0, 2026-11-02:** the app runs in production on Vercel and Neon with sign-in for four demo accounts, a health check and CI.
 - **M1, 2026-11-02:** the data is ready: 24 synthetic DOCX documents pass validation, and 40 reviewed eval questions are split into dev 12 and test 28 (`data/VERSION` 2026.11-1).
+- **M2, 2026-11-03:** production answers questions from the indexed corpus (24 documents, 423 chunks) with streamed text and citation chips, checked with one question for each of the four roles.
