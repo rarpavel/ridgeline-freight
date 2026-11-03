@@ -1,6 +1,6 @@
 import 'server-only';
 
-import { cosineDistance, desc, eq, sql } from 'drizzle-orm';
+import { and, cosineDistance, desc, eq, inArray, sql } from 'drizzle-orm';
 import { DrizzleQueryError } from 'drizzle-orm/errors';
 
 import { AppError } from '@/lib/errors';
@@ -17,6 +17,7 @@ import {
   type FusedCandidate,
   type VectorHit,
 } from './fuse';
+import type { PromptChunk } from './prompt';
 
 const VECTOR_TOP_K = 20;
 const FTS_TOP_K = 20;
@@ -35,6 +36,8 @@ export type RetrievalResult = {
   ftsMatches: number;
   vectorUnavailable: boolean;
 };
+
+export type LoadedChunk = PromptChunk & { chunkId: string; documentId: string };
 
 /**
  * The two statements of DATA_MODEL.md §3. Role filtering happens here and only here (CLAUDE.md
@@ -104,6 +107,42 @@ async function embedQuestion(
   } catch (err) {
     logger.warn({ err }, 'retrieval.vector_unavailable');
     return null;
+  }
+}
+
+/**
+ * The text behind the fused candidates, in their order, under the same role filter. A chunk replaced
+ * by an ingest since retrieval is skipped; aliases are numbered from what this returns.
+ */
+export async function loadPromptChunks(
+  { chunkIds, roles }: { chunkIds: readonly string[]; roles: readonly Role[] },
+  { db }: RetrieveDeps,
+): Promise<LoadedChunk[]> {
+  if (chunkIds.length === 0) return [];
+  try {
+    const rows = await db
+      .select({
+        chunkId: chunks.id,
+        documentId: chunks.documentId,
+        documentTitle: documents.title,
+        sectionRef: chunks.sectionRef,
+        sectionTitle: chunks.sectionTitle,
+        contextPrefix: chunks.contextPrefix,
+        content: chunks.content,
+      })
+      .from(chunks)
+      .innerJoin(documents, eq(documents.id, chunks.documentId))
+      .where(
+        and(
+          inArray(chunks.id, [...chunkIds]),
+          sql`${documents.accessRoles} && ${sql.param(roles)}::text[]`,
+        ),
+      );
+    const byId = new Map(rows.map((row) => [row.chunkId, row]));
+    return chunkIds.flatMap((chunkId) => byId.get(chunkId) ?? []);
+  } catch (err) {
+    const cause = err instanceof DrizzleQueryError ? err.cause : err;
+    throw new AppError('db_error', 'Prompt chunk query failed', { cause });
   }
 }
 

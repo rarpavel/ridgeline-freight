@@ -2,7 +2,7 @@
 
 Ingestion (parsing, chunking, context prefixes, embeddings) and query handling (hybrid retrieval, fusion, gate, generation, citation validation). Code lives in `src/server/ingest/` and `src/server/rag/`; the web route and the CLIs call the same functions. Values below are defaults; tuned values are recorded in `eval_runs.retrieval_config`.
 
-Last updated: 2026-11-02
+Last updated: 2026-11-03
 
 ## 1. Ingestion
 
@@ -102,7 +102,7 @@ Default `SIM_FLOOR = 0.30` (placeholder; calibrated on the dev split in M3 by co
 
 ### 2.5 Generation (`generate.ts`)
 
-`openai.chat.completions.create({ stream: true, stream_options: { include_usage: true }, ... })`; tokens forwarded as `delta` SSE events; usage from the final chunk, fallback to `js-tiktoken` counts.
+`openai.chat.completions.create({ stream: true, stream_options: { include_usage: true }, ... })`; tokens forwarded as `delta` SSE events; usage from the final chunk, fallback to `js-tiktoken` counts. The output limit goes out as `max_completion_tokens`, because gpt-5 models reject `max_tokens`. The whole call has a 30 s timeout, and a client disconnect aborts it too.
 
 ### 2.6 Citation validation (`citations.ts`)
 
