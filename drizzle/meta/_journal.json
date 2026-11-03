@@ -36,6 +36,20 @@
       "when": 1793692613530,
       "tag": "0004_request_traces_constraints",
       "breakpoints": true
+    },
+    {
+      "idx": 5,
+      "version": "7",
+      "when": 1793697816368,
+      "tag": "0005_eval_tables",
+      "breakpoints": true
+    },
+    {
+      "idx": 6,
+      "version": "7",
+      "when": 1793697817683,
+      "tag": "0006_eval_constraints",
+      "breakpoints": true
     }
   ]
 }

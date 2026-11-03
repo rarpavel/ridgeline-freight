@@ -10,6 +10,7 @@ import { afterAll, beforeAll, describe, expect, it, vi } from 'vitest';
 
 import { chunks } from '@/server/db/schema/chunks';
 import { documents, documentTexts } from '@/server/db/schema/documents';
+import { evalQuestions, evalResults, evalRuns } from '@/server/db/schema/eval';
 import { requestTraces } from '@/server/db/schema/request-traces';
 
 import { createDatabase, dropDatabase, withClient } from './helpers/database';
@@ -106,6 +107,9 @@ describe('migrations', () => {
       'chunks',
       'document_texts',
       'documents',
+      'eval_questions',
+      'eval_results',
+      'eval_runs',
       'request_traces',
     ]);
   });
@@ -250,6 +254,63 @@ describe('migrations', () => {
     expect(rows[0]?.indexdef).toContain('created_at DESC');
   });
 
+  it('rejects an unknown category, split or role on an eval question', async () => {
+    let counter = 0;
+    const insertQuestion = (category: string, split: string, role: string) => {
+      counter += 1;
+      return client.query(
+        `INSERT INTO eval_questions (slug, category, split, role, question, dataset_version)
+         VALUES ($1, $2, $3, $4, 'q', '2026.11-1')`,
+        [`question-${counter}`, category, split, role],
+      );
+    };
+
+    await expect(insertQuestion('direct', 'dev', 'sales')).resolves.toBeDefined();
+    await expect(insertQuestion('other', 'dev', 'sales')).rejects.toMatchObject({
+      code: '23514',
+      constraint: 'eval_questions_category_check',
+    });
+    await expect(insertQuestion('direct', 'all', 'sales')).rejects.toMatchObject({
+      code: '23514',
+      constraint: 'eval_questions_split_check',
+    });
+    await expect(insertQuestion('direct', 'dev', 'finance')).rejects.toMatchObject({
+      code: '23514',
+      constraint: 'eval_questions_role_check',
+    });
+  });
+
+  it('accepts all as an eval run split, rejects an unknown one and cascades deletes', async () => {
+    const insertRun = (split: string) =>
+      client.query<{ id: string }>(
+        `INSERT INTO eval_runs (split, model, embedding_model, prompt_version, retrieval_config,
+                                git_sha, dataset_version)
+         VALUES ($1, 'm', 'e', 'rag-system@v1#a1b2c3d4', '{}', 'sha', '2026.11-1') RETURNING id`,
+        [split],
+      );
+
+    await expect(insertRun('other')).rejects.toMatchObject({
+      code: '23514',
+      constraint: 'eval_runs_split_check',
+    });
+
+    const run = await insertRun('all');
+    const runId = run.rows[0]?.id;
+    const question = await client.query<{ id: string }>(
+      `INSERT INTO eval_questions (slug, category, split, role, question, dataset_version)
+       VALUES ('cascade-question', 'direct', 'dev', 'sales', 'q', '2026.11-1') RETURNING id`,
+    );
+    await client.query(
+      `INSERT INTO eval_results (run_id, question_id, answer, refused, retrieved, scores, latency_ms)
+       VALUES ($1, $2, 'a', false, '[]', '{}', 1)`,
+      [runId, question.rows[0]?.id],
+    );
+
+    await client.query('DELETE FROM eval_runs WHERE id = $1', [runId]);
+    const remaining = await client.query('SELECT 1 FROM eval_results WHERE run_id = $1', [runId]);
+    expect(remaining.rowCount).toBe(0);
+  });
+
   it('changes nothing and exits 0 when run a second time', async () => {
     const applied = () => client.query('SELECT hash FROM drizzle.__drizzle_migrations ORDER BY id');
     const before = await applied();
@@ -277,6 +338,9 @@ describe('migrations', () => {
     expect(await columnsOf(client, 'documents')).toEqual(drizzleColumnsOf(documents));
     expect(await columnsOf(client, 'document_texts')).toEqual(drizzleColumnsOf(documentTexts));
     expect(await columnsOf(client, 'request_traces')).toEqual(drizzleColumnsOf(requestTraces));
+    expect(await columnsOf(client, 'eval_questions')).toEqual(drizzleColumnsOf(evalQuestions));
+    expect(await columnsOf(client, 'eval_runs')).toEqual(drizzleColumnsOf(evalRuns));
+    expect(await columnsOf(client, 'eval_results')).toEqual(drizzleColumnsOf(evalResults));
     // tsv is added by a custom migration and is read through SQL, never written.
     expect(await columnsOf(client, 'chunks')).toEqual([...drizzleColumnsOf(chunks), 'tsv'].sort());
   });
