@@ -256,6 +256,8 @@ Daily budget: `INSERT INTO usage_daily (day) VALUES (current_date) ON CONFLICT D
 | `0002_corpus_constraints_and_tsv.sql` | custom | CHECK constraints on `doc_type`, `access_roles`, `char_end > char_start` and `token_count > 0`; generated `tsv`; `chunks_tsv_idx` |
 | `0003_request_traces.sql` | generated | `request_traces`, `request_traces_created_idx` |
 | `0004_request_traces_constraints.sql` | custom | CHECK constraints on `source`, `gate` and `refusal_reason` |
+| `0005_eval_tables.sql` | generated | `eval_questions`, `eval_runs`, `eval_results`, their foreign keys and the unique constraint on `slug` |
+| `0006_eval_constraints.sql` | custom | CHECK constraints on `eval_questions` `category`, `split`, `role` and on `eval_runs.split` |
 
 - `chunks.tsv` and the CHECK constraints are not declared in `src/server/db/schema/*.ts`, so Drizzle never tries to write `tsv`; queries reach it through `sql`. `tests/integration/migrations.test.ts` fails if the database columns and the Drizzle schema diverge.
 - Forward-only; a rollback is a new migration. CI applies all migrations to a fresh `pgvector/pgvector:pg17` container on every PR. Production migrations are run from the developer's machine before merging the PR that needs them (`DEPLOYMENT.md §3`); migrations are additive so the previous app version keeps working.
