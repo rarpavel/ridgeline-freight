@@ -8,11 +8,12 @@ export const QUESTION_CATEGORIES = [
   'exception',
   'no_answer',
   'other_role',
+  'broad',
 ] as const;
 
 // What prompt 04 returns.
 export const generatedQuestionSchema = z.object({
-  slug: z.string().regex(/^(direct|comparison|exception|no_answer|other_role)-\d{2}$/),
+  slug: z.string().regex(/^(direct|comparison|exception|no_answer|other_role|broad)-\d{2}$/),
   category: z.enum(QUESTION_CATEGORIES),
   role: z.enum(ROLES),
   question: z.string().min(20).max(200),

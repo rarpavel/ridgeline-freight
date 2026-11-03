@@ -15,7 +15,13 @@ import { streamChat } from '@/server/rag/generate';
 import { registrySchema } from '../data-gen/schemas/registry';
 import { describeError } from './data-gen/describe-error';
 
-const COUNT_KEYS: ReadonlySet<string> = new Set(['leakCount', 'needsReview', 'judgeErrors']);
+const COUNT_KEYS: ReadonlySet<string> = new Set([
+  'leakCount',
+  'truncatedAnswers',
+  'outputTokensMax',
+  'needsReview',
+  'judgeErrors',
+]);
 // The model's hidden thinking counts against the limit (EVALUATION.md §4).
 const JUDGE_MAX_TOKENS = 4000;
 

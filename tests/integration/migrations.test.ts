@@ -266,6 +266,7 @@ describe('migrations', () => {
     };
 
     await expect(insertQuestion('direct', 'dev', 'sales')).resolves.toBeDefined();
+    await expect(insertQuestion('broad', 'dev', 'sales')).resolves.toBeDefined();
     await expect(insertQuestion('other', 'dev', 'sales')).rejects.toMatchObject({
       code: '23514',
       constraint: 'eval_questions_category_check',
