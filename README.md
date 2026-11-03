@@ -2,7 +2,7 @@
 
 [![CI](https://github.com/rarpavel/ridgeline-freight/actions/workflows/ci.yml/badge.svg)](https://github.com/rarpavel/ridgeline-freight/actions/workflows/ci.yml)
 
-A document assistant for a fictional US freight company. It answers from 24 synthetic contracts, rate sheets, SOPs and HR policies with citations you can click, refuses when the documents don't hold the answer, enforces roles in the SQL query, and is measured on a held-out question set. [Live demo](https://ridgeline-freight.vercel.app) · [Evaluation method](docs/04-ai/EVALUATION.md) · [Specification](docs/SPEC.md)
+A document assistant for a fictional US freight company. It answers from 24 synthetic contracts, rate sheets, SOPs and HR policies with citations you can click, refuses when the documents don't hold the answer, enforces roles in the SQL query, and is measured on a held-out question set. [Live demo](https://ridgeline-freight.vercel.app) · [2-minute video](https://youtu.be/E97KsiWyTzg) · [Evaluation method](docs/04-ai/EVALUATION.md) · [Specification](docs/SPEC.md)
 
 ## Results
 
@@ -55,7 +55,7 @@ Next.js 16 (App Router, TypeScript strict), Postgres with pgvector, Drizzle ORM,
 
 ## Demo
 
-https://ridgeline-freight.vercel.app. Sign in at [/login](https://ridgeline-freight.vercel.app/login) as `sales`, `hr`, `ops` or `admin`. The passwords are on that page, because these are public demo accounts and all the data is synthetic.
+https://ridgeline-freight.vercel.app. Sign in at [/login](https://ridgeline-freight.vercel.app/login) as `sales`, `hr`, `ops` or `admin`. The passwords are on that page, because these are public demo accounts and all the data is synthetic. A [2-minute video](https://youtu.be/E97KsiWyTzg) walks through it, with an AI-generated voice-over.
 
 | Role    | Try asking                                                                                      |
 | ------- | ----------------------------------------------------------------------------------------------- |

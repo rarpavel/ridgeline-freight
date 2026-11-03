@@ -1,0 +1,6 @@
+Sign in as sales for scenes 1-5, then as admin for scene 6.
+
+Scene 2: What is the late delivery penalty in the Harbor Point Foods MSA?
+Scene 3: Which has the stricter liability cap, Harbor Point Foods or Lakeshore Retail?
+Scene 4: What is the CEO's salary?
+Scene 5: How many PTO days do drivers accrue per month?
