@@ -45,17 +45,25 @@ Aggregates in `eval_runs.metrics`: per category and overall.
 
 ## 3. Targets (test split)
 
-| Metric | Target |
-|--------|--------|
-| retrievalHitRate | ≥ 0.90 |
-| correctness | ≥ 0.85 |
-| faithfulness | ≥ 0.90 |
-| refusalAccuracy | ≥ 0.95 |
-| leakCount | 0 |
-| falseRefusalRate | ≤ 0.10 |
-| ttftP50 (warm) | < 3,000 ms |
+| Metric | Target | Published run | Met |
+|--------|--------|---------------|-----|
+| retrievalHitRate | ≥ 0.90 | 1.000 | yes |
+| correctness | ≥ 0.85 | 0.824 | **no** |
+| faithfulness | ≥ 0.90 | 1.000 | yes |
+| refusalAccuracy | ≥ 0.95 | 1.000 | yes |
+| leakCount | 0 | 0 | yes |
+| falseRefusalRate | ≤ 0.10 | 0.056 | yes |
+| ttftP50 (warm) | < 3,000 ms | 3,268 ms | **no** |
 
 Honest reporting: a missed target is published with the real value and a one-line reason.
+
+Published run: `98810a54-3c7c-47ae-b43b-3777247ec443`, label `published`, 2026-11-03, production database, `test` split (28 questions), commit `976dd0c`, `gpt-5-mini`, `text-embedding-3-small`, prompt `rag-system@v3#5dc28de8`, dataset `2026.11-2`, judge `claude-haiku-5-5`, `simFloor` 0.45, `finalK` 8, `perDocCap` 3. Also: `citationValidity` 1.000, `costPerQuestion` $0.00069, `latencyP50` 3,357 ms, `truncatedAnswers` 0, `outputTokensMax` 835, `needsReview` 0, `judgeErrors` 0.
+
+Nothing was tuned after this run (ADR-0013). What the numbers mean:
+
+- **correctness** is 14 of 17 answered questions. `comparison-05` is a real miss: the sections stating the 90 and 180 days were among the candidates but not among the 8 passages in the prompt. `exception-01` and `exception-04` answered the yes/no question correctly, with a valid citation, and left out a value the reference states (§4). A score of 1 on those two would give 0.941; the published value stays 0.824.
+- **ttftP50** rises with the model's hidden reasoning: over the 22 questions that reached the model, the correlation between `ttft_ms` and `output_tokens` is 0.76. The CLI ran on a developer laptop, not on Vercel, and traces hold no timing breakdown, so the network's share is not separated.
+- **retrievalHitRate** counts documents, not passages, so 1.000 hides a limit. In `comparison-05` and in `direct-02`, the one false refusal, the expected document reached the prompt but the section with the answer did not. This is the limit §7 shows for `broad` (`finalK` 8, `perDocCap` 3).
 
 ## 4. Judge (`prompts/judge.v1.md`, authored in `data-gen/prompts/06-judge.md`)
 
@@ -66,6 +74,7 @@ Honest reporting: a missed target is published with the real value and a one-lin
 - Agreement check: rule C of the rubric follows from what the system did (a refusal is correct exactly when there is no reference answer, and an answer is `null`). A judge who disagrees, or who finds no claims in an answer, sets `scores.needsReview`. The judge's own value is `scores.judgeRefusalCorrect`; `scores.refusalCorrect` stays the deterministic flag.
 - Sanity check in M4: read 10 judged items by hand; note disagreements in this file.
 - Hand check, 2026-11-03: all 12 items of the dev run `5f3217e7` (`rag-036-judge-3`), 9 answered and 3 refused, read against the question, reference and cited text. No value was misjudged and no unsupported claim was missed; `needsReview` was 0 and `judgeErrors` 0. Two scores show the rubric's "every value" rule applied unevenly: `exception-03` got 0 for leaving out the $150.00 limit and receipts on a yes/no question it answered correctly, while `direct-06` got 1 although it left out the reference's "410 miles". Read literally the rule gives 0 to both, and read by what was asked it gives 1 to both. So `correctness` can move by one item on how a reference is worded. An earlier run also counted a derived difference ($490,000.00) as supported, though no passage states it, so `faithfulness` is slightly lenient on arithmetic. Neither changes the rubric for now; both are worth reading again on the published run.
+- Hand check of the published run, 2026-11-03: the 18 judged answers to `direct`, `comparison` and `exception` questions, read against the question and reference. No value was misjudged. The uneven rule shows again: `exception-01` and `exception-04` got 0 for leaving out a reference value on a yes/no question they answered correctly. Arithmetic is still lenient: `comparison-01` states "15 fewer days" as supported. The rubric stays as it is (ADR-0013).
 
 ## 5. Running
 
