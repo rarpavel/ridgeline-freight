@@ -101,11 +101,11 @@ A gate refusal makes no model call and sends `meta` with `gate: 'refuse'`, the f
   QUESTION: ...
   ```
   Single turn; no history. A later part of a split table has the header rows from `context_prefix` at the start of its block (§1.2). A chunk with no section leaves out `· Section …`.
-- Output limit: 1,500 tokens (`MAX_OUTPUT_TOKENS`). Reasoning tokens count against it (ADR-0021).
+- Output limit: 1,500 tokens (`MAX_OUTPUT_TOKENS`). Reasoning tokens count against it, and reasoning effort is `low` (`REASONING_EFFORT`) so that they leave room for the answer (ADR-0021, ADR-0022).
 
 ### 2.5 Generation (`generate.ts`)
 
-`openai.chat.completions.create({ stream: true, stream_options: { include_usage: true }, ... })`; tokens forwarded as `delta` SSE events; usage from the final chunk, fallback to `js-tiktoken` counts. The output limit goes out as `max_completion_tokens`, because gpt-5 models reject `max_tokens`. The whole call has a 30 s timeout, and a client disconnect aborts it too.
+`openai.chat.completions.create({ stream: true, stream_options: { include_usage: true }, ... })`; tokens forwarded as `delta` SSE events; usage from the final chunk, fallback to `js-tiktoken` counts. The output limit goes out as `max_completion_tokens`, because gpt-5 models reject `max_tokens`. The whole call has a 30 s timeout, and a client disconnect aborts it too. `finish_reason: 'length'` sets `done.truncated` and logs `chat.output_truncated`; the text and the citation rules stay the same, and the chat shows a note (ADR-0022).
 
 ### 2.6 Citation validation (`citations.ts`)
 
@@ -127,7 +127,8 @@ One `request_traces` row per request (candidates with scores, gate, prompt versi
 | `finalK` / `perDocCap` | 8 / 3 | `retrieval_config` | dev split |
 | `simFloor` | 0.45 | env `SIM_FLOOR` | dev split |
 | chunk size | 50–600 tokens | `CHUNKER_VERSION` | dev split |
-| `MAX_OUTPUT_TOKENS` | 1,500 | env | dev split (ADR-0021) |
+| `MAX_OUTPUT_TOKENS` | 1,500 | env | dev split (ADR-0021), broad questions (§3.2) |
+| `REASONING_EFFORT` | `low` | env | broad questions (§3.2) |
 
 ### 3.1 `SIM_FLOOR` calibration (RAG-033, 2026-11-03)
 
@@ -160,5 +161,44 @@ Best cosine per question, with the role of the question applied:
 **The floor does not decide these metrics; the output limit and the prompt do (ADR-0021).** With the limit at 700 tokens, all 6 false refusals in the 9 runs were answers cut off at the limit with no citation yet, converted by `no_valid_citations`. Reasoning tokens count against the limit, and one answer used 1,229 in total. The same cut-off produced 10 of 18 `no_answer` refusals, so `refusalAccuracy` of 1.000 at 700 was partly an accident. With 1,500 and prompt v1, `no_answer` questions counted as answered in 5 of 6 attempts, though all 5 ended with a `NO_ANSWER:` line: rule 8 of v1 asked for that form, while `citations.ts` only recognizes the marker at the start. Prompt v2 puts the marker first and alone, and no answer in the 5 runs had it anywhere else.
 
 These numbers cover 12 dev questions without the judge, so they say nothing about whether answers are correct, and one false refusal is still 0.111, above the 0.10 target. TTFT p50 is 4.2–5.3 s against the 3 s target. The limit is not recorded in `retrieval_config`; the runs are labeled `rag-033-floor-0.45-cap1500` (v1) and `rag-033-v2-cap1500` (v2). Chunking was not changed: `retrievalHitRate` and `retrievalHitRate@20` are 1.000 in every run.
+
+### 3.2 Reasoning effort and the output limit (ADR-0022, 2026-11-03)
+
+Prompt `rag-system.v3`, `SIM_FLOOR` 0.45, local database (24 documents, 423 chunks), `gpt-5-mini`, through `answerQuestion` with its 30 s timeout. No judge ran. Seven broad questions (below) ran 6 times each per setting, shuffled, 6 at a time. Effort "default" sends no `reasoning_effort`, as before this change.
+
+| Effort | Limit | Refused at the limit | Cut off, with citations | Output p50 / max | TTFT p50 / p95 (ms) | Latency p50 / p95 (ms) | Cost per question |
+|--------|-------|-----|---|-----------|--------------|---------------|----------|
+| default | 1,500 | 24 of 42 | 4 | 1,500 / 1,500 | 9,446 / 12,674 | 12,845 / 17,599 | $0.00319 |
+| default | 2,500 | 5 of 42 | 2 | 1,960 / 2,500 | 13,491 / 22,687 | 16,794 / 25,863 | $0.00427 |
+| default | 4,000 | 0 of 42 | 0 | 1,803 / 3,533 | 15,322 / 25,731 | 18,767 / 28,051 | $0.00424 |
+| **low** | **1,500** | **0 of 42** | **0** | **572 / 1,427** | **3,813 / 7,315** | **6,229 / 9,581** | **$0.00162** |
+| low | 2,500 | 0 of 42 | 0 | 553 / 1,053 | 3,801 / 8,890 | 6,341 / 11,851 | $0.00164 |
+| minimal | 1,500 | 0 of 42 | 0 | 273 / 539 | 1,044 / 1,353 | 3,679 / 6,400 | $0.00104 |
+
+Every refusal at the limit had no citation yet, and no call timed out. A further 84 runs each at low with limits of 1,500 and 2,000 also reached no limit, so low has 252 runs without one. The largest answer used 1,433 tokens.
+
+**Dev split, `pnpm eval --split dev --no-judge`:**
+
+| Setting | Runs | falseRefusalRate | refusalAccuracy | leakCount | TTFT p50 (ms) | Latency p50 (ms) | Cost per question | Largest answer |
+|---------|---|-----|-----|---|-------|-------|--------|---|
+| default, 1,500 (`output-limit-baseline`) | 1 | 0.000 | 1.000 | 0 | 4,502 | 4,619 | $0.00126 | 719 |
+| low, 1,500 (`output-limit-low-1500`) | 5 | 0.000 | 1.000 | 0 | 2,035–2,832 | 2,235–3,299 | $0.00078–0.00081 | 369 |
+
+**Quality, without a judge.** All 45 answers to answerable dev questions at low had the expected fact. "What are the late delivery penalties across all of our customers?" named all 6 values in all 36 runs at low. At the default effort and 1,500, 1 of 6 answers named only one. These are key-fact checks: they do not show that a fact is given for the right customer, nor that the wording is good.
+
+Refusals by the model on these questions, none of them at the limit:
+
+| Question | default (all limits) | low (all limits) | minimal |
+|----------|-------|--------|-----|
+| Are late delivery penalties ever waived for any of our customers? | 7 of 18 | 22 of 36 | 6 of 6 |
+| Compare the liability limits and payment terms across all customer MSAs. | 0 of 18 | 1 of 36 | 0 of 6 |
+
+The questions, written for this comparison and not from the eval set:
+- `sales`: "Are late delivery penalties ever waived for any of our customers?", "What are the late delivery penalties across all of our customers?", "Compare the liability limits and payment terms across all customer MSAs.", "Summarize every fee a customer can be charged on top of the base rate."
+- `ops`: "Summarize what our carrier agreements require about insurance, liability and payment."
+- `hr`: "Give me an overview of everything the handbook says about what drivers must do and may claim."
+- `admin`: "What obligations do we have toward customers, carriers and employees when something goes wrong?"
+
+Seven questions chosen to be broad show the fault and its fix. They do not give a rate for real traffic. The effort and the limit are not recorded in `eval_runs`; the labels above are the record.
 
 Roadmap (not MVP): HNSW index with iterative scans at larger corpus sizes; reranker between fusion and gate; query condensation for follow-ups.

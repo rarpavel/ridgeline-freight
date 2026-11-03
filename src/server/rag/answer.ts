@@ -145,6 +145,7 @@ export async function* answerQuestion(
           refused: true,
           reason: 'gate',
           usage,
+          truncated: false,
           ttftMs: null,
           latencyMs,
           costUsd: trace.costUsd,
@@ -163,10 +164,12 @@ export async function* answerQuestion(
     const messages = buildMessages({ role: user.role, today: new Date(), chunks, question });
     let answer = '';
     let usage: TokenUsage = { inputTokens: 0, outputTokens: 0 };
+    let truncated = false;
     let ttftMs: number | null = null;
     for await (const part of generate(messages, { llm, signal, timeoutMs: llmTimeoutMs })) {
-      if (part.type === 'usage') {
+      if (part.type === 'end') {
         usage = part.usage;
+        truncated = part.truncated;
         trace.inputTokens = usage.inputTokens;
         trace.outputTokens = usage.outputTokens;
         trace.costUsd = costOf([...embeddingUsage, { model: env.CHAT_MODEL, ...usage }]);
@@ -182,6 +185,12 @@ export async function* answerQuestion(
     // `originalText` stays out of the logs like the prompt; the trace has it as `generatedText`.
     const { text, refused, reason, valid, dropped } = validateCitations(answer, chunks.length);
     if (dropped.length > 0) logger.warn({ ...logFields, dropped }, 'chat.citations_dropped');
+    if (truncated) {
+      logger.warn(
+        { ...logFields, outputTokens: usage.outputTokens, refused },
+        'chat.output_truncated',
+      );
+    }
 
     const citations = valid.flatMap((n): ChatCitation[] => {
       const chunk = chunks[n - 1];
@@ -205,7 +214,15 @@ export async function* answerQuestion(
     logger.info({ ...logFields, ...doneLogFields(trace), durationMs: latencyMs }, 'chat.done');
     yield {
       event: 'done',
-      data: { refused, reason, usage, ttftMs, latencyMs, costUsd: trace.costUsd ?? null },
+      data: {
+        refused,
+        reason,
+        usage,
+        truncated,
+        ttftMs,
+        latencyMs,
+        costUsd: trace.costUsd ?? null,
+      },
     };
   } catch (err) {
     // An aborted request is not a failure; the finally block records it.

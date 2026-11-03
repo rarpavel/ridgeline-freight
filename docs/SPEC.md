@@ -76,7 +76,7 @@ Tables (DDL in `docs/03-data/DATA_MODEL.md`): `documents`, `document_texts`, `ch
 1. Vector top-20 (cosine, exact scan) and FTS top-20 (any word of the question, `ts_rank_cd`; ADR-0019), both with `access_roles && $roles`.
 2. RRF (k = 60) → top-8, at most 3 chunks per document.
 3. Gate: best cosine < `SIM_FLOOR` **and** no chunk holds every word of the question → refusal without a model call. `SIM_FLOOR` calibrated on the dev split.
-4. Prompt: versioned system prompt (`prompts/rag-system.v3.md`) + context blocks `[1]..[8]` + the question. output limit 1,500 tokens (ADR-0021).
+4. Prompt: versioned system prompt (`prompts/rag-system.v3.md`) + context blocks `[1]..[8]` + the question. output limit 1,500 tokens, low reasoning effort (ADR-0021, ADR-0022).
 5. SSE events: `meta` → `delta`* → `citations` → `done` | `error`.
 6. Post-processing: parse `[n]`, drop unknown aliases (logged), detect `NO_ANSWER:`, convert zero-citation answers to refusals, write `request_traces`.
 
@@ -107,7 +107,7 @@ Runs: `pnpm eval --split test|dev --label <name>` from the developer's machine; 
 - Login required; encrypted httpOnly cookie; `/admin/*` admin-only in `proxy.ts` and in each handler.
 - Role filter in SQL for retrieval and the viewer; leak integration test in CI.
 - Prompt injection: context treated as data (prompt rules), delimited numbered blocks, restricted Markdown rendering (no HTML, no links), citation validation.
-- Limits: 20 requests/hour per account, 40/hour per IP, question ≤ 500 chars, output limit 1,500 tokens (ADR-0021), daily global token budget with a hard stop and an explicit "budget exhausted" state; provider spend cap in the dashboard.
+- Limits: 20 requests/hour per account, 40/hour per IP, question ≤ 500 chars, output limit 1,500 tokens (ADR-0021, ADR-0022), daily global token budget with a hard stop and an explicit "budget exhausted" state; provider spend cap in the dashboard.
 - Secrets only in server env, validated at boot; basic security headers; no model calls from the browser.
 
 ## 10. Observability

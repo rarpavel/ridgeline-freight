@@ -73,7 +73,8 @@ export function ChatPanel({ maxQuestionChars }: { maxQuestionChars: number }) {
     }
   }
 
-  const { status, question, citations, refused, failure, traceId, isStreamClosed } = state;
+  const { status, question, citations, refused, truncated, failure, traceId, isStreamClosed } =
+    state;
   const isBusy = status === 'waiting' || status === 'streaming';
   const text = visibleText(state);
 
@@ -111,6 +112,12 @@ export function ChatPanel({ maxQuestionChars }: { maxQuestionChars: number }) {
               </div>
             ) : (
               text !== '' && <AnswerText text={text} citations={citations} />
+            )}
+            {status === 'done' && truncated && (
+              <p className="text-muted-foreground mt-2 text-xs" data-testid="answer-truncated">
+                The model reached its length limit before finishing. A narrower question should work
+                better.
+              </p>
             )}
           </section>
 

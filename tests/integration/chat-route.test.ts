@@ -59,13 +59,15 @@ const LOW_SIM_VECTOR = Array.from({ length: DIMENSIONS }, (_, i) => {
   return i === 1 ? Math.sqrt(1 - 0.12 ** 2) : 0;
 });
 
-type Part = { text: string } | { usage: typeof USAGE } | { fail: Error };
+type Part = { text: string } | { usage: typeof USAGE } | { fail: Error } | { finish: 'length' };
 
 async function* completion(parts: Part[]) {
   for (const part of parts) {
     if ('fail' in part) throw part.fail;
     if ('text' in part) {
       yield { choices: [{ delta: { content: part.text } }], usage: null };
+    } else if ('finish' in part) {
+      yield { choices: [{ delta: {}, finish_reason: part.finish }], usage: null };
     } else {
       yield { choices: [], usage: part.usage };
     }
@@ -237,8 +239,34 @@ describe('POST /api/chat', () => {
     const done = eventOf(events, 'done')?.data;
     expect(done?.refused).toBe(false);
     expect(done?.usage).toEqual({ inputTokens: 120, outputTokens: 8 });
+    expect(done?.truncated).toBe(false);
     expect(done?.ttftMs).toEqual(expect.any(Number));
     expect(done?.latencyMs).toEqual(expect.any(Number));
+  });
+
+  it('keeps a cited answer the output limit cut off and marks it truncated', async () => {
+    modelStreams([{ text: 'A [1] and the' }, { finish: 'length' }, { usage: USAGE }]);
+
+    const events = await readEvents(await POST(chatRequest({ question: QUESTION })));
+
+    expect(eventOf(events, 'citations')?.data.text).toBe('A [1] and the');
+    expect(eventOf(events, 'done')?.data).toMatchObject({
+      refused: false,
+      reason: null,
+      truncated: true,
+    });
+  });
+
+  it('refuses an answer the output limit cut off before any citation, and says why', async () => {
+    modelStreams([{ finish: 'length' }, { usage: USAGE }]);
+
+    const events = await readEvents(await POST(chatRequest({ question: QUESTION })));
+
+    expect(eventOf(events, 'done')?.data).toMatchObject({
+      refused: true,
+      reason: 'no_valid_citations',
+      truncated: true,
+    });
   });
 
   it('sends the model only passages open to the role, within the output limit', async () => {
@@ -251,6 +279,7 @@ describe('POST /api/chat', () => {
     expect(prompt).toContain(MSA_TEXT);
     expect(prompt).not.toContain(HR_TEXT);
     expect(params.max_completion_tokens).toBe(1500);
+    expect(params.reasoning_effort).toBe('low');
     expect(params.stream_options).toEqual({ include_usage: true });
   });
 
