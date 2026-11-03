@@ -31,7 +31,7 @@ Last updated: 2026-11-03
 - `migrations.test.ts`: fresh DB → all migrations apply → schema matches Drizzle.
 - `ingest.test.ts`: ingest 3 fixture documents with a deterministic fake embedder (hash → vector) → counts, idempotency (second run skips), `--force` re-embeds.
 - `retrieval.test.ts`: role filter returns only allowed documents for each role, in the FTS list and the all-terms count; any-word FTS matching and rank; FTS zero-match path; vector-unavailable fallback; gate signals on off-topic questions.
-- `rbac-leak.test.ts`: with the full demo corpus ingested (fake embedder), for every eval question and every role, no returned document outside `access_roles`; `other_role` questions return zero chunks. **This test must stay green forever.**
+- `rbac-leak.test.ts`: with the full demo corpus ingested (fake embedder), for every eval question and every role (160 combinations), no document outside the role in the vector list, the FTS list or the prompt chunks; `other_role` questions return no chunk of the document they ask about (they do return chunks the role may read, see ADR-0019); every document under every role on both viewer routes answers 200 only to its roles. The role filter on the all-terms count returns no documents, so `retrieval.test.ts` covers it. **This test must stay green forever.**
 - `guardrails.test.ts`: 21st request in an hour → 429; daily budget reached → 503; windows reset.
 - `auth.test.ts`: wrong password → 401; cookie attributes; `/admin/*` forbidden for non-admin; cross-site login and logout refused. Counting failed logins in the limiter is added here with the rate limiter.
 - `trace.test.ts`: one trace per request with correct counts.
