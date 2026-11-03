@@ -8,16 +8,16 @@ A document assistant for a fictional US freight company. It answers from 24 synt
 
 Test split, 28 held-out questions, run on the production data on 2026-11-03. Model `gpt-5-mini`, prompt `rag-system@v3`, dataset `2026.11-2`, judge `claude-haiku-5-5`, run `98810a54`.
 
-| Metric | Value | Target |
-|--------|-------|--------|
-| Retrieval hit rate (document level) | 1.000 | ≥ 0.90 |
-| Correctness (judge) | **0.824, missed** | ≥ 0.85 |
-| Faithfulness (judge) | 1.000 | ≥ 0.90 |
-| Refusal accuracy | 1.000 | ≥ 0.95 |
-| Cross-role leaks | 0 | 0 |
-| False refusal rate | 0.056 | ≤ 0.10 |
-| Time to first token, p50 | **3,268 ms, missed** | < 3,000 ms |
-| Cost per question | $0.00069 | none |
+| Metric                              | Value                | Target     |
+| ----------------------------------- | -------------------- | ---------- |
+| Retrieval hit rate (document level) | 1.000                | ≥ 0.90     |
+| Correctness (judge)                 | **0.824, missed**    | ≥ 0.85     |
+| Faithfulness (judge)                | 1.000                | ≥ 0.90     |
+| Refusal accuracy                    | 1.000                | ≥ 0.95     |
+| Cross-role leaks                    | 0                    | 0          |
+| False refusal rate                  | 0.056                | ≤ 0.10     |
+| Time to first token, p50            | **3,268 ms, missed** | < 3,000 ms |
+| Cost per question                   | $0.00069             | none       |
 
 - **Correctness missed:** 14 of 17 answers scored 1. One lost a fact that never reached the prompt, and two answered a yes/no question correctly but left out a value the reference states.
 - **Time to first token missed:** it rises with the model's hidden reasoning, and the run was measured from a developer laptop rather than from Vercel.
@@ -57,20 +57,20 @@ Next.js 16 (App Router, TypeScript strict), Postgres with pgvector, Drizzle ORM,
 
 https://ridgeline-freight.vercel.app. Sign in at [/login](https://ridgeline-freight.vercel.app/login) as `sales`, `hr`, `ops` or `admin`. The passwords are on that page, because these are public demo accounts and all the data is synthetic.
 
-| Role | Try asking |
-|------|-----------|
-| `sales` | What is the late delivery penalty in the Harbor Point Foods MSA? |
-| | How does Northline Auto Parts' per-shipment liability limit compare with Marlowe & Finch's? |
-| | How many PTO days do drivers accrue per month? (refused: an HR document) |
-| `hr` | How many paid holidays does Ridgeline observe each year? |
-| | How many paid sick days accrue per year? |
-| | What is the late delivery penalty in the Harbor Point Foods MSA? (refused: a sales document) |
-| `ops` | How quickly do we need to pay Granite Fork Intermodal once it sends an invoice? |
-| | Does the $250,000 cargo cap in the Juniper Bend agreement apply to a load on container chassis? |
-| | What is the CEO's salary? (refused: not in any document) |
-| `admin` | How much do drivers earn per hour for detention once free time has run out? |
-| | What are the payment terms for Harbor Point Foods compared with Lakeshore Retail Group? |
-| | What is the CEO's salary? (refused: not in any document) |
+| Role    | Try asking                                                                                      |
+| ------- | ----------------------------------------------------------------------------------------------- |
+| `sales` | What is the late delivery penalty in the Harbor Point Foods MSA?                                |
+|         | How does Northline Auto Parts' per-shipment liability limit compare with Marlowe & Finch's?     |
+|         | How many PTO days do drivers accrue per month? (refused: an HR document)                        |
+| `hr`    | How many paid holidays does Ridgeline observe each year?                                        |
+|         | How many paid sick days accrue per year?                                                        |
+|         | What is the late delivery penalty in the Harbor Point Foods MSA? (refused: a sales document)    |
+| `ops`   | How quickly do we need to pay Granite Fork Intermodal once it sends an invoice?                 |
+|         | Does the $250,000 cargo cap in the Juniper Bend agreement apply to a load on container chassis? |
+|         | What is the CEO's salary? (refused: not in any document)                                        |
+| `admin` | How much do drivers earn per hour for detention once free time has run out?                     |
+|         | What are the payment terms for Harbor Point Foods compared with Lakeshore Retail Group?         |
+|         | What is the CEO's salary? (refused: not in any document)                                        |
 
 An admin can also open [/admin/eval](https://ridgeline-freight.vercel.app/admin/eval) for every run and every question.
 
