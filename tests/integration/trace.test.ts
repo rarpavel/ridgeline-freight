@@ -295,8 +295,10 @@ describe('request_traces', () => {
       citationsDropped: 0,
     });
     expect(trace.costUsd).toBeCloseTo(EMBEDDING_COST, 6);
-    expect(trace.retrieval.candidates.every(({ inPrompt, cited }) => inPrompt && !cited)).toBe(
-      true,
+    // Retrieval still found candidates, but no prompt was built from them.
+    expect(trace.retrieval.candidates.length).toBeGreaterThan(0);
+    expect(trace.retrieval.candidates.filter(({ inPrompt, cited }) => inPrompt || cited)).toEqual(
+      [],
     );
     expect(eventOf(events, 'done')?.data.costUsd).toBeCloseTo(EMBEDDING_COST, 6);
     expect(fakeOpenai.chat.completions.create).not.toHaveBeenCalled();

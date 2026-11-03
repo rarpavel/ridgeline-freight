@@ -123,6 +123,8 @@ export async function* answerQuestion(
       trace.gate = 'refuse_gate';
       trace.refused = true;
       trace.refusalReason = 'gate';
+      // Fusion marked the ones that would fit a prompt, but no prompt is built.
+      for (const candidate of retrieval.candidates) candidate.inPrompt = false;
       yield { event: 'meta', data: { ...metaData, gate: 'refuse' } };
       yield { event: 'delta', data: { text: REFUSAL_TEXT } };
       yield { event: 'citations', data: { valid: [], dropped: [], text: REFUSAL_TEXT } };
