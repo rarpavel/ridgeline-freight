@@ -2,7 +2,7 @@
 
 Threat model (STRIDE-lite), RBAC design, prompt-injection defenses, secrets handling, and abuse/cost limits for a public demo with four shared accounts and an LLM key behind it.
 
-Last updated: 2026-11-02
+Last updated: 2026-11-03
 
 ## 1. Assets and assumptions
 
@@ -39,7 +39,7 @@ Last updated: 2026-11-02
 
 - Roles: `sales`, `hr`, `ops`, `admin`. Documents carry `access_roles`; `admin` is listed on every document at ingest time (catalog), so no special-casing in SQL.
 - Enforcement points: retrieval SQL, `/api/documents/:id`, `/api/documents/:id/original`, `/api/traces/:id` (own traces only, admin any), `/admin/*`.
-- Tests: `rbac-leak.test.ts` (every role × every question), `other_role` eval category (expects zero chunks).
+- Tests: `rbac-leak.test.ts` (every role × every question, every role × every document on both viewer routes), `other_role` eval category (expects zero chunks from a disallowed document; chunks the role may read still come back, and refusing is the job of the gate and the model, ADR-0019).
 
 ## 5. Prompt injection
 

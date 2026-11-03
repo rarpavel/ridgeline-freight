@@ -1,5 +1,4 @@
 import { execFile } from 'node:child_process';
-import { createHash } from 'node:crypto';
 import { mkdir, mkdtemp, readFile, rm, writeFile } from 'node:fs/promises';
 import { createServer, type Server } from 'node:http';
 import type { AddressInfo } from 'node:net';
@@ -19,6 +18,7 @@ import { embedTexts } from '@/server/llm/embeddings';
 import { catalogSchema, type CatalogEntry } from '../../data-gen/schemas/catalog';
 import { renderDocx } from '../../scripts/data-gen/markdown-docx';
 import { createDatabase, dropDatabase } from './helpers/database';
+import { fakeVector } from './helpers/fake-embedding';
 
 vi.mock('server-only', () => ({}));
 vi.mock('@/env', () => ({
@@ -34,15 +34,6 @@ const run = promisify(execFile);
 
 const DB_NAME = `ridgeline_ingest_${process.pid}`;
 const MODEL = 'fake-embedding';
-const DIMENSIONS = 1536;
-
-function fakeVector(text: string): number[] {
-  const digest = createHash('sha256').update(text).digest();
-  return Array.from(
-    { length: DIMENSIONS },
-    (_, index) => (digest[index % digest.length] ?? 0) / 255,
-  );
-}
 
 function clause(section: number, index: number, topic: string): string {
   const sentence = `The ${topic} obligation number ${index} applies to every shipment under this section. `;

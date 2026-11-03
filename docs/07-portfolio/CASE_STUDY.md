@@ -2,7 +2,7 @@
 
 Draft of the Upwork case study, the 2-minute demo video script, and the README outline. Numbers in brackets are placeholders filled from the published `test` eval run.
 
-Last updated: 2026-11-02
+Last updated: 2026-11-03
 
 ## 1. Upwork case study (draft)
 
@@ -33,7 +33,7 @@ Last updated: 2026-11-02
 | 0:10–0:40 | Ask: "What is the late delivery penalty in the Harbor Point Foods MSA?" → streamed answer with `[1]` → click chip → viewer scrolls to §4.3 highlighted; open "Show sources" | "Every claim carries a citation. One click opens the clause. The sources panel shows what was retrieved, with scores, cost and latency." |
 | 0:40–1:00 | Ask: "Which has the stricter liability cap, Harbor Point Foods or Lakeshore Retail?" → two figures, two citations | "Comparison questions pull passages from two documents and attribute each figure to its source." |
 | 1:00–1:15 | Ask: "What is the CEO's salary?" → refusal | "When the documents don't contain the answer, it says so. Refusals are enforced by the retrieval gate and by citation validation, not just by the prompt." |
-| 1:15–1:35 | Ask: "How many PTO days do drivers accrue per month?" as `sales` → refusal; sources panel shows zero retrieved chunks | "Access control lives in the SQL query. A sales user never retrieves HR documents — zero chunks, and an automated test proves it." |
+| 1:15–1:35 | Ask: "How many PTO days do drivers accrue per month?" as `sales` → refusal; sources panel lists no HR document | "Access control lives in the SQL query. A sales user never retrieves a chunk from an HR document, and an automated test proves it for every role and question." |
 | 1:35–2:00 | `/admin/eval`: metrics table and per-question results; back to the chat with the show-sources panel open | "Quality is measured on a held-out test set — hit rate, correctness, faithfulness, refusal accuracy — with an independent judge model. Code and methodology are public." |
 
 Recording checklist: warm the DB and model first (one throwaway question); 1440×900 window; hide bookmarks; prepare the four questions in a text file; record in one take per scene; add captions.
