@@ -12,12 +12,16 @@ export type ChatState = {
   citations: ChatCitation[] | null;
   refused: boolean;
   failure: ChatFailure | null;
+  traceId: string | null;
+  /** The trace is written after `done`, before the stream closes (OBSERVABILITY.md §1). */
+  isStreamClosed: boolean;
 };
 
 export type ChatAction =
   | { type: 'submit'; question: string }
   | { type: 'event'; event: ChatEvent }
-  | { type: 'fail'; failure: ChatFailure };
+  | { type: 'fail'; failure: ChatFailure }
+  | { type: 'stream_closed' };
 
 export const INITIAL_CHAT_STATE: ChatState = {
   status: 'idle',
@@ -26,6 +30,8 @@ export const INITIAL_CHAT_STATE: ChatState = {
   citations: null,
   refused: false,
   failure: null,
+  traceId: null,
+  isStreamClosed: false,
 };
 
 export const CONNECTION_LOST = 'The connection was lost before the answer finished. Try again.';
@@ -45,11 +51,13 @@ export function chatReducer(state: ChatState, action: ChatAction): ChatState {
       return { ...INITIAL_CHAT_STATE, status: 'waiting', question: action.question };
     case 'fail':
       return fail(state, action.failure);
+    case 'stream_closed':
+      return { ...state, isStreamClosed: true };
     case 'event': {
       const { event } = action;
       switch (event.event) {
         case 'meta':
-          return state;
+          return { ...state, traceId: event.data.traceId };
         case 'delta':
           return { ...state, status: 'streaming', text: state.text + event.data.text };
         case 'citations':
