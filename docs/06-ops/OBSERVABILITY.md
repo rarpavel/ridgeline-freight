@@ -14,6 +14,8 @@ Written once per chat request and once per eval question (`source = 'eval'`, fro
   "bestSim": 0.61, "simFloor": 0.30, "ftsMatches": 4, "vectorUnavailable": false }
 ```
 
+`inPrompt` means the model was given the chunk, so it is false for every candidate of a gate refusal.
+
 This single row, with its `gate` column, answers: what was retrieved, why it was or was not refused, what the model cited, what it cost, how long it took.
 
 The row is written when the request ends, however it ends, and the stream stays open until then, so a client that has read to the end of the stream can read the trace. The `gate` is `refuse_gate` here and in logs; the SSE `meta` event calls the same decision `refuse`.
