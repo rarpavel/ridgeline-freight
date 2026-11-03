@@ -49,6 +49,36 @@ describe('chatReducer', () => {
     ).toMatchObject({ status: 'streaming', text: 'Fee [1]', citations: null });
   });
 
+  it('keeps the trace id from meta and marks the stream closed only when told', () => {
+    const state = run([
+      {
+        event: 'meta',
+        data: { traceId: 't-1', promptVersion: 'v1', model: 'm', gate: 'answer' },
+      },
+      { event: 'done', data: { refused: false, ...doneData } },
+    ]);
+
+    expect(state).toMatchObject({ status: 'done', traceId: 't-1', isStreamClosed: false });
+    expect(chatReducer(state, { type: 'stream_closed' }).isStreamClosed).toBe(true);
+  });
+
+  it('forgets the trace of the previous answer on submit', () => {
+    const closed = chatReducer(
+      run([
+        {
+          event: 'meta',
+          data: { traceId: 't-1', promptVersion: 'v1', model: 'm', gate: 'answer' },
+        },
+      ]),
+      { type: 'stream_closed' },
+    );
+
+    expect(chatReducer(closed, { type: 'submit', question: 'Next?' })).toMatchObject({
+      traceId: null,
+      isStreamClosed: false,
+    });
+  });
+
   it('replaces the text with the validated one on citations', () => {
     const state = run([
       { event: 'delta', data: { text: 'Fee [1] [9]' } },

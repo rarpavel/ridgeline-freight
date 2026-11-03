@@ -16,6 +16,7 @@ import { parseSseStream } from '@/lib/sse';
 import { AnswerText } from './AnswerText';
 import { ChatBanner } from './ChatBanner';
 import { ChatForm } from './ChatForm';
+import { SourcesPanel } from './SourcesPanel';
 
 export function ChatPanel({ maxQuestionChars }: { maxQuestionChars: number }) {
   const [state, dispatch] = useReducer(chatReducer, INITIAL_CHAT_STATE);
@@ -66,10 +67,13 @@ export function ChatPanel({ maxQuestionChars }: { maxQuestionChars: number }) {
       const message = isStreaming ? CONNECTION_LOST : NETWORK_ERROR;
       dispatch({ type: 'fail', failure: { kind: 'error', message } });
       setDraft(question);
+    } finally {
+      // The form reopens at `done`, so a next question may already own the state.
+      if (abortRef.current === abort) dispatch({ type: 'stream_closed' });
     }
   }
 
-  const { status, question, citations, refused, failure } = state;
+  const { status, question, citations, refused, failure, traceId, isStreamClosed } = state;
   const isBusy = status === 'waiting' || status === 'streaming';
   const text = visibleText(state);
 
@@ -109,6 +113,10 @@ export function ChatPanel({ maxQuestionChars }: { maxQuestionChars: number }) {
               text !== '' && <AnswerText text={text} citations={citations} />
             )}
           </section>
+
+          {status === 'done' && traceId && isStreamClosed && (
+            <SourcesPanel key={traceId} traceId={traceId} />
+          )}
 
           {failure && <ChatBanner failure={failure} />}
         </div>

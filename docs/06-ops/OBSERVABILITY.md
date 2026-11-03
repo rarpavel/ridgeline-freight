@@ -66,7 +66,9 @@ Public (no session) and never cached (`Cache-Control: no-store`). `SELECT 1` has
 
 ## 4. UI "Show sources"
 
-Per answer: list of in-prompt chunks (document, section, page, vector sim, FTS score, RRF, cited ✓), the gate decision, model, prompt version, tokens, cost, TTFT/latency. Non-admin users see the same panel (it is part of the demo); the trace endpoint checks that the trace belongs to the requesting account.
+Per answer, a "Show sources" button opens a sheet (`src/components/chat/SourcesPanel.tsx`, full width on a phone): the in-prompt chunks (document slug, section, vector sim, FTS score, RRF, cited ✓), the other candidates collapsed under "Not in prompt", the gate decision with best sim, sim floor and FTS matches, model, prompt version, tokens, cost, TTFT/latency. Scores have 3 decimals. A gate refusal reads `gate: refused`, and all its candidates are under "Not in prompt". The button appears once the stream has closed, because the trace is written just before that (§1).
+
+Non-admin users see the same panel (it is part of the demo). `GET /api/traces/:id` answers only the requesting account's traces, admin any; another account's trace, a missing one and a malformed id are the same 404. The response leaves out `question`, `account`, `role` and `generated_text`, so the original text of a converted answer stays in the database. Its shape is `TraceDetails` in `src/lib/trace-details.ts`, and it is never cached (`Cache-Control: no-store`).
 
 ## 5. Alerts (minimal)
 
