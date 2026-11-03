@@ -23,6 +23,7 @@ Last updated: 2026-11-03
 - `prompts`: loader hash stability, `{{var}}` rendering, missing variable throws; `prompts/rag-system.v1.md` equals the block in `data-gen/prompts/05-rag-system-prompt.md`.
 - `prompt`: `buildMessages` block numbering and format, table header rows in a block, question cut to 500 chars.
 - `markdown`: rendered answers contain no raw HTML, no links, no images.
+- `answer-text`: the rendered answer has no markup from the text, its only links are citation chips to the viewer, and a marker with no source stays text.
 - `document-blocks`: normalized text → headings, lists, tables with offsets; overlap with a chunk range; the section around an offset.
 - `docx parser` (fixtures in `tests/fixtures/*.docx`, produced by the data-gen renderer): headings → `##`, tables → Markdown rows, lists.
 - `pricing`: cost math with `asOf`.

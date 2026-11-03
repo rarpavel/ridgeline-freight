@@ -26,6 +26,10 @@ describe('parseMarkdown: forbidden content', () => {
     expect(parseMarkdown(source)).toEqual([paragraph(expected)]);
   });
 
+  it('removes an image tag and keeps the citation next to it', () => {
+    expect(parseMarkdown('<img src=x onerror=alert(1)> [1]')).toEqual([paragraph(' [1]')]);
+  });
+
   it('drops a link definition line', () => {
     expect(parseMarkdown('Fee due.\n\n[terms]: https://evil.example')).toEqual([
       paragraph('Fee due.'),
