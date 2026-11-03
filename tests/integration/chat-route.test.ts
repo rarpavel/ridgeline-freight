@@ -10,6 +10,7 @@ import { AppError } from '@/lib/errors';
 import type { ChatEvent } from '@/lib/sse';
 import { chunks } from '@/server/db/schema/chunks';
 import { documents } from '@/server/db/schema/documents';
+import { REFUSAL_TEXT } from '@/server/rag/refusal';
 
 import { createDatabase, dropDatabase } from './helpers/database';
 
@@ -49,7 +50,14 @@ const HR_TEXT = 'Secret salary bands live in this HR policy.';
 const QUESTION = 'What is the late delivery penalty?';
 const USAGE = { prompt_tokens: 120, completion_tokens: 8 };
 
+const UNCOVERED_QUESTION = 'Which forklift certifications exist?';
+
 const VECTOR = Array.from({ length: DIMENSIONS }, (_, i) => (i === 0 ? 1 : 0));
+// A unit vector with a cosine of 0.12 to VECTOR, the one every seeded chunk has.
+const LOW_SIM_VECTOR = Array.from({ length: DIMENSIONS }, (_, i) => {
+  if (i === 0) return 0.12;
+  return i === 1 ? Math.sqrt(1 - 0.12 ** 2) : 0;
+});
 
 type Part = { text: string } | { usage: typeof USAGE } | { fail: Error };
 
@@ -66,6 +74,10 @@ async function* completion(parts: Part[]) {
 
 function modelStreams(parts: Part[]) {
   fakeOpenai.chat.completions.create.mockResolvedValue(completion(parts));
+}
+
+function embeddingIs(embedding: number[]) {
+  fakeOpenai.embeddings.create.mockResolvedValue({ data: [{ index: 0, embedding }] });
 }
 
 /** Every event of a finished SSE response, in order. */
@@ -309,7 +321,77 @@ describe('POST /api/chat', () => {
       dropped: [],
       text: 'Not in the documents.',
     });
-    expect(eventOf(events, 'done')?.data.refused).toBe(true);
+    expect(eventOf(events, 'done')?.data).toMatchObject({ refused: true, reason: 'model' });
+  });
+
+  it('refuses at the gate without a model call when both signals are weak', async () => {
+    embeddingIs(LOW_SIM_VECTOR);
+
+    const events = await readEvents(await POST(chatRequest({ question: UNCOVERED_QUESTION })));
+
+    expect(events.map(({ event }) => event)).toEqual(['meta', 'delta', 'citations', 'done']);
+    expect(eventOf(events, 'meta')?.data.gate).toBe('refuse');
+    expect(eventOf(events, 'citations')?.data).toEqual({
+      valid: [],
+      dropped: [],
+      text: REFUSAL_TEXT,
+    });
+    expect(eventOf(events, 'done')?.data).toMatchObject({
+      refused: true,
+      reason: 'gate',
+      usage: { inputTokens: 0, outputTokens: 0 },
+      ttftMs: null,
+    });
+    expect(fakeOpenai.chat.completions.create).not.toHaveBeenCalled();
+  });
+
+  it('calls the model on a weak similarity when FTS found something', async () => {
+    embeddingIs(LOW_SIM_VECTOR);
+    modelStreams([{ text: 'A [1]' }, { usage: USAGE }]);
+
+    const events = await readEvents(await POST(chatRequest({ question: 'late delivery penalty' })));
+
+    expect(eventOf(events, 'meta')?.data.gate).toBe('answer');
+    expect(eventOf(events, 'done')?.data).toMatchObject({ refused: false, reason: null });
+    expect(fakeOpenai.chat.completions.create).toHaveBeenCalledOnce();
+  });
+
+  it('does not let FTS matches in another role keep a question past the gate', async () => {
+    embeddingIs(LOW_SIM_VECTOR);
+
+    const response = await POST(chatRequest({ question: 'secret salary bands' }));
+    const body = await response.text();
+
+    expect(body).toContain('"gate":"refuse"');
+    expect(body).not.toContain(HR_TEXT);
+    expect(fakeOpenai.chat.completions.create).not.toHaveBeenCalled();
+  });
+
+  it('refuses at the gate when the embedding call fails and FTS found nothing', async () => {
+    fakeOpenai.embeddings.create.mockRejectedValue(new Error('embedder down'));
+
+    const events = await readEvents(await POST(chatRequest({ question: UNCOVERED_QUESTION })));
+
+    expect(eventOf(events, 'done')?.data).toMatchObject({ refused: true, reason: 'gate' });
+    expect(fakeOpenai.chat.completions.create).not.toHaveBeenCalled();
+  });
+
+  it('turns a model answer without citations into a refusal', async () => {
+    modelStreams([{ text: 'The penalty is $250.00.' }, { usage: USAGE }]);
+
+    const events = await readEvents(await POST(chatRequest({ question: QUESTION })));
+
+    expect(eventOf(events, 'meta')?.data.gate).toBe('answer');
+    expect(eventOf(events, 'citations')?.data).toEqual({
+      valid: [],
+      dropped: [],
+      text: REFUSAL_TEXT,
+    });
+    expect(eventOf(events, 'done')?.data).toMatchObject({
+      refused: true,
+      reason: 'no_valid_citations',
+      usage: { inputTokens: 120, outputTokens: 8 },
+    });
   });
 
   it('answers from FTS alone when the embedding call fails', async () => {

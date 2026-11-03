@@ -2,7 +2,7 @@
 
 Final Postgres schema, indexes, constraints, migration and seed strategy. Drizzle schema files in `src/server/db/schema/*.ts` must match this document; the SQL here is the source of truth for review.
 
-Last updated: 2026-11-02
+Last updated: 2026-11-03
 
 ## 1. ER diagram
 
@@ -178,6 +178,8 @@ CREATE TABLE request_traces (
   ttft_ms          int,
   latency_ms       int,
   refused          boolean NOT NULL DEFAULT false,
+  refusal_reason   text CHECK (refusal_reason IN ('gate','model','no_valid_citations')),
+  generated_text   text,                                       -- the model's answer before validation
   citations_valid  int NOT NULL DEFAULT 0,
   citations_dropped int NOT NULL DEFAULT 0,
   error            text

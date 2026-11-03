@@ -20,6 +20,7 @@ const citation: ChatCitation = {
 };
 
 const doneData = {
+  reason: null,
   usage: { inputTokens: 1, outputTokens: 1 },
   ttftMs: 1,
   latencyMs: 2,
