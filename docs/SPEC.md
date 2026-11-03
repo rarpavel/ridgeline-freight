@@ -76,7 +76,7 @@ Tables (DDL in `docs/03-data/DATA_MODEL.md`): `documents`, `document_texts`, `ch
 1. Vector top-20 (cosine, exact scan) and FTS top-20 (any word of the question, `ts_rank_cd`; ADR-0019), both with `access_roles && $roles`.
 2. RRF (k = 60) → top-8, at most 3 chunks per document.
 3. Gate: best cosine < `SIM_FLOOR` **and** no chunk holds every word of the question → refusal without a model call. `SIM_FLOOR` calibrated on the dev split.
-4. Prompt: versioned system prompt (`prompts/rag-system.v2.md`) + context blocks `[1]..[8]` + the question. output limit 1,500 tokens (ADR-0021).
+4. Prompt: versioned system prompt (`prompts/rag-system.v3.md`) + context blocks `[1]..[8]` + the question. output limit 1,500 tokens (ADR-0021).
 5. SSE events: `meta` → `delta`* → `citations` → `done` | `error`.
 6. Post-processing: parse `[n]`, drop unknown aliases (logged), detect `NO_ANSWER:`, convert zero-citation answers to refusals, write `request_traces`.
 

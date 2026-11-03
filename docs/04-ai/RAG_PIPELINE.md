@@ -88,7 +88,7 @@ A gate refusal makes no model call and sends `meta` with `gate: 'refuse'`, the f
 
 ### 2.4 Prompt assembly (`prompt.ts`)
 
-- System prompt: `prompts/rag-system.v2.md` (authored in `data-gen/prompts/05-rag-system-prompt.md`).
+- System prompt: `prompts/rag-system.v3.md` (authored in `data-gen/prompts/05-rag-system-prompt.md`).
 - `buildMessages({ role, today, chunks, question })` returns `[system, user]`. `{{role}}` and `{{today}}` (`MM/DD/YYYY`, UTC) are rendered into the system message.
 - User message: context blocks in fused order, then the question (cut to 500 chars):
   ```
