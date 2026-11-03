@@ -2,7 +2,7 @@
 
 What is tested at which level, with which tools, and what runs in CI. The goal is confidence in retrieval, access control and citations, not coverage numbers.
 
-Last updated: 2026-11-02
+Last updated: 2026-11-03
 
 ## 1. Levels
 
@@ -23,6 +23,7 @@ Last updated: 2026-11-02
 - `prompts`: loader hash stability, `{{var}}` rendering, missing variable throws; `prompts/rag-system.v1.md` equals the block in `data-gen/prompts/05-rag-system-prompt.md`.
 - `prompt`: `buildMessages` block numbering and format, table header rows in a block, question cut to 500 chars.
 - `markdown`: rendered answers contain no raw HTML, no links, no images.
+- `document-blocks`: normalized text → headings, lists, tables with offsets; overlap with a chunk range; the section around an offset.
 - `docx parser` (fixtures in `tests/fixtures/*.docx`, produced by the data-gen renderer): headings → `##`, tables → Markdown rows, lists.
 - `pricing`: cost math with `asOf`.
 
@@ -34,6 +35,7 @@ Last updated: 2026-11-02
 - `guardrails.test.ts`: 21st request in an hour → 429; daily budget reached → 503; windows reset.
 - `auth.test.ts`: wrong password → 401; cookie attributes; `/admin/*` forbidden for non-admin; cross-site login and logout refused. Counting failed logins in the limiter is added here with the rate limiter.
 - `trace.test.ts`: one trace per request with correct counts.
+- `documents-route.test.ts`: viewer and original-file routes: 401 without a session, 403 with no part of the document for another role, 404 for an unknown or malformed id, chunk range only for a chunk of this document, DOCX bytes and file name.
 
 ## 3. Fixtures and determinism
 

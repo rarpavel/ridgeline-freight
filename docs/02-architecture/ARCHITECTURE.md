@@ -78,7 +78,11 @@ The client renders `[n]` markers as plain text while streaming and upgrades them
 
 ### 2.3 Document viewer
 
-`GET /api/documents/:id?chunk=:chunkId` → checks `access_roles && session.roles` → returns `document_texts.text`, `sections` and the chunk's `char_start/char_end`. The page renders the text and scrolls to the highlighted range. `GET /api/documents/:id/original` serves the DOCX with the same check.
+`GET /api/documents/:id?chunk=:chunkId` → filters on `access_roles && session.roles` in SQL → returns `{ id, title, text, sections, chunk: { charStart, charEnd } | null }`. `GET /api/documents/:id/original` serves the DOCX as an attachment named `<slug>.docx`, with the same filter. Both answer 401 without a session, 403 when the document exists outside the role (only its id is read to tell this apart, and no part of it is returned), and 404 for an unknown or malformed id. A `chunk` that is malformed, gone after a re-ingest or from another document leaves `chunk: null`: the document opens without a highlight.
+
+The page `/documents/:id?chunk=:chunkId` calls the same query directly and parses the normalized text back into headings, paragraphs, lists and tables (`src/lib/document-blocks.ts`), rendered as React text only, so nothing in a document can become markup. It highlights every line that overlaps the chunk's range and scrolls to the first one; the header stays on top and names the cited section, so the section is visible even when a chunk starts in the middle of it. Citation chips open the page in a new tab, because the single-turn answer lives only in the chat page's state.
+
+The DOCX files are read at runtime from `source_path`, relative to the project root. The path comes from the database, so the file tracer can't follow it: `outputFileTracingIncludes` in `next.config.ts` ships `data/corpus` with this route, and a `turbopackIgnore` comment on the path keeps the tracer from including the whole project.
 
 ### 2.4 Evaluation
 
