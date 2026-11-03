@@ -1,10 +1,11 @@
 import type { Metadata } from 'next';
 
+import { DemoGuide } from '@/components/auth/DemoGuide';
 import { LoginForm } from '@/components/auth/LoginForm';
 import { safeNextPath } from '@/lib/safe-next-path';
 import { listDemoAccounts } from '@/server/auth/accounts';
 
-export const metadata: Metadata = { title: 'Sign in · Ridgeline Freight RAG Assistant' };
+export const metadata: Metadata = { title: 'Sign in' };
 
 // The account list comes from runtime env, so it must not be frozen at build time.
 export const dynamic = 'force-dynamic';
@@ -27,6 +28,7 @@ export default async function LoginPage({ searchParams }: PageProps<'/login'>) {
           accounts={listDemoAccounts()}
           next={safeNextPath(typeof next === 'string' ? next : null)}
         />
+        <DemoGuide />
       </div>
     </main>
   );

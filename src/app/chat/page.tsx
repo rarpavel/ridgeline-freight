@@ -7,7 +7,7 @@ export default async function ChatPage() {
   const { account, role } = await requireSession();
 
   return (
-    <div className="flex min-h-dvh flex-1 flex-col">
+    <div className="flex flex-1 flex-col">
       <header className="border-border flex items-center justify-between gap-3 border-b px-4 py-3">
         <div className="min-w-0">
           <h1 className="truncate text-base font-semibold">Ridgeline Freight RAG Assistant</h1>
