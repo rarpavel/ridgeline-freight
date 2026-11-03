@@ -74,7 +74,7 @@ Streaming protocol (SSE), events in order:
 | `done` | `{ refused, usage: { inputTokens, outputTokens }, ttftMs \| null, latencyMs, costUsd \| null }` | last on success; `costUsd` is `null` until RAG-027 |
 | `error` | `{ code: "llm_error" \| "db_error" \| "internal", message }` | terminal; replaces `citations` and `done`, and comes without `meta` if retrieval failed. `rate_limited` and `budget_exhausted` are added with the guardrails (RAG-038) |
 
-The client renders `[n]` markers as plain text while streaming and upgrades them to chips on `citations`, where it replaces the streamed text with `citations.text`: dropped markers and the `NO_ANSWER:` prefix are gone from it, so the client does not repeat the server's parsing. A missing session or an invalid body returns 401 or 400 as JSON before the stream starts; after that the HTTP status is already 200 and a failure can only be an `error` event.
+The client renders `[n]` markers as plain text while streaming and upgrades them to chips on `citations`, where it replaces the streamed text with `citations.text`: dropped markers and the `NO_ANSWER:` prefix are gone from it, so the client does not repeat the server's parsing. The only exception is cosmetic: the client hides a leading `NO_ANSWER:` while streaming, and whether an answer is a refusal still comes from `done.refused`. If an `error` event arrives or the stream ends without `done`, the partial text is removed, because its citations were never validated. A missing session or an invalid body returns 401 or 400 as JSON before the stream starts; after that the HTTP status is already 200 and a failure can only be an `error` event.
 
 ### 2.3 Document viewer
 
