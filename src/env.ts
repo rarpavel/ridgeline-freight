@@ -40,7 +40,7 @@ export const envSchema = z.object({
   EMBEDDING_MODEL: z.string().default('text-embedding-3-small'),
   SESSION_SECRET: z.string().min(32),
   DEMO_ACCOUNTS_JSON: demoAccountsSchema,
-  SIM_FLOOR: z.coerce.number().min(0).max(1).default(0.3),
+  SIM_FLOOR: z.coerce.number().min(0).max(1).default(0.45),
   MAX_QUESTION_CHARS: z.coerce.number().int().positive().default(500),
   MAX_OUTPUT_TOKENS: z.coerce.number().int().positive().default(700),
   RATE_LIMIT_ACCOUNT_PER_HOUR: z.coerce.number().int().positive().default(20),

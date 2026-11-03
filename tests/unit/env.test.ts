@@ -34,7 +34,7 @@ describe('env', () => {
     const { env } = await importEnv();
 
     expect(env.CHAT_MODEL).toBe('gpt-5-mini');
-    expect(env.SIM_FLOOR).toBe(0.3);
+    expect(env.SIM_FLOOR).toBe(0.45);
     expect(env.DEMO_ACCOUNTS_JSON).toEqual([{ id: 'sales', role: 'sales', passwordHash: HASH }]);
   });
 
