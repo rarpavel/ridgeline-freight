@@ -135,7 +135,7 @@ Roadmap: a committed injection test corpus with automated tests and an `injectio
 | Output | 1,500 tokens, reasoning included, at low effort (ADR-0021, ADR-0022) | model call |
 | Daily tokens (global) | `DAILY_TOKEN_BUDGET` (default 400k ≈ $0.30 on `gpt-5-mini`) | `usage_daily` check before the model call |
 | Failed logins per IP | 5 / hour | `rate_limits` (`login:<sha256>`) |
-| Provider spend, OpenAI | $20 / month, seen 2026-11-03; the dashboard marks it "Limit not enforced", so it does not stop spending | dashboard, manual |
+| Provider spend, OpenAI | $20 / month, enforced since 2026-11-03: requests fail once it is reached | dashboard, manual |
 | Provider spend, Anthropic | $10 / month, set 2026-11-03; the key is used only by the CLIs, not in production | dashboard, manual |
 
 `/api/chat` checks in this order, each before anything is spent: session, question length (400 with no database query), IP limit, account limit, daily budget. Windows are whole UTC hours and the budget day is a UTC day. The `ip:` and `acct:` counts include refused requests. An unreachable database stops the request with 503 `db_error`: the limits fail closed.
@@ -144,7 +144,7 @@ The eval CLI calls `answerQuestion` directly, so these limits do not apply to it
 
 **Known limits:**
 - Requests already running can pass the budget by what they use, because usage is added after the answer.
-- A client that disconnects mid-answer adds no tokens, because the provider reports usage only at the end of the stream. Rate limits bound this. The OpenAI limit is not enforced, so nothing at the provider stops the spend.
+- A client that disconnects mid-answer adds no tokens, because the provider reports usage only at the end of the stream. Rate limits bound this, and the enforced OpenAI limit is the hard stop.
 - Fixed windows allow a 2× burst at a window edge (ADR-0008).
 - `rate_limits` rows are not pruned; at demo scale the table stays small.
 - The IP hash has no salt, so it hides addresses from a casual reader of the table, not from someone who hashes the IPv4 range.
