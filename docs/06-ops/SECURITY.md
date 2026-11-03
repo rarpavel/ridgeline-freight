@@ -20,7 +20,7 @@ Last updated: 2026-11-03
 | Repudiation | "Who spent the budget?" | `request_traces` with account, hashed ip, timestamps; `usage_daily` |
 | Information disclosure | Cross-role leak via retrieval, viewer, or error messages | SQL filter + leak integration test; `AppError.safeMessage` only; stack traces never returned |
 | Information disclosure | Secrets in client bundle or logs | Only `NEXT_PUBLIC_*` reaches the client; `pino` redaction of `authorization`, `cookie`, keys |
-| Denial of service / cost abuse | Script hammers `/api/chat` | Per-account 20/h, per-IP 40/h, question ≤ 500 chars, `max_tokens` 700, daily token budget with hard stop, provider spend cap; Vercel attack challenge mode if needed |
+| Denial of service / cost abuse | Script hammers `/api/chat` | Per-account 20/h, per-IP 40/h, question ≤ 500 chars, output limit 1,500 tokens, daily token budget with hard stop, provider spend cap; Vercel attack challenge mode if needed |
 | Elevation of privilege | Non-admin opens `/admin/eval` | `proxy.ts` redirect **plus** `requireRole('admin')` in every admin route/server function |
 | Supply chain | Malicious dependency | `pnpm` lockfile, Dependabot, minimal dependency list with justification |
 
@@ -65,7 +65,7 @@ Roadmap: a committed injection test corpus with automated tests and an `injectio
 | Requests per account | 20 / hour | `rate_limits` (`acct:<id>`) |
 | Requests per IP | 40 / hour | `rate_limits` (`ip:<sha256>`) |
 | Question length | 500 chars | request validation |
-| Output | 700 tokens | model call |
+| Output | 1,500 tokens, reasoning included (ADR-0021) | model call |
 | Daily tokens (global) | `DAILY_TOKEN_BUDGET` (default 400k ≈ $0.30 on `gpt-5-mini`) | `usage_daily` check before the model call |
 | Provider spend | monthly cap in the provider dashboard | manual |
 

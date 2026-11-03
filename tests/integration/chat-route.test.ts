@@ -171,6 +171,7 @@ describe('POST /api/chat', () => {
     vi.stubEnv('DATABASE_URL', url);
     vi.stubEnv('OPENAI_API_KEY', 'test-openai-key');
     vi.stubEnv('CHAT_MODEL', 'test-chat-model');
+    vi.stubEnv('MAX_OUTPUT_TOKENS', '1500');
     vi.stubEnv('SESSION_SECRET', SECRET);
     vi.stubEnv(
       'DEMO_ACCOUNTS_JSON',
@@ -216,7 +217,7 @@ describe('POST /api/chat', () => {
     const meta = eventOf(events, 'meta')?.data;
     expect(meta?.gate).toBe('answer');
     expect(meta?.model).toBe('test-chat-model');
-    expect(meta?.promptVersion).toMatch(/^rag-system@v1#/);
+    expect(meta?.promptVersion).toMatch(/^rag-system@v2#/);
     expect(meta?.traceId).toMatch(/^[0-9a-f-]{36}$/);
 
     expect(eventOf(events, 'citations')?.data).toEqual({
@@ -249,7 +250,7 @@ describe('POST /api/chat', () => {
     const prompt = JSON.stringify(params.messages);
     expect(prompt).toContain(MSA_TEXT);
     expect(prompt).not.toContain(HR_TEXT);
-    expect(params.max_completion_tokens).toBe(700);
+    expect(params.max_completion_tokens).toBe(1500);
     expect(params.stream_options).toEqual({ include_usage: true });
   });
 

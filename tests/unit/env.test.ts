@@ -35,6 +35,7 @@ describe('env', () => {
 
     expect(env.CHAT_MODEL).toBe('gpt-5-mini');
     expect(env.SIM_FLOOR).toBe(0.45);
+    expect(env.MAX_OUTPUT_TOKENS).toBe(1500);
     expect(env.DEMO_ACCOUNTS_JSON).toEqual([{ id: 'sales', role: 'sales', passwordHash: HASH }]);
   });
 

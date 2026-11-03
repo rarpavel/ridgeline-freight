@@ -88,7 +88,7 @@ A gate refusal makes no model call and sends `meta` with `gate: 'refuse'`, the f
 
 ### 2.4 Prompt assembly (`prompt.ts`)
 
-- System prompt: `prompts/rag-system.v1.md` (authored in `data-gen/prompts/05-rag-system-prompt.md`).
+- System prompt: `prompts/rag-system.v2.md` (authored in `data-gen/prompts/05-rag-system-prompt.md`).
 - `buildMessages({ role, today, chunks, question })` returns `[system, user]`. `{{role}}` and `{{today}}` (`MM/DD/YYYY`, UTC) are rendered into the system message.
 - User message: context blocks in fused order, then the question (cut to 500 chars):
   ```
@@ -101,7 +101,7 @@ A gate refusal makes no model call and sends `meta` with `gate: 'refuse'`, the f
   QUESTION: ...
   ```
   Single turn; no history. A later part of a split table has the header rows from `context_prefix` at the start of its block (§1.2). A chunk with no section leaves out `· Section …`.
-- `max_tokens: 700`.
+- Output limit: 1,500 tokens (`MAX_OUTPUT_TOKENS`). Reasoning tokens count against it (ADR-0021).
 
 ### 2.5 Generation (`generate.ts`)
 
@@ -127,7 +127,7 @@ One `request_traces` row per request (candidates with scores, gate, prompt versi
 | `finalK` / `perDocCap` | 8 / 3 | `retrieval_config` | dev split |
 | `simFloor` | 0.45 | env `SIM_FLOOR` | dev split |
 | chunk size | 50–600 tokens | `CHUNKER_VERSION` | dev split |
-| `max_tokens` | 700 | env | fixed |
+| `MAX_OUTPUT_TOKENS` | 1,500 | env | dev split (ADR-0021) |
 
 ### 3.1 `SIM_FLOOR` calibration (RAG-033, 2026-11-03)
 
@@ -143,21 +143,22 @@ Best cosine per question, with the role of the question applied:
 
 `no_answer` questions sit inside the answerable range, because they are worded like real questions about the same documents. A floor can therefore separate only questions the role has no documents for.
 
-| `SIM_FLOOR` | `MAX_OUTPUT_TOKENS` | Runs | Gate refusals per run | falseRefusalRate | refusalAccuracy | leakCount | Answers at the token limit |
-|-------------|-----|---|---|-------|-------|---|------|
-| 0.20 | 700 | 1 | 0 | 0.000 | 1.000 | 0 | 2 |
-| 0.25 | 700 | 1 | 0 | 0.000 | 1.000 | 0 | 2 |
-| 0.30 | 700 | 1 | 0 | 0.000 | 1.000 | 0 | 1 |
-| 0.35 | 700 | 1 | 0 | 0.111 | 0.667 | 0 | 3 |
-| **0.45** | 700 | 3 | 1 | 0.111, 0.000, 0.111 | 1.000, 0.667, 0.667 | 0 | 3, 2, 2 |
-| 0.50 | 700 | 1 | 1 | 0.333 | 1.000 | 0 | 5 |
-| 0.60 | 700 | 1 | 2 | 0.000 | 1.000 | 0 | 0 |
-| 0.45 | 1500 | 3 | 1 | 0.000, 0.000, 0.000 | 0.333, 0.333, 0.667 | 0 | 0 |
+| `SIM_FLOOR` | Prompt | `MAX_OUTPUT_TOKENS` | Runs | Gate refusals per run | falseRefusalRate | refusalAccuracy | leakCount | Answers at the token limit |
+|-------------|----|-----|---|---|-------|-------|---|------|
+| 0.20 | v1 | 700 | 1 | 0 | 0.000 | 1.000 | 0 | 2 |
+| 0.25 | v1 | 700 | 1 | 0 | 0.000 | 1.000 | 0 | 2 |
+| 0.30 | v1 | 700 | 1 | 0 | 0.000 | 1.000 | 0 | 1 |
+| 0.35 | v1 | 700 | 1 | 0 | 0.111 | 0.667 | 0 | 3 |
+| 0.45 | v1 | 700 | 3 | 1 | 0.111, 0.000, 0.111 | 1.000, 0.667, 0.667 | 0 | 3, 2, 2 |
+| 0.50 | v1 | 700 | 1 | 1 | 0.333 | 1.000 | 0 | 5 |
+| 0.60 | v1 | 700 | 1 | 2 | 0.000 | 1.000 | 0 | 0 |
+| 0.45 | v1 | 1,500 | 3 | 1 | 0.000, 0.000, 0.000 | 0.333, 0.333, 0.667 | 0 | 0 |
+| **0.45** | **v2** | **1,500** | **5** | **1** | **0.000 in all 5** | **1.000 in all 5** | **0** | **0** |
 
 **Chosen: 0.45.** It refuses `other_role-05` without a model call and leaves 0.15 of margin under the lowest answerable question. A false refusal is the costlier error, since the model can still refuse what the gate lets through. 0.60 scores well here but sits 0.0001 under `direct-03`, so it would not generalize. Every floor from 0.20 to 0.35 is below all 12 best-sim values, so the gate never fired and those runs differ only by model variation. 0.45 and 0.50 refuse the same one question, so they differ the same way.
 
-**The floor does not decide these metrics; the output limit does.** With the limit at 700 tokens, all 6 false refusals in the 9 runs were answers cut off at the limit with no citation yet, converted by `no_valid_citations`. With 1500, false refusals disappear, but `no_answer` questions get answered in 5 of 6 attempts. The perfect `refusalAccuracy` at 700 comes largely from the same cut-off (10 of 18 `no_answer` attempts), not from the model declining. Single-run numbers are unstable at this sample size: one false refusal is 0.111, above the 0.10 target.
+**The floor does not decide these metrics; the output limit and the prompt do (ADR-0021).** With the limit at 700 tokens, all 6 false refusals in the 9 runs were answers cut off at the limit with no citation yet, converted by `no_valid_citations`. Reasoning tokens count against the limit, and one answer used 1,229 in total. The same cut-off produced 10 of 18 `no_answer` refusals, so `refusalAccuracy` of 1.000 at 700 was partly an accident. With 1,500 and prompt v1, `no_answer` questions counted as answered in 5 of 6 attempts, though all 5 ended with a `NO_ANSWER:` line: rule 8 of v1 asked for that form, while `citations.ts` only recognizes the marker at the start. Prompt v2 puts the marker first and alone, and no answer in the 5 runs had it anywhere else.
 
-The limit is not recorded in `retrieval_config`; the runs with 1500 are labeled `rag-033-floor-0.45-cap1500`. Chunking was not changed: `retrievalHitRate` and `retrievalHitRate@20` are 1.000 in every run.
+These numbers cover 12 dev questions without the judge, so they say nothing about whether answers are correct, and one false refusal is still 0.111, above the 0.10 target. TTFT p50 is 4.2–5.3 s against the 3 s target. The limit is not recorded in `retrieval_config`; the runs are labeled `rag-033-floor-0.45-cap1500` (v1) and `rag-033-v2-cap1500` (v2). Chunking was not changed: `retrievalHitRate` and `retrievalHitRate@20` are 1.000 in every run.
 
 Roadmap (not MVP): HNSW index with iterative scans at larger corpus sizes; reranker between fusion and gate; query condensation for follow-ups.

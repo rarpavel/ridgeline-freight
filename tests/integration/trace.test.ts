@@ -240,7 +240,7 @@ describe('request_traces', () => {
       generatedText: 'A [1] and B [2] and C [9]',
       error: null,
     });
-    expect(trace.promptVersion).toMatch(/^rag-system@v1#/);
+    expect(trace.promptVersion).toMatch(/^rag-system@v2#/);
     expect(trace.costUsd).toBeCloseTo(EMBEDDING_COST + CHAT_COST, 6);
     expect(trace.ttftMs).toEqual(expect.any(Number));
     expect(trace.latencyMs).toEqual(expect.any(Number));
