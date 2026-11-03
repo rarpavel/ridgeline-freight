@@ -77,7 +77,10 @@ function modelStreams(parts: Part[]) {
 }
 
 function embeddingIs(embedding: number[]) {
-  fakeOpenai.embeddings.create.mockResolvedValue({ data: [{ index: 0, embedding }] });
+  fakeOpenai.embeddings.create.mockResolvedValue({
+    data: [{ index: 0, embedding }],
+    usage: { prompt_tokens: 5, total_tokens: 5 },
+  });
 }
 
 /** Every event of a finished SSE response, in order. */
@@ -189,9 +192,7 @@ describe('POST /api/chat', () => {
   beforeEach(async () => {
     vi.clearAllMocks();
     cookieJar.clear();
-    fakeOpenai.embeddings.create.mockResolvedValue({
-      data: [{ index: 0, embedding: VECTOR }],
-    });
+    embeddingIs(VECTOR);
     await signIn('sales', 'sales');
   });
 
@@ -429,7 +430,7 @@ describe('POST /api/chat', () => {
 
   describe('answerQuestion', () => {
     const user = { account: 'sales', role: 'sales' } as const;
-    const embed = async () => [VECTOR];
+    const embed = async () => ({ embedding: VECTOR, tokens: 5 });
 
     async function collect(events: AsyncIterable<ChatEvent>) {
       const collected: ChatEvent[] = [];

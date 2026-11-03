@@ -1,11 +1,11 @@
 import 'server-only';
 
-export type VectorHit = { chunkId: string; documentId: string; sim: number };
-export type FtsHit = { chunkId: string; documentId: string; score: number };
+type HitSource = { chunkId: string; documentId: string; slug: string; sectionRef: string | null };
 
-export type FusedCandidate = {
-  chunkId: string;
-  documentId: string;
+export type VectorHit = HitSource & { sim: number };
+export type FtsHit = HitSource & { score: number };
+
+export type FusedCandidate = HitSource & {
   vectorRank: number | null;
   vectorSim: number | null;
   ftsRank: number | null;
@@ -37,10 +37,12 @@ export function fuseRrf(
   { k, finalK, perDocCap }: FuseOptions,
 ): FusedCandidate[] {
   const byChunk = new Map<string, FusedCandidate>();
-  const candidateFor = ({ chunkId, documentId }: { chunkId: string; documentId: string }) => {
+  const candidateFor = ({ chunkId, documentId, slug, sectionRef }: HitSource) => {
     const candidate = byChunk.get(chunkId) ?? {
       chunkId,
       documentId,
+      slug,
+      sectionRef,
       vectorRank: null,
       vectorSim: null,
       ftsRank: null,

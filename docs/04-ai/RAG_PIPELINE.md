@@ -110,12 +110,12 @@ A gate refusal makes no model call and sends `meta` with `gate: 'refuse'`, the f
 
 - Regex `\[(\d{1,2})\]` over the full answer; valid if `1 ≤ n ≤ inPrompt.length`; unknown aliases are removed and counted in `citations_dropped`.
 - A refusal is detected when the answer starts with `NO_ANSWER:` (`reason = 'model'`); the marker is stripped, every `[n]` in it counts as dropped, the model's reason stays as the text (the fixed refusal text if it gave none), and the UI shows the refusal state.
-- If `!refused && valid.length === 0` → converted to a refusal (`reason = 'no_valid_citations'`); the generated text is replaced by the fixed refusal text. `validateCitations` returns the generated text as `originalText` for the trace (RAG-027); it is not logged.
+- If `!refused && valid.length === 0` → converted to a refusal (`reason = 'no_valid_citations'`); the generated text is replaced by the fixed refusal text. `validateCitations` returns the generated text as `originalText`; the trace stores it as `generated_text`, and it is not logged.
 - `done.reason` carries `gate`, `model` or `no_valid_citations`, and `null` for an answer.
 
 ### 2.7 Trace (`trace.ts`)
 
-One `request_traces` row per request (candidates with scores, gate, prompt version, model, tokens, cost from `config/pricing.json`, TTFT, latency, citation counts, refusal, error), written after `done`/`error` and awaited before the handler returns.
+One `request_traces` row per request (candidates with scores, gate, prompt version, model, tokens, cost from `config/pricing.json`, TTFT, latency, citation counts, refusal, error), written once the request ends, whether by `done`, `error` or a client disconnect, and awaited before the stream closes. A failed write is logged as `chat.trace_failed` and does not affect the answer.
 
 ## 3. Tuning knobs
 

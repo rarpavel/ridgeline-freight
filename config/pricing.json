@@ -1,0 +1,13 @@
+{
+  "asOf": "2026-11-03",
+  "currency": "USD",
+  "sources": {
+    "openai": "https://developers.openai.com/api/docs/pricing",
+    "anthropic": "https://platform.claude.com/docs/en/about-claude/pricing"
+  },
+  "models": {
+    "gpt-5-mini": { "inputPer1M": 0.25, "outputPer1M": 2 },
+    "text-embedding-3-small": { "inputPer1M": 0.02, "outputPer1M": 0 },
+    "claude-haiku-5-5": { "inputPer1M": 0.1, "outputPer1M": 0.5 }
+  }
+}

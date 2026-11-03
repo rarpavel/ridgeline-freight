@@ -7,11 +7,11 @@ vi.mock('server-only', () => ({}));
 const OPTIONS = { k: 60, finalK: 8, perDocCap: 3 };
 
 function vectorHit(chunkId: string, documentId = `doc-${chunkId}`, sim = 0.5): VectorHit {
-  return { chunkId, documentId, sim };
+  return { chunkId, documentId, slug: `slug-${documentId}`, sectionRef: null, sim };
 }
 
 function ftsHit(chunkId: string, documentId = `doc-${chunkId}`, score = 0.1): FtsHit {
-  return { chunkId, documentId, score };
+  return { chunkId, documentId, slug: `slug-${documentId}`, sectionRef: null, score };
 }
 
 describe('fuseRrf', () => {
@@ -26,6 +26,8 @@ describe('fuseRrf', () => {
     expect(fused[0]).toEqual({
       chunkId: 'both',
       documentId: 'doc-both',
+      slug: 'slug-doc-both',
+      sectionRef: null,
       vectorRank: 2,
       vectorSim: 0.7,
       ftsRank: 2,

@@ -10,6 +10,7 @@ import { afterAll, beforeAll, describe, expect, it, vi } from 'vitest';
 
 import { chunks } from '@/server/db/schema/chunks';
 import { documents, documentTexts } from '@/server/db/schema/documents';
+import { requestTraces } from '@/server/db/schema/request-traces';
 
 import { createDatabase, dropDatabase, withClient } from './helpers/database';
 
@@ -94,7 +95,7 @@ describe('migrations', () => {
     await dropDatabase(DB_NAME);
   });
 
-  it('creates the vector extension and only the corpus tables', async () => {
+  it('creates the vector extension and only the expected tables', async () => {
     const extension = await client.query(`SELECT 1 FROM pg_extension WHERE extname = 'vector'`);
     expect(extension.rowCount).toBe(1);
 
@@ -105,6 +106,7 @@ describe('migrations', () => {
       'chunks',
       'document_texts',
       'documents',
+      'request_traces',
     ]);
   });
 
@@ -218,6 +220,36 @@ describe('migrations', () => {
     expect(remaining.rowCount).toBe(0);
   });
 
+  it('rejects an unknown source, gate or refusal_reason on a trace', async () => {
+    const insertTrace = (source: string, gate: string, refusalReason: string | null) =>
+      client.query(
+        `INSERT INTO request_traces (source, account, role, question, retrieval, gate, refusal_reason)
+         VALUES ($1, 'sales', 'sales', 'q', '{}', $2, $3)`,
+        [source, gate, refusalReason],
+      );
+
+    await expect(insertTrace('chat', 'refuse_gate', 'gate')).resolves.toBeDefined();
+    await expect(insertTrace('cron', 'answer', null)).rejects.toMatchObject({
+      code: '23514',
+      constraint: 'request_traces_source_check',
+    });
+    await expect(insertTrace('chat', 'refuse', null)).rejects.toMatchObject({
+      code: '23514',
+      constraint: 'request_traces_gate_check',
+    });
+    await expect(insertTrace('chat', 'answer', 'other')).rejects.toMatchObject({
+      code: '23514',
+      constraint: 'request_traces_refusal_reason_check',
+    });
+  });
+
+  it('indexes request_traces by created_at, newest first', async () => {
+    const { rows } = await client.query<{ indexdef: string }>(
+      `SELECT indexdef FROM pg_indexes WHERE indexname = 'request_traces_created_idx'`,
+    );
+    expect(rows[0]?.indexdef).toContain('created_at DESC');
+  });
+
   it('changes nothing and exits 0 when run a second time', async () => {
     const applied = () => client.query('SELECT hash FROM drizzle.__drizzle_migrations ORDER BY id');
     const before = await applied();
@@ -244,6 +276,7 @@ describe('migrations', () => {
   it('matches the Drizzle schema', async () => {
     expect(await columnsOf(client, 'documents')).toEqual(drizzleColumnsOf(documents));
     expect(await columnsOf(client, 'document_texts')).toEqual(drizzleColumnsOf(documentTexts));
+    expect(await columnsOf(client, 'request_traces')).toEqual(drizzleColumnsOf(requestTraces));
     // tsv is added by a custom migration and is read through SQL, never written.
     expect(await columnsOf(client, 'chunks')).toEqual([...drizzleColumnsOf(chunks), 'tsv'].sort());
   });

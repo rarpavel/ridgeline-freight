@@ -22,6 +22,20 @@
       "when": 1793616339064,
       "tag": "0002_corpus_constraints_and_tsv",
       "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "7",
+      "when": 1793692612717,
+      "tag": "0003_request_traces",
+      "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "7",
+      "when": 1793692613530,
+      "tag": "0004_request_traces_constraints",
+      "breakpoints": true
     }
   ]
 }
