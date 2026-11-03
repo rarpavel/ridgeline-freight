@@ -46,7 +46,7 @@ sequenceDiagram
   participant L as OpenAI
   U->>P: POST /api/chat {question}
   P->>R: session ok (role)
-  R->>G: rate limit (account, ip), question length, daily budget
+  R->>G: question length, rate limit (ip, account), daily budget
   G-->>R: allow | 429 | 503 budget
   R->>L: embed question
   R->>DB: vector top-20 + FTS top-20 (role filter in SQL)

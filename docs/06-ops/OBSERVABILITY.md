@@ -36,7 +36,7 @@ Retention: unbounded in the MVP (demo traffic); prune by hand if the table grows
 ## 2. Logs
 
 - `pino` JSON to stdout; Vercel keeps runtime logs (Hobby: short retention, `TO VERIFY` current window). Fields per line: `level, time, msg, traceId, route, account, role, durationMs` and event-specific data.
-- Events: `chat.done` (gate, tokens, cost, latency, citations valid/dropped, refused), `chat.error`, `chat.trace_failed`, `chat.citations_dropped`, `chat.output_truncated`, `chat.client_disconnected`, `pricing.unknown_model`, `auth.login.fail`, `guardrail.rate_limited`, `guardrail.budget_exhausted`, `ingest.document`, `eval.question`, `health.db_error`, `health.git_sha_unavailable`, `db.pool_error`.
+- Events: `chat.done` (gate, tokens, cost, latency, citations valid/dropped, refused), `chat.error`, `chat.trace_failed`, `chat.citations_dropped`, `chat.output_truncated`, `chat.client_disconnected`, `pricing.unknown_model`, `auth.login.fail`, `guardrail.rate_limited`, `guardrail.budget_exhausted`, `guardrail.db_error`, `guardrail.usage_failed`, `guardrail.refund_failed`, `ingest.document`, `eval.question`, `health.db_error`, `health.git_sha_unavailable`, `db.pool_error`.
 - Redaction: `authorization`, `cookie`, `*.apiKey`, `*.password`.
 - Question, passages, prompt and answer never go to the logs; the question and the generated text live only in `request_traces`.
 - Errors logged as `err` keep only `type`, `message`, `stack`, `code`, and the same fields of nested `cause` and `errors`, because `pg` attaches its client, password included, to its errors.

@@ -231,11 +231,25 @@ describe('guardrails', () => {
     });
   });
 
-  it('fails closed when the database cannot count: 503 db_error', async () => {
-    await expect(
-      limits.failClosed(() => Promise.reject(new Error('connection refused'))),
-    ).rejects.toMatchObject({ code: 'db_error', status: 503 });
-  });
+  it.each([
+    ['the rate limit', 'insert'],
+    ['the budget', 'select'],
+  ] as const)(
+    'fails closed when %s query fails: 503 db_error, no model call',
+    async (_, method) => {
+      const failure = vi.spyOn(db, method).mockImplementationOnce(() => {
+        throw new Error('connection refused');
+      });
+
+      const response = await POST(chatRequest(QUESTION));
+
+      expect(response.status).toBe(503);
+      expect((await errorOf(response)).code).toBe('db_error');
+      expect(fakeOpenai.chat.completions.create).not.toHaveBeenCalled();
+      expect(fakeOpenai.embeddings.create).not.toHaveBeenCalled();
+      failure.mockRestore();
+    },
+  );
 
   describe('rate limit windows', () => {
     const deps = (now: Date) => ({ db, clock: () => now });

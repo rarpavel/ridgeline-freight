@@ -6,6 +6,7 @@ import { DrizzleQueryError } from 'drizzle-orm/errors';
 
 import { AppError } from '@/lib/errors';
 import type { db as appDb } from '@/server/db/client';
+import { logger } from '@/server/logger';
 
 export type GuardrailDeps = {
   db: typeof appDb;
@@ -39,6 +40,8 @@ export async function failClosed<T>(query: () => Promise<T>): Promise<T> {
     return await query();
   } catch (err) {
     const cause = err instanceof DrizzleQueryError ? err.cause : err;
+    // errorResponse does not log an AppError, so this is the only record of the cause.
+    logger.error({ err: cause }, 'guardrail.db_error');
     throw new AppError('db_error', DB_UNAVAILABLE, { cause });
   }
 }

@@ -1,6 +1,7 @@
 import 'server-only';
 
 import { and, eq, sql } from 'drizzle-orm';
+import { DrizzleQueryError } from 'drizzle-orm/errors';
 
 import { env } from '@/env';
 import { AppError } from '@/lib/errors';
@@ -22,18 +23,18 @@ async function countRequest(
   start: Date,
   { db }: Pick<GuardrailDeps, 'db'>,
 ): Promise<number> {
-  const [row] = await failClosed(() =>
-    db
+  return failClosed(async () => {
+    const [row] = await db
       .insert(rateLimits)
       .values({ key, windowStart: start, count: 1 })
       .onConflictDoUpdate({
         target: [rateLimits.key, rateLimits.windowStart],
         set: { count: sql`${rateLimits.count} + 1` },
       })
-      .returning({ count: rateLimits.count }),
-  );
-  if (!row) throw new AppError('db_error', 'The rate limit query returned no row.');
-  return row.count;
+      .returning({ count: rateLimits.count });
+    if (!row) throw new Error('The rate limit query returned no row');
+    return row.count;
+  });
 }
 
 /**
@@ -83,7 +84,9 @@ export async function reserveLoginAttempt(
         .set({ count: sql`${rateLimits.count} - 1` })
         .where(and(eq(rateLimits.key, key), eq(rateLimits.windowStart, start)));
     } catch (err) {
-      logger.warn({ err, route: '/api/auth/login' }, 'guardrail.refund_failed');
+      // A failed query's own message carries its parameters.
+      const cause = err instanceof DrizzleQueryError ? err.cause : err;
+      logger.warn({ err: cause, route: '/api/auth/login' }, 'guardrail.refund_failed');
     }
   };
 }
