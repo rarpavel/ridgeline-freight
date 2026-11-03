@@ -98,7 +98,7 @@ Pipeline (`data-gen/`): world bible → fact registry (5–8 facts per document,
 
 40 questions: direct 16, comparison 6, exception 5, no_answer 8, other_role 5. Split **dev 12 / test 28**; thresholds and prompts tuned on dev; README reports test only.
 
-Metrics: retrieval hit rate (expected docs among the 8 in-prompt chunks), correctness (judge, 0/1 + rationale), faithfulness (judge, share of supported claims), refusal accuracy (no_answer + other_role), leak count (other_role with any retrieved chunk; must be 0), false refusal rate, citation validity, TTFT and latency p50/p95, cost per question. Targets: hit rate ≥ 0.90, correctness ≥ 0.85, faithfulness ≥ 0.90, refusal accuracy ≥ 0.95, leaks = 0. Real numbers are published even when below target.
+Metrics: retrieval hit rate (expected docs among the 8 in-prompt chunks), correctness (judge, 0/1 + rationale), faithfulness (judge, share of supported claims), refusal accuracy (no_answer + other_role), leak count (other_role questions with any retrieved chunk from a disallowed document; must be 0), false refusal rate, citation validity, TTFT and latency p50/p95, cost per question. Targets: hit rate ≥ 0.90, correctness ≥ 0.85, faithfulness ≥ 0.90, refusal accuracy ≥ 0.95, leaks = 0. Real numbers are published even when below target.
 
 Runs: `pnpm eval --split test|dev --label <name>` from the developer's machine; results in `eval_runs` / `eval_results`; `/admin/eval` lists runs and per-question rows. A full test run costs ≈ $0.10.
 

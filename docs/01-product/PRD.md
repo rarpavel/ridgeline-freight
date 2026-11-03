@@ -2,7 +2,7 @@
 
 Product requirements for the demo: the problem, who uses it, what is in and out of scope, and how success is measured. Technical design lives in `docs/02-architecture/ARCHITECTURE.md`; this file answers "what and for whom".
 
-Last updated: 2026-11-02
+Last updated: 2026-11-03
 
 ## Problem
 
@@ -40,7 +40,7 @@ Out of scope (explicitly): conversation history, document upload by users, multi
 - As `sales`, I ask "What is the late delivery penalty in the Harbor Point Foods MSA?" and get the exact figure with `[1]` pointing to the penalty clause; clicking `[1]` opens the MSA at that clause.
 - As `sales`, I ask "Which has the stricter liability cap, Harbor Point Foods or Lakeshore Retail?" and get both figures, each attributed to its MSA, with two citations.
 - As `ops`, I ask "Does the detention charge apply to hazmat loads?" and the answer preserves the exception.
-- As `sales`, I ask about PTO accrual and get a refusal with no HR content and zero retrieved chunks shown in the trace.
+- As `sales`, I ask about PTO accrual and get a refusal with no HR content and no chunk from an HR document shown in the trace.
 - As anyone, I ask "What is the CEO's salary?" and get "This is not in the documents I can access."
 - As `admin`, I open `/admin/eval` and see the latest run with hit rate, correctness, faithfulness, refusal accuracy, leaks, latency, cost, and can compare two runs.
 - As a visitor without login, I am redirected to the login page; the login page shows the demo credentials and a note that data is synthetic.

@@ -2,7 +2,7 @@
 
 How the Ridgeline Freight corpus and the evaluation set are produced: the world bible, the fact registry (JSON Schema), the document catalog, the generation pipeline, DOCX rendering, the validation script, and the eval-question pipeline. Prompts are in `data-gen/prompts/`.
 
-Last updated: 2026-11-02
+Last updated: 2026-11-03
 
 ## 1. Principles
 
@@ -168,7 +168,7 @@ Generation rules (prompt 04):
 - Paraphrase: the question must not contain more than 4 consecutive words from `statement`; ≥ 40% of questions use indirect phrasing (role-play: "a customer asks how long they have to pay…").
 - Comparison questions name two documents and expect both values; distractor questions name a similar document with a different value.
 - `no_answer` questions are plausible for the role but absent from all documents (e.g., CEO salary, a customer not in the world).
-- `other_role` questions are answerable from documents the role cannot access; the expected behavior is refusal with zero retrieved chunks.
+- `other_role` questions are answerable from documents the role cannot access; the expected behavior is refusal with zero retrieved chunks from those documents. Chunks the role may read still come back (ADR-0019).
 - Split assignment is stratified by category (dev ≈ 30%).
 
 Manual review checklist (each question, `reviewed: true` only when all hold): unambiguous; one correct answer from the facts; the expected document(s) really contain it; role is right; no leakage of the exact fact wording; dates/amounts in US format; category correct.
