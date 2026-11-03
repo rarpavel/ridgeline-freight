@@ -1,12 +1,12 @@
 # Case Study, Demo Video and README Structure
 
-Draft of the Upwork case study, the 2-minute demo video script, and the README outline. Numbers in brackets are placeholders filled from the published `test` eval run.
+The Upwork case study, the 2-minute demo video script, and the README outline. The numbers come from the published `test` eval run (`docs/04-ai/EVALUATION.md §3`).
 
 Last updated: 2026-11-03
 
-## 1. Upwork case study (draft)
+## 1. Upwork case study
 
-**Title:** Production-grade RAG assistant for a logistics company's contracts, SOPs and HR policies — with verifiable citations, role-based access and measured accuracy
+**Title:** RAG assistant for a logistics company's contracts, SOPs and HR policies — with verifiable citations, role-based access and measured accuracy
 
 **The problem.** A mid-size freight company keeps the answers to everyday questions — late-delivery penalties, detention fees, PTO accrual, hazmat procedures — inside dozens of contracts, rate sheets and policies. People search shared drives, ask colleagues, and sometimes quote the wrong customer's terms. Off-the-shelf "chat with PDF" tools hallucinate, cite nothing you can check, and show everyone everything.
 
@@ -15,15 +15,17 @@ Last updated: 2026-11-03
 - says "this isn't in the documents" when it isn't — enforced three ways (retrieval gate, model refusal, citation validation), not just asked for in a prompt;
 - enforces roles (sales, HR, ops, admin) in the database query, with automated tests proving zero cross-role leaks;
 - shows its work: every answer has a "sources" panel with retrieved passages, scores, cost and latency;
-- is measured: a held-out test set of [28] questions across five categories, scored deterministically and by an independent LLM judge, with the methodology public.
+- is measured: a held-out test set of 28 questions across five categories, scored deterministically and by an independent LLM judge, with the methodology public.
 
-**Results (test split, [date], model [gpt-5-mini], prompt [v1]).** Retrieval hit rate [xx%] · correctness [xx%] · faithfulness [xx%] · refusal accuracy [xx%] · cross-role leaks 0 · median time to first token [x.x s] · cost per answer [$0.00x].
+**Results (test split, 2026-11-03, model `gpt-5-mini`, prompt `rag-system@v3`).** Retrieval hit rate 100% (document level) · correctness 82.4% · faithfulness 100% · refusal accuracy 100% · cross-role leaks 0 · median time to first token 3.3 s · cost per question $0.0007.
+
+Two targets were missed, and I publish them as measured: correctness (82.4% against 85%) and time to first token (3.3 s against 3 s, measured from a developer laptop). Nothing was tuned after this run, and the reason for each miss is public.
 
 **Stack.** Next.js 16 (App Router, TypeScript strict), PostgreSQL + pgvector (hybrid vector + full-text search, Reciprocal Rank Fusion), OpenAI-compatible model client, Drizzle ORM, Vercel + Neon, GitHub Actions CI.
 
-**What adapts to your company.** Your documents (DOCX today; PDF and scans on the roadmap), your roles and permissions, your model provider (any OpenAI-compatible endpoint, including private deployments), your cloud (AWS/Azure/GCP or on-prem). Synthetic demo data contains no PII; nothing is used to train models.
+**What adapts to your company.** Your documents (DOCX today; PDF and scans on the roadmap), your roles and permissions, your model provider (any OpenAI-compatible endpoint, including private deployments), your cloud (it can be deployed in your own AWS or Azure account, GCP or on-prem). The demo runs on synthetic data with no PII, and your documents are not used to train models.
 
-**Links.** Live demo (demo logins on the page) · [2-minute video](https://youtu.be/E97KsiWyTzg) · GitHub repository · evaluation methodology.
+**Links.** [Live demo](https://ridgeline-freight.vercel.app) (demo logins on the page) · [2-minute video](https://youtu.be/E97KsiWyTzg) · [GitHub repository](https://github.com/rarpavel/ridgeline-freight) · [evaluation methodology](https://github.com/rarpavel/ridgeline-freight/blob/main/docs/04-ai/EVALUATION.md).
 
 ## 2. Demo video script (2:00, English voice-over, 1080p, cursor visible)
 

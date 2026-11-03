@@ -20,7 +20,7 @@ function BackToChat() {
 
 function NoAccess({ message }: { message: string }) {
   return (
-    <main className="mx-auto flex min-h-dvh w-full max-w-2xl flex-col items-start justify-center gap-4 px-4">
+    <main className="mx-auto flex w-full max-w-2xl flex-1 flex-col items-start justify-center gap-4 px-4">
       <h1 className="text-base font-semibold">No access</h1>
       <p className="text-muted-foreground text-sm">{message}</p>
       <BackToChat />
@@ -60,7 +60,7 @@ export default async function DocumentPage({
   const citedSection = citedSectionLabel(document);
 
   return (
-    <div className="flex min-h-dvh flex-1 flex-col">
+    <div className="flex flex-1 flex-col">
       <header className="border-border bg-background sticky top-0 z-10 flex flex-col gap-2 border-b px-4 py-3">
         <div className="flex items-center justify-between gap-3">
           <BackToChat />
