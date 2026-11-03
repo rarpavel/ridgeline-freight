@@ -9,6 +9,7 @@ import { logger } from '@/server/logger';
 import * as chunks from './schema/chunks';
 import * as documents from './schema/documents';
 import * as evaluation from './schema/eval';
+import * as guardrails from './schema/guardrails';
 import * as requestTraces from './schema/request-traces';
 
 export const pool = new Pool({ connectionString: env.DATABASE_URL });
@@ -20,5 +21,5 @@ pool.on('error', (err) => {
 });
 
 export const db = drizzle(pool, {
-  schema: { ...documents, ...chunks, ...requestTraces, ...evaluation },
+  schema: { ...documents, ...chunks, ...requestTraces, ...evaluation, ...guardrails },
 });

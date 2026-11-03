@@ -5,6 +5,9 @@ import { AppError } from '@/lib/errors';
 import { encodeSseEvent, type ChatEvent } from '@/lib/sse';
 import { requireSession } from '@/server/auth/require';
 import { db } from '@/server/db/client';
+import { assertDailyBudget, recordDailyUsage } from '@/server/guardrails/budget';
+import { clientIp } from '@/server/guardrails/limits';
+import { assertChatRateLimit } from '@/server/guardrails/rateLimit';
 import { errorResponse } from '@/server/http';
 import { embedQuery } from '@/server/llm/embeddings';
 import { answerQuestion } from '@/server/rag/answer';
@@ -54,11 +57,19 @@ export async function POST(request: Request) {
   try {
     const user = await requireSession();
     const { question } = await parseBody(request);
+    await assertChatRateLimit({ account: user.account, ip: clientIp(request) }, { db });
+    await assertDailyBudget({ db });
 
     const abort = new AbortController();
     const events = answerQuestion(
       { question, user },
-      { db, embed: embedQuery, llm: streamChat, signal: abort.signal },
+      {
+        db,
+        embed: embedQuery,
+        llm: streamChat,
+        signal: abort.signal,
+        recordUsage: (usage) => recordDailyUsage(usage, { db }),
+      },
     );
     return new Response(toSseStream(events, abort), {
       headers: {

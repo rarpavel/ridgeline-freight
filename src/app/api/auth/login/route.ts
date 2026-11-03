@@ -5,6 +5,9 @@ import { z } from 'zod';
 import { AppError } from '@/lib/errors';
 import { verifyCredentials } from '@/server/auth/accounts';
 import { sessionOptions, type SessionData } from '@/server/auth/session';
+import { db } from '@/server/db/client';
+import { clientIp } from '@/server/guardrails/limits';
+import { reserveLoginAttempt } from '@/server/guardrails/rateLimit';
 import { assertSameOrigin, errorResponse } from '@/server/http';
 import { logger } from '@/server/logger';
 
@@ -28,12 +31,14 @@ export async function POST(request: Request) {
     assertSameOrigin(request);
     const { account, password } = await parseBody(request);
 
+    const refundAttempt = await reserveLoginAttempt(clientIp(request), { db });
     const verified = await verifyCredentials(account, password);
     if (!verified) {
       // The submitted account is user input, so it stays out of the log.
       logger.warn({ route: ROUTE }, 'auth.login_failed');
       throw new AppError('unauthorized', 'Incorrect account or password.');
     }
+    await refundAttempt();
 
     const response = NextResponse.json(
       { account: verified.id, role: verified.role },

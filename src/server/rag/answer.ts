@@ -6,6 +6,7 @@ import { env } from '@/env';
 import { AppError } from '@/lib/errors';
 import type { ChatCitation, ChatErrorCode, ChatEvent } from '@/lib/sse';
 import type { SessionUser } from '@/server/auth/require';
+import type { DailyUsage } from '@/server/guardrails/budget';
 import { costOf, type ModelUsage } from '@/server/llm/pricing';
 import { logger } from '@/server/logger';
 
@@ -25,6 +26,8 @@ export type AnswerDeps = RetrieveDeps & {
   /** The eval CLI sets these two; the chat route keeps the defaults. */
   source?: 'chat' | 'eval';
   simFloor?: number;
+  /** Adds to the daily budget. Only the chat route passes it: eval runs do not spend the demo's. */
+  recordUsage?: (usage: DailyUsage) => Promise<void>;
 };
 
 const ROUTE = '/api/chat';
@@ -75,7 +78,16 @@ function errorCode(err: unknown): ChatErrorCode {
  */
 export async function* answerQuestion(
   { question, user }: { question: string; user: SessionUser },
-  { db, embed, llm, signal, llmTimeoutMs, source = 'chat', simFloor = env.SIM_FLOOR }: AnswerDeps,
+  {
+    db,
+    embed,
+    llm,
+    signal,
+    llmTimeoutMs,
+    source = 'chat',
+    simFloor = env.SIM_FLOOR,
+    recordUsage,
+  }: AnswerDeps,
 ): AsyncGenerator<ChatEvent, void, undefined> {
   const traceId = randomUUID();
   const startedAt = Date.now();
@@ -240,5 +252,10 @@ export async function* answerQuestion(
       logger.info({ ...logFields, durationMs: trace.latencyMs }, 'chat.client_disconnected');
     }
     await writeTrace(trace, { db });
+    await recordUsage?.({
+      inputTokens: trace.inputTokens ?? 0,
+      outputTokens: trace.outputTokens ?? 0,
+      costUsd: trace.costUsd ?? 0,
+    });
   }
 }
