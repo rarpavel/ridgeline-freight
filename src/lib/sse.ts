@@ -24,6 +24,8 @@ export type ChatEvent =
         refused: boolean;
         reason: RefusalReason | null;
         usage: { inputTokens: number; outputTokens: number };
+        /** The model reached the output limit before it finished (ADR-0022). */
+        truncated: boolean;
         ttftMs: number | null;
         latencyMs: number;
         costUsd: number | null;

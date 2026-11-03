@@ -92,6 +92,7 @@ Rule: anything importing `src/server/**` must itself be server-only (route handl
 | `DEMO_ACCOUNTS_JSON` | yes | `[{"id":"sales","role":"sales","passwordHash":"$2b$…"}, …]` | auth |
 | `SIM_FLOOR` | no | `0.45` | gate |
 | `MAX_QUESTION_CHARS` / `MAX_OUTPUT_TOKENS` | no | `500` / `1500` | guardrails |
+| `REASONING_EFFORT` | no | `low` (`minimal`, `low`, `medium`, `high`) | chat |
 | `RATE_LIMIT_ACCOUNT_PER_HOUR` / `RATE_LIMIT_IP_PER_HOUR` | no | `20` / `40` | guardrails |
 | `DAILY_TOKEN_BUDGET` | no | `400000` | guardrails |
 | `ANTHROPIC_API_KEY` / `JUDGE_MODEL` | eval, data-gen | `claude-haiku-5-5` | judge, question generation |

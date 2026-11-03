@@ -22,6 +22,7 @@ const citation: ChatCitation = {
 const doneData = {
   reason: null,
   usage: { inputTokens: 1, outputTokens: 1 },
+  truncated: false,
   ttftMs: 1,
   latencyMs: 2,
   costUsd: null,
@@ -101,6 +102,13 @@ describe('chatReducer', () => {
     ]);
 
     expect(state).toMatchObject({ status: 'done', refused: true, text: 'Not in the documents.' });
+  });
+
+  it('marks a cut-off answer on done and forgets it on the next question', () => {
+    const state = run([{ event: 'done', data: { refused: false, ...doneData, truncated: true } }]);
+
+    expect(state.truncated).toBe(true);
+    expect(chatReducer(state, { type: 'submit', question: 'Next?' }).truncated).toBe(false);
   });
 
   it('drops the unvalidated partial text on an error event', () => {

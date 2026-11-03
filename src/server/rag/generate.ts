@@ -14,7 +14,8 @@ const LLM_TIMEOUT_MS = 30_000;
 
 export type TokenUsage = { inputTokens: number; outputTokens: number };
 
-export type GenerationPart = { type: 'delta'; text: string } | { type: 'usage'; usage: TokenUsage };
+export type GenerationPart =
+  { type: 'delta'; text: string } | { type: 'end'; usage: TokenUsage; truncated: boolean };
 
 export type StreamChat = (
   messages: PromptMessages,
@@ -28,6 +29,8 @@ export const streamChat: StreamChat = (messages, signal) =>
       messages,
       // gpt-5 models reject the older max_tokens name.
       max_completion_tokens: env.MAX_OUTPUT_TOKENS,
+      // Reasoning tokens count against that limit (ADR-0022).
+      reasoning_effort: env.REASONING_EFFORT,
       stream: true,
       stream_options: { include_usage: true },
     },
@@ -49,7 +52,10 @@ function estimateUsage(messages: PromptMessages, answer: string): TokenUsage {
   };
 }
 
-/** Yields the answer's text as it arrives and its token usage last (RAG_PIPELINE.md §2.5). */
+/**
+ * Yields the answer's text as it arrives, then its token usage and whether the output limit cut it
+ * off (RAG_PIPELINE.md §2.5).
+ */
 export async function* generate(
   messages: PromptMessages,
   {
@@ -60,10 +66,12 @@ export async function* generate(
 ): AsyncGenerator<GenerationPart, void, undefined> {
   let answer = '';
   let usage: TokenUsage | null = null;
+  let truncated = false;
   try {
     const stream = await llm(messages, AbortSignal.any([signal, AbortSignal.timeout(timeoutMs)]));
     for await (const chunk of stream) {
       const text = chunk.choices[0]?.delta.content;
+      if (chunk.choices[0]?.finish_reason === 'length') truncated = true;
       if (text) {
         answer += text;
         yield { type: 'delta', text };
@@ -78,5 +86,5 @@ export async function* generate(
   } catch (err) {
     throw new AppError('llm_error', 'Chat completion failed', { cause: err });
   }
-  yield { type: 'usage', usage: usage ?? estimateUsage(messages, answer) };
+  yield { type: 'end', usage: usage ?? estimateUsage(messages, answer), truncated };
 }

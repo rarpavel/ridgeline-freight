@@ -11,6 +11,7 @@ export type ChatState = {
   /** `null` until the `citations` event: markers stay plain text until then. */
   citations: ChatCitation[] | null;
   refused: boolean;
+  truncated: boolean;
   failure: ChatFailure | null;
   traceId: string | null;
   /** The trace is written after `done`, before the stream closes (OBSERVABILITY.md §1). */
@@ -29,6 +30,7 @@ export const INITIAL_CHAT_STATE: ChatState = {
   text: '',
   citations: null,
   refused: false,
+  truncated: false,
   failure: null,
   traceId: null,
   isStreamClosed: false,
@@ -63,7 +65,12 @@ export function chatReducer(state: ChatState, action: ChatAction): ChatState {
         case 'citations':
           return { ...state, text: event.data.text, citations: event.data.valid };
         case 'done':
-          return { ...state, status: 'done', refused: event.data.refused };
+          return {
+            ...state,
+            status: 'done',
+            refused: event.data.refused,
+            truncated: event.data.truncated,
+          };
         case 'error':
           return fail(state, { kind: 'error', message: event.data.message });
       }

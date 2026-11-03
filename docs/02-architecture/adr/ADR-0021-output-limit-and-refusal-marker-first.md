@@ -1,6 +1,6 @@
 # ADR-0021: Raise the output limit to 1,500 tokens and put the refusal marker first
 
-Status: Accepted · Date: 2026-11-03
+Status: Accepted, its rejection of a lower `reasoning_effort` superseded by ADR-0022 · Date: 2026-11-03
 
 ## Context
 Calibrating `SIM_FLOOR` (`RAG_PIPELINE.md §3.1`) showed two faults the floor cannot fix.
