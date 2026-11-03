@@ -50,6 +50,8 @@ function scored(
       leak: null,
       citationsValid: 0,
       citationsDropped: 0,
+      truncated: false,
+      outputTokens: 500,
     },
     ...overrides,
   };
@@ -117,6 +119,8 @@ describe('scoreResult', () => {
       candidates: [candidate('msa-harbor'), candidate('sop-dock', false)],
       citationsValid: 1,
       citationsDropped: 0,
+      truncated: false,
+      outputTokens: 500,
       accessRolesBySlug: ACCESS,
     });
 
@@ -131,6 +135,8 @@ describe('scoreResult', () => {
       candidates: [...fillers, candidate('sop-dock', false)],
       citationsValid: 0,
       citationsDropped: 0,
+      truncated: false,
+      outputTokens: 500,
       accessRolesBySlug: ACCESS,
     });
 
@@ -146,6 +152,8 @@ describe('scoreResult', () => {
           candidates: [candidate('msa-harbor')],
           citationsValid: 0,
           citationsDropped: 0,
+          truncated: false,
+          outputTokens: 500,
           accessRolesBySlug: ACCESS,
         },
       ),
@@ -156,6 +164,8 @@ describe('scoreResult', () => {
       leak: null,
       citationsValid: 0,
       citationsDropped: 0,
+      truncated: false,
+      outputTokens: 500,
     });
   });
 
@@ -171,6 +181,8 @@ describe('scoreResult', () => {
         candidates,
         citationsValid: 0,
         citationsDropped: 0,
+        truncated: false,
+        outputTokens: 500,
         accessRolesBySlug: ACCESS,
       }).leak;
 
@@ -203,6 +215,35 @@ describe('percentile', () => {
 });
 
 describe('aggregateMetrics', () => {
+  it('counts a refused broad question as a false refusal', () => {
+    const { overall, byCategory } = aggregateMetrics([
+      scored('broad', { refused: true }),
+      scored('broad'),
+    ]);
+
+    expect(overall.falseRefusalRate).toBe(0.5);
+    expect(byCategory.broad?.falseRefusalRate).toBe(0.5);
+  });
+
+  it('counts answers at the token limit, refused or not', () => {
+    const { overall, byCategory } = aggregateMetrics([
+      scored('broad', { scores: scoresOf({ truncated: true, outputTokens: 1500 }) }),
+      scored('broad', { refused: true, scores: scoresOf({ truncated: true, outputTokens: 1500 }) }),
+      scored('direct', { scores: scoresOf({ outputTokens: 300 }) }),
+    ]);
+
+    expect(overall).toMatchObject({ truncatedAnswers: 2, outputTokensMax: 1500 });
+    expect(byCategory.direct).toMatchObject({ truncatedAnswers: 0, outputTokensMax: 300 });
+  });
+
+  it('has no largest answer when no question reached the model', () => {
+    const { overall } = aggregateMetrics([
+      scored('other_role', { refused: true, scores: scoresOf({ outputTokens: 0 }) }),
+    ]);
+
+    expect(overall).toMatchObject({ truncatedAnswers: 0, outputTokensMax: null });
+  });
+
   it('has every metric of EVALUATION §2 overall and per category', () => {
     const { overall, byCategory } = aggregateMetrics([scored('direct'), scored('other_role')]);
 

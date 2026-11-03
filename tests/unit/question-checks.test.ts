@@ -56,6 +56,14 @@ const lakeshoreException = makeFact({
   valueType: 'text',
   isException: true,
 });
+const harborCap = makeFact({
+  factId: 'msa-harbor-point-foods#05',
+  docSlug: 'msa-harbor-point-foods',
+  category: 'liability_cap',
+  statement: 'Damage to a load under this contract is covered up to $100,000.00 on any one shipment.',
+  value: '$100,000.00',
+  aliases: ['$100,000'],
+});
 const ptoAccrual = makeFact({
   factId: 'hr-pto-holidays#02',
   docSlug: 'hr-pto-holidays',
@@ -68,7 +76,7 @@ const ptoAccrual = makeFact({
 
 const deps = {
   catalog,
-  facts: [harborPenalty, lakeshorePenalty, lakeshoreException, ptoAccrual],
+  facts: [harborPenalty, harborCap, lakeshorePenalty, lakeshoreException, ptoAccrual],
   blocklist: ['Acme Freight'],
 };
 
@@ -130,6 +138,24 @@ const otherRole: GeneratedQuestion = {
   sourceFactIds: ['hr-pto-holidays#02'],
   distractorDocSlugs: [],
   notes: 'Sales cannot read an hr_policy document.',
+};
+
+const broad: GeneratedQuestion = {
+  slug: 'broad-01',
+  category: 'broad',
+  role: 'sales',
+  question: 'Summarize what Harbor Point Foods and Lakeshore Retail owe or get when loads go wrong.',
+  expectedAnswer:
+    'Harbor Point Foods: $250.00 per late shipment, covered up to $100,000.00. Lakeshore Retail Group: $175.00 per late shipment, and a fee unless it gave one day of notice.',
+  expectedDocSlugs: ['msa-harbor-point-foods', 'msa-lakeshore-retail'],
+  sourceFactIds: [
+    'msa-harbor-point-foods#03',
+    'msa-harbor-point-foods#05',
+    'msa-lakeshore-retail#03',
+    'msa-lakeshore-retail#07',
+  ],
+  distractorDocSlugs: [],
+  notes: 'Four facts across two MSAs.',
 };
 
 describe('findSharedNgram', () => {
@@ -356,6 +382,22 @@ describe('parseBatch', () => {
   });
 });
 
+describe('broad questions', () => {
+  it('accepts four facts', () => {
+    expect(checkQuestion(broad, deps)).toEqual([]);
+  });
+
+  it('rejects fewer than four facts', () => {
+    const narrow = { ...broad, sourceFactIds: broad.sourceFactIds.slice(0, 3) };
+    expect(checkQuestion(narrow, deps).join()).toContain('broad needs at least 4 facts');
+  });
+
+  it('rejects a broad question whose answer lacks a value', () => {
+    const partial = { ...broad, expectedAnswer: 'Harbor Point Foods: $250.00 per late shipment.' };
+    expect(checkQuestion(partial, deps).join()).toContain('expectedAnswer lacks $175.00');
+  });
+});
+
 describe('checkBatch', () => {
   it('rejects a wrong count', () => {
     expect(checkBatch([direct], 'direct', deps).join()).toContain('1 direct questions, expected 16');
@@ -379,7 +421,7 @@ function makeBatch(template: GeneratedQuestion): GeneratedQuestion[] {
   }));
 }
 
-const generated = [direct, comparison, exception, noAnswer, otherRole].flatMap(makeBatch);
+const generated = [direct, comparison, exception, noAnswer, otherRole, broad].flatMap(makeBatch);
 
 function withSplits(questions: GeneratedQuestion[]): EvalQuestion[] {
   return assignSplits(questions).map((question) => ({
@@ -396,8 +438,8 @@ function devCount(questions: EvalQuestion[], category: string): number {
 describe('assignSplits', () => {
   const questions = withSplits(generated);
 
-  it('makes 12 dev and 28 test questions', () => {
-    expect(questions.filter(({ split }) => split === 'dev')).toHaveLength(12);
+  it('makes 16 dev and 28 test questions', () => {
+    expect(questions.filter(({ split }) => split === 'dev')).toHaveLength(16);
     expect(questions.filter(({ split }) => split === 'test')).toHaveLength(28);
   });
 
@@ -407,6 +449,7 @@ describe('assignSplits', () => {
     expect(devCount(questions, 'exception')).toBe(2);
     expect(devCount(questions, 'no_answer')).toBe(2);
     expect(devCount(questions, 'other_role')).toBe(1);
+    expect(devCount(questions, 'broad')).toBe(4);
   });
 
   it('gives the same split whatever the input order', () => {

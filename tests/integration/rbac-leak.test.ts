@@ -124,7 +124,7 @@ describe('rbac leak', () => {
     expect(idBySlug.size).toBe(24);
     expect(chunkIdBySlug.size).toBe(24);
     expect(ROLES).toHaveLength(4);
-    expect(questions).toHaveLength(40);
+    expect(questions).toHaveLength(44);
   });
 
   it('never retrieves a document outside the role, for each role and question', async () => {
@@ -166,7 +166,7 @@ describe('rbac leak', () => {
       }
     }
 
-    expect(combinations).toBe(160);
+    expect(combinations).toBe(176);
     reportViolations(violations);
   });
 

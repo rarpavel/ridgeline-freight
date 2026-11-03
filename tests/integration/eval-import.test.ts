@@ -87,7 +87,7 @@ describe('pnpm eval:import', () => {
     await rm(fixtureDir, { recursive: true, force: true });
   });
 
-  it('imports the 40 reviewed questions with their split and the version from data/VERSION', async () => {
+  it('imports the 44 reviewed questions with their split and the version from data/VERSION', async () => {
     await importFrom(REPO);
 
     const { rows } = await client.query<Record<string, unknown>>(
@@ -95,8 +95,8 @@ describe('pnpm eval:import', () => {
               source_fact_ids, distractor_doc_slugs, reviewed, notes, dataset_version
        FROM eval_questions`,
     );
-    expect(rows).toHaveLength(40);
-    expect(rows.filter((row) => row.split === 'dev')).toHaveLength(12);
+    expect(rows).toHaveLength(44);
+    expect(rows.filter((row) => row.split === 'dev')).toHaveLength(16);
     expect(rows.filter((row) => row.split === 'test')).toHaveLength(28);
 
     const bySlug = new Map(rows.map((row) => [row.slug, row]));
@@ -126,7 +126,7 @@ describe('pnpm eval:import', () => {
     const question = 'What does this reworded question ask about Harbor Point Foods?';
     await importQuestions(changeFirst({ question }));
 
-    expect(await countRows()).toBe(40);
+    expect(await countRows()).toBe(44);
     const after = await client.query('SELECT id, question FROM eval_questions WHERE slug = $1', [
       slug,
     ]);
@@ -136,7 +136,7 @@ describe('pnpm eval:import', () => {
   it('skips a question with reviewed false and warns about it', async () => {
     const { stderr } = await importQuestions(changeFirst({ reviewed: false }));
 
-    expect(await countRows()).toBe(39);
+    expect(await countRows()).toBe(43);
     expect(stderr).toContain(`${QUESTIONS[0]?.slug}: skipped, reviewed is false`);
   });
 

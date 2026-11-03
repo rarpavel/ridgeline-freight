@@ -827,5 +827,122 @@
     "split": "dev",
     "reviewed": true,
     "datasetVersion": "2026.11-1"
+  },
+  {
+    "slug": "broad-01",
+    "category": "broad",
+    "role": "sales",
+    "question": "What are the late delivery penalties across all of our customers?",
+    "expectedAnswer": "Harbor Point Foods, Inc.: 1.5% per week. Lakeshore Retail Group: $500.00 per late delivery. Prairie Wind Manufacturing: 2.0% per week. Marlowe & Finch Medical Supply: $250.00 per late delivery. Northline Auto Parts: 0.5% per day. Cedar Valley Beverages: 1.0% per week.",
+    "expectedDocSlugs": [
+      "msa-harbor-point-foods",
+      "msa-lakeshore-retail",
+      "msa-prairie-wind-mfg",
+      "msa-marlowe-finch-medical",
+      "msa-northline-auto",
+      "msa-cedar-valley-beverages"
+    ],
+    "sourceFactIds": [
+      "msa-harbor-point-foods#04",
+      "msa-lakeshore-retail#04",
+      "msa-prairie-wind-mfg#04",
+      "msa-marlowe-finch-medical#04",
+      "msa-northline-auto#04",
+      "msa-cedar-valley-beverages#04"
+    ],
+    "distractorDocSlugs": [],
+    "notes": "One value from each of the six MSAs. From the ad hoc questions in RAG_PIPELINE.md 3.2.",
+    "split": "dev",
+    "reviewed": true,
+    "datasetVersion": "2026.11-2"
+  },
+  {
+    "slug": "broad-02",
+    "category": "broad",
+    "role": "sales",
+    "question": "Compare the liability limits and payment terms across all customer MSAs.",
+    "expectedAnswer": "Harbor Point Foods, Inc.: $100,000.00 per shipment, Net 30. Lakeshore Retail Group: $50,000.00 per shipment, Net 45. Prairie Wind Manufacturing: $25,000.00 per shipment, Net 60. Marlowe & Finch Medical Supply: $500,000.00 per shipment, Net 15. Northline Auto Parts: $10,000.00 per shipment, Net 21. Cedar Valley Beverages: $75,000.00 per shipment, Net 90.",
+    "expectedDocSlugs": [
+      "msa-harbor-point-foods",
+      "msa-lakeshore-retail",
+      "msa-prairie-wind-mfg",
+      "msa-marlowe-finch-medical",
+      "msa-northline-auto",
+      "msa-cedar-valley-beverages"
+    ],
+    "sourceFactIds": [
+      "msa-harbor-point-foods#05",
+      "msa-harbor-point-foods#03",
+      "msa-lakeshore-retail#05",
+      "msa-lakeshore-retail#03",
+      "msa-prairie-wind-mfg#05",
+      "msa-prairie-wind-mfg#03",
+      "msa-marlowe-finch-medical#05",
+      "msa-marlowe-finch-medical#03",
+      "msa-northline-auto#05",
+      "msa-northline-auto#03",
+      "msa-cedar-valley-beverages#05",
+      "msa-cedar-valley-beverages#03"
+    ],
+    "distractorDocSlugs": [],
+    "notes": "Two values from each of the six MSAs. From the ad hoc questions in RAG_PIPELINE.md 3.2.",
+    "split": "dev",
+    "reviewed": true,
+    "datasetVersion": "2026.11-2"
+  },
+  {
+    "slug": "broad-03",
+    "category": "broad",
+    "role": "ops",
+    "question": "Summarize what each of our carrier agreements says about cargo liability limits, payment terms and detention charges.",
+    "expectedAnswer": "Brightwater Carriers: $150,000.00 per occurrence except hazmat, Net 30, $50.00 per hour after 2 hours free time. Ashgrove Haulage: $60,000.00 per occurrence except hazmat, Net 45, $35.00 per hour after 3 hours free time. Juniper Bend Logistics: $250,000.00 per occurrence except shipments on container chassis, Net 15, $60.00 per hour after 90 minutes free time. Granite Fork Intermodal: $400,000.00 per occurrence except hazmat, Net 10, $45.00 per hour after 4 hours free time.",
+    "expectedDocSlugs": [
+      "carrier-brightwater",
+      "carrier-ashgrove-haulage",
+      "carrier-juniper-bend",
+      "carrier-granite-fork-intermodal"
+    ],
+    "sourceFactIds": [
+      "carrier-brightwater#05",
+      "carrier-brightwater#02",
+      "carrier-brightwater#03",
+      "carrier-ashgrove-haulage#05",
+      "carrier-ashgrove-haulage#02",
+      "carrier-ashgrove-haulage#03",
+      "carrier-juniper-bend#05",
+      "carrier-juniper-bend#02",
+      "carrier-juniper-bend#03",
+      "carrier-granite-fork-intermodal#05",
+      "carrier-granite-fork-intermodal#02",
+      "carrier-granite-fork-intermodal#03"
+    ],
+    "distractorDocSlugs": [],
+    "notes": "Three values from each of the four carrier agreements, narrowed from the ad hoc question in RAG_PIPELINE.md 3.2 because the registry has no insurance facts.",
+    "split": "dev",
+    "reviewed": true,
+    "datasetVersion": "2026.11-2"
+  },
+  {
+    "slug": "broad-04",
+    "category": "broad",
+    "role": "hr",
+    "question": "Give me an overview of what the driver handbook requires of drivers and what they can claim in pay or reimbursement.",
+    "expectedAnswer": "Drivers may drive at most 11 hours after 10 consecutive hours off, with at most 14 hours on duty, and must report OSD claims within 24 hours of delivery. They can claim detention pay of $45.00 per hour after two (2) hours of free time, layover pay of $150.00 per layover day, and lumper fees up to $150.00 with receipts, except for hazmat shipments.",
+    "expectedDocSlugs": [
+      "hr-driver-hours-safety"
+    ],
+    "sourceFactIds": [
+      "hr-driver-hours-safety#01",
+      "hr-driver-hours-safety#03",
+      "hr-driver-hours-safety#04",
+      "hr-driver-hours-safety#05",
+      "hr-driver-hours-safety#06",
+      "hr-driver-hours-safety#07"
+    ],
+    "distractorDocSlugs": [],
+    "notes": "One document, but a summary of six of its facts. Narrowed to the driver handbook from the ad hoc question in RAG_PIPELINE.md 3.2, which had no single answer.",
+    "split": "dev",
+    "reviewed": true,
+    "datasetVersion": "2026.11-2"
   }
 ]
