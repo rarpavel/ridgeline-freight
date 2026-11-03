@@ -115,7 +115,7 @@ CREATE INDEX chunks_tsv_idx      ON chunks USING gin (tsv);
 CREATE TABLE eval_questions (
   id               uuid PRIMARY KEY DEFAULT gen_random_uuid(),
   slug             text NOT NULL UNIQUE,                       -- 'direct-012'
-  category         text NOT NULL CHECK (category IN ('direct','comparison','exception','no_answer','other_role')),
+  category         text NOT NULL CHECK (category IN ('direct','comparison','exception','no_answer','other_role','broad')),
   split            text NOT NULL CHECK (split IN ('dev','test')),
   role             text NOT NULL CHECK (role IN ('sales','hr','ops','admin')),
   question         text NOT NULL,
@@ -258,7 +258,8 @@ Daily budget: `SELECT input_tokens, output_tokens FROM usage_daily WHERE day = $
 | `0004_request_traces_constraints.sql` | custom | CHECK constraints on `source`, `gate` and `refusal_reason` |
 | `0005_eval_tables.sql` | generated | `eval_questions`, `eval_runs`, `eval_results`, their foreign keys and the unique constraint on `slug` |
 | `0006_eval_constraints.sql` | custom | CHECK constraints on `eval_questions` `category`, `split`, `role` and on `eval_runs.split` |
-| `0007_guardrails.sql` | generated | `rate_limits`, `usage_daily` |
+| `0007_eval_broad_category.sql` | custom | Adds `broad` to the CHECK constraint on `eval_questions.category` |
+| `0008_guardrails.sql` | generated | `rate_limits`, `usage_daily` |
 
 - `chunks.tsv` and the CHECK constraints are not declared in `src/server/db/schema/*.ts`, so Drizzle never tries to write `tsv`; queries reach it through `sql`. `tests/integration/migrations.test.ts` fails if the database columns and the Drizzle schema diverge.
 - Forward-only; a rollback is a new migration. CI applies all migrations to a fresh `pgvector/pgvector:pg17` container on every PR. Production migrations are run from the developer's machine before merging the PR that needs them (`DEPLOYMENT.md §3`); migrations are additive so the previous app version keeps working.

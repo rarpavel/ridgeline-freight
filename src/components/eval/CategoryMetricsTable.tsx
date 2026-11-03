@@ -23,7 +23,7 @@ function MetricsRow({ name, metrics }: { name: string; metrics: Metrics | null |
   );
 }
 
-/** Always all five categories, so a category the run lacks reads as a gap, not as a shorter table. */
+/** Always every category, so a category the run lacks reads as a gap, not as a shorter table. */
 export function CategoryMetricsTable({ metrics }: { metrics: RunMetrics | null }) {
   return (
     <Table>

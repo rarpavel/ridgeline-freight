@@ -236,6 +236,8 @@ describe('runEval', () => {
       refusalAccuracy: 1,
       falseRefusalRate: 0,
       citationValidity: 1,
+      truncatedAnswers: 0,
+      outputTokensMax: 20,
     });
     expect(Object.keys(metrics?.byCategory ?? {}).sort()).toEqual([
       'direct',
@@ -263,6 +265,26 @@ describe('runEval', () => {
     expect(answered).toHaveLength(1);
     expect(answered[0]?.citedChunkIds).toEqual([answered[0]?.retrieved[0]?.chunkId]);
     expect(answered[0]?.scores).toMatchObject({ retrievalHit: true, citationsValid: 1 });
+  });
+
+  it('records an answer cut off at the token limit, also when it ends as a refusal', async () => {
+    const cutOff: StreamChat = vi.fn(async () =>
+      (async function* () {
+        yield { choices: [{ delta: { content: 'A long answer with no citation yet' } }], usage: null };
+        yield { choices: [{ delta: {}, finish_reason: 'length' }], usage: null };
+        yield { choices: [], usage: { prompt_tokens: 100, completion_tokens: 1500 } };
+      })() as never,
+    );
+
+    const { runId, metrics } = await start({ split: 'dev' }, { llm: cutOff });
+
+    expect(metrics?.overall.truncatedAnswers).toBeGreaterThan(0);
+    expect(metrics?.overall.outputTokensMax).toBe(1500);
+    expect(metrics?.overall.falseRefusalRate).toBe(1);
+    const results = await resultsOf(runId);
+    const cut = results.filter(({ scores }) => scores.truncated);
+    expect(cut.length).toBe(metrics?.overall.truncatedAnswers);
+    expect(cut.every(({ refused }) => refused)).toBe(true);
   });
 
   it('imports the questions only when the dataset version has none', async () => {

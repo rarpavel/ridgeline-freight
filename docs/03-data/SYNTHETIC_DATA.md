@@ -10,7 +10,7 @@ Last updated: 2026-11-03
 - **One world.** `data/world.json` fixes the company, customers, carriers, lanes, addresses and calendar so all documents agree with each other.
 - **No real entities.** No real companies, people, addresses, phone numbers, DOT/MC numbers. A blocklist check runs on every generated text; all catalog names were checked against web search on 2026-11-02 (see §4). The generator must not invent company names outside `world.json`.
 - **US realism.** USD with two decimals, `MM/DD/YYYY`, Illinois governing law, Net-N payment terms, accessorial/detention/layover fees, PTO accrual, at-will employment, FMCSA-style compliance language without real regulation numbers.
-- **Versioned.** `data/VERSION` (e.g. `2026.11-1`) changes whenever the registry, documents or questions change; eval runs record it.
+- **Versioned.** `data/VERSION` (e.g. `2026.11-2`) changes whenever the registry, documents or questions change; eval runs record it.
 
 ## 2. World bible — `data/world.json`
 
@@ -173,22 +173,24 @@ Generation rules (prompt 04):
 
 Manual review checklist (each question, `reviewed: true` only when all hold): unambiguous; one correct answer from the facts; the expected document(s) really contain it; role is right; no leakage of the exact fact wording; dates/amounts in US format; category correct.
 
-Counts: direct 16, comparison 6, exception 5, no_answer 8, other_role 5 = 40. Split: dev 12 / test 28.
+Counts: direct 16, comparison 6, exception 5, no_answer 8, other_role 5, broad 4 = 44. Split: dev 16 / test 28.
 
 `pnpm datagen:questions` makes one call per category, one at a time, with the same retries as `pnpm datagen:docs`. The set is written only when every check passes. An existing file is only checked, so a run costs nothing and hand edits are kept; `--force` regenerates and would discard them. The checks are in `scripts/data-gen/question-checks.ts`:
 
 - Schema, exact counts, unique slugs, no question asked twice.
 - Every document slug is in the catalog, no document is both expected and a distractor, and every source fact exists, belongs to an expected document, and every expected document has one.
-- `direct|comparison|exception`: the role can read every expected document. `other_role`: the role can read none of them, and `expectedAnswer` is null. `no_answer`: no documents, no facts, and `expectedAnswer` is null.
+- `direct|comparison|exception|broad`: the role can read every expected document. `other_role`: the role can read none of them, and `expectedAnswer` is null. `no_answer`: no documents, no facts, and `expectedAnswer` is null.
 - No 5-gram shared between the question and the `statement` of a source fact. An amount or date counts as one word, and a hyphen splits a word.
-- `direct`: one document and one fact. `comparison`: two documents of the same type, two facts linked by `differsFrom` and at least one distractor. `exception`: a fact with `isException`.
+- `direct`: one document and one fact. `comparison`: two documents of the same type, two facts linked by `differsFrom` and at least one distractor. `exception`: a fact with `isException`. `broad`: at least 4 facts.
 - `expectedAnswer` contains the value or an alias of each source fact, except `text` facts, whose values are often sentences an answer rewords.
 - The question has 6–25 words. Date and money formats, blocklist, URLs, emails and phones.
-- Split: the dev count of each category is direct 5, comparison 2, exception 2, no_answer 2, other_role 1. Within a category, dev takes the first questions by a hash of the slug, so the split does not depend on the order of the file.
+- Split: the dev count of each category is direct 5, comparison 2, exception 2, no_answer 2, other_role 1, broad 4. Within a category, dev takes the first questions by a hash of the slug, so the split does not depend on the order of the file.
 
 No check can tell whether a question is indirect (the ≥ 40% rule), whether a `no_answer` question is really absent from the documents, or whether a `text` answer is right. These are for the manual review.
 
-The committed set was generated on 2026-11-02 (`claude-haiku-5-5`) and reviewed by an AI agent the same day (`reviewed: true`): 14 questions were edited, one of them replaced. Results are in `data/eval/review.md`. `data/VERSION` is `2026.11-1`.
+The committed set was generated on 2026-11-02 (`claude-haiku-5-5`) and reviewed by an AI agent the same day (`reviewed: true`): 14 questions were edited, one of them replaced. Results are in `data/eval/review.md`.
+
+The 4 `broad` questions were added by hand on 2026-11-03 to catch answers at the output limit (`EVALUATION.md §7`), and reviewed by an AI agent the same day (`review.md`). They are dev only, and the other 40 questions did not change, so those keep `datasetVersion` `2026.11-1` in the file; an import writes the current version to every row. `data/VERSION` is `2026.11-2`.
 
 ## 7. Review effort
 

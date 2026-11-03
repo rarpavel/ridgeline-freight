@@ -7,7 +7,7 @@ import type { QUESTION_CATEGORIES } from '../../../data-gen/schemas/questions';
 export type Category = (typeof QUESTION_CATEGORIES)[number];
 
 const FUSED_CANDIDATES = 20;
-const ANSWERABLE: readonly Category[] = ['direct', 'comparison', 'exception'];
+const ANSWERABLE: readonly Category[] = ['direct', 'comparison', 'exception', 'broad'];
 const UNANSWERABLE: readonly Category[] = ['no_answer', 'other_role'];
 
 export type JudgeClaim = { claim: string; supported: boolean; citation: number | null };
@@ -30,6 +30,8 @@ export type ResultScores = {
   leak: boolean | null;
   citationsValid: number;
   citationsDropped: number;
+  truncated: boolean;
+  outputTokens: number;
 } & JudgeScores;
 
 export type ScoredResult = {
@@ -53,6 +55,8 @@ export const METRIC_KEYS = [
   'latencyP50',
   'latencyP95',
   'costPerQuestion',
+  'truncatedAnswers',
+  'outputTokensMax',
   'correctness',
   'faithfulness',
   'needsReview',
@@ -86,12 +90,16 @@ export function scoreResult(
     candidates,
     citationsValid,
     citationsDropped,
+    truncated,
+    outputTokens,
     accessRolesBySlug,
   }: {
     refused: boolean;
     candidates: readonly TraceCandidate[];
     citationsValid: number;
     citationsDropped: number;
+    truncated: boolean;
+    outputTokens: number;
     accessRolesBySlug: ReadonlyMap<string, readonly string[]>;
   },
 ): ResultScores {
@@ -107,6 +115,8 @@ export function scoreResult(
     leak: category === 'other_role' ? isLeak(candidates, role, accessRolesBySlug) : null,
     citationsValid,
     citationsDropped,
+    truncated,
+    outputTokens,
   };
 }
 
@@ -139,6 +149,9 @@ function metricsOf(results: readonly ScoredResult[]): Metrics {
   const ttfts = results.map(({ ttftMs }) => ttftMs).filter(isPresent);
   const latencies = results.map(({ latencyMs }) => latencyMs);
   const costs = results.map(({ costUsd }) => costUsd).filter(isPresent);
+  const outputTokens = results
+    .map(({ scores }) => scores.outputTokens)
+    .filter((tokens) => tokens > 0);
   const leaks = results.map(({ scores }) => scores.leak).filter(isPresent);
   const judged = results.filter(
     ({ scores }) => isPresent(scores.correctness) || isPresent(scores.judgeError),
@@ -160,6 +173,10 @@ function metricsOf(results: readonly ScoredResult[]): Metrics {
     latencyP50: percentile(latencies, 50),
     latencyP95: percentile(latencies, 95),
     costPerQuestion: mean(costs),
+    // All results, refusals too: an answer cut off before its first citation ends up as a refusal.
+    truncatedAnswers: results.filter(({ scores }) => scores.truncated).length,
+    // Null when no question reached the model: a gate refusal reports 0 tokens.
+    outputTokensMax: outputTokens.length === 0 ? null : Math.max(...outputTokens),
     // Answered only: refusals are already measured by refusalAccuracy and falseRefusalRate, and the
     // faithfulness of 1 the rubric gives a refusal would inflate the number.
     correctness: mean(answered.map(({ scores }) => scores.correctness).filter(isPresent)),

@@ -1,5 +1,5 @@
 {
-  "id": "f13cd0c7-80f5-4ea4-b9bc-6f4c66f9387d",
+  "id": "59794949-97ca-4e50-8019-c940c7105d04",
   "prevId": "c5c61781-aef9-4169-a260-e3da346944a3",
   "version": "7",
   "dialect": "postgresql",
@@ -94,35 +94,35 @@
             }
           ],
           "isUnique": false,
-          "concurrently": false,
+          "with": {},
           "method": "btree",
-          "with": {}
+          "concurrently": false
         }
       },
       "foreignKeys": {
         "chunks_document_id_documents_id_fk": {
           "name": "chunks_document_id_documents_id_fk",
           "tableFrom": "chunks",
-          "tableTo": "documents",
           "columnsFrom": [
             "document_id"
           ],
+          "tableTo": "documents",
           "columnsTo": [
             "id"
           ],
-          "onDelete": "cascade",
-          "onUpdate": "no action"
+          "onUpdate": "no action",
+          "onDelete": "cascade"
         }
       },
       "compositePrimaryKeys": {},
       "uniqueConstraints": {
         "chunks_document_id_ordinal_unique": {
           "name": "chunks_document_id_ordinal_unique",
-          "nullsNotDistinct": false,
           "columns": [
             "document_id",
             "ordinal"
-          ]
+          ],
+          "nullsNotDistinct": false
         }
       },
       "policies": {},
@@ -157,15 +157,15 @@
         "document_texts_document_id_documents_id_fk": {
           "name": "document_texts_document_id_documents_id_fk",
           "tableFrom": "document_texts",
-          "tableTo": "documents",
           "columnsFrom": [
             "document_id"
           ],
+          "tableTo": "documents",
           "columnsTo": [
             "id"
           ],
-          "onDelete": "cascade",
-          "onUpdate": "no action"
+          "onUpdate": "no action",
+          "onDelete": "cascade"
         }
       },
       "compositePrimaryKeys": {},
@@ -247,17 +247,17 @@
       "uniqueConstraints": {
         "documents_slug_unique": {
           "name": "documents_slug_unique",
-          "nullsNotDistinct": false,
           "columns": [
             "slug"
-          ]
+          ],
+          "nullsNotDistinct": false
         },
         "documents_source_path_unique": {
           "name": "documents_source_path_unique",
-          "nullsNotDistinct": false,
           "columns": [
             "source_path"
-          ]
+          ],
+          "nullsNotDistinct": false
         }
       },
       "policies": {},
@@ -358,10 +358,10 @@
       "uniqueConstraints": {
         "eval_questions_slug_unique": {
           "name": "eval_questions_slug_unique",
-          "nullsNotDistinct": false,
           "columns": [
             "slug"
-          ]
+          ],
+          "nullsNotDistinct": false
         }
       },
       "policies": {},
@@ -451,28 +451,28 @@
         "eval_results_run_id_eval_runs_id_fk": {
           "name": "eval_results_run_id_eval_runs_id_fk",
           "tableFrom": "eval_results",
-          "tableTo": "eval_runs",
           "columnsFrom": [
             "run_id"
           ],
+          "tableTo": "eval_runs",
           "columnsTo": [
             "id"
           ],
-          "onDelete": "cascade",
-          "onUpdate": "no action"
+          "onUpdate": "no action",
+          "onDelete": "cascade"
         },
         "eval_results_question_id_eval_questions_id_fk": {
           "name": "eval_results_question_id_eval_questions_id_fk",
           "tableFrom": "eval_results",
-          "tableTo": "eval_questions",
           "columnsFrom": [
             "question_id"
           ],
+          "tableTo": "eval_questions",
           "columnsTo": [
             "id"
           ],
-          "onDelete": "cascade",
-          "onUpdate": "no action"
+          "onUpdate": "no action",
+          "onDelete": "cascade"
         }
       },
       "compositePrimaryKeys": {
@@ -572,93 +572,6 @@
           "type": "jsonb",
           "primaryKey": false,
           "notNull": false
-        }
-      },
-      "indexes": {},
-      "foreignKeys": {},
-      "compositePrimaryKeys": {},
-      "uniqueConstraints": {},
-      "policies": {},
-      "checkConstraints": {},
-      "isRLSEnabled": false
-    },
-    "public.rate_limits": {
-      "name": "rate_limits",
-      "schema": "",
-      "columns": {
-        "key": {
-          "name": "key",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "window_start": {
-          "name": "window_start",
-          "type": "timestamp with time zone",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "count": {
-          "name": "count",
-          "type": "integer",
-          "primaryKey": false,
-          "notNull": true,
-          "default": 0
-        }
-      },
-      "indexes": {},
-      "foreignKeys": {},
-      "compositePrimaryKeys": {
-        "rate_limits_key_window_start_pk": {
-          "name": "rate_limits_key_window_start_pk",
-          "columns": [
-            "key",
-            "window_start"
-          ]
-        }
-      },
-      "uniqueConstraints": {},
-      "policies": {},
-      "checkConstraints": {},
-      "isRLSEnabled": false
-    },
-    "public.usage_daily": {
-      "name": "usage_daily",
-      "schema": "",
-      "columns": {
-        "day": {
-          "name": "day",
-          "type": "date",
-          "primaryKey": true,
-          "notNull": true
-        },
-        "requests": {
-          "name": "requests",
-          "type": "integer",
-          "primaryKey": false,
-          "notNull": true,
-          "default": 0
-        },
-        "input_tokens": {
-          "name": "input_tokens",
-          "type": "bigint",
-          "primaryKey": false,
-          "notNull": true,
-          "default": 0
-        },
-        "output_tokens": {
-          "name": "output_tokens",
-          "type": "bigint",
-          "primaryKey": false,
-          "notNull": true,
-          "default": 0
-        },
-        "cost_usd": {
-          "name": "cost_usd",
-          "type": "numeric(10, 6)",
-          "primaryKey": false,
-          "notNull": true,
-          "default": 0
         }
       },
       "indexes": {},
@@ -823,9 +736,9 @@
             }
           ],
           "isUnique": false,
-          "concurrently": false,
+          "with": {},
           "method": "btree",
-          "with": {}
+          "concurrently": false
         }
       },
       "foreignKeys": {},
@@ -838,10 +751,10 @@
   },
   "enums": {},
   "schemas": {},
+  "views": {},
   "sequences": {},
   "roles": {},
   "policies": {},
-  "views": {},
   "_meta": {
     "columns": {},
     "schemas": {},

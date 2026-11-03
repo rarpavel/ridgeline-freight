@@ -17,17 +17,21 @@ export const CATEGORY_COUNTS: Record<Category, number> = {
   exception: 5,
   no_answer: 8,
   other_role: 5,
+  broad: 4,
 };
 
-// 30% of each category by largest remainder, which adds up to dev 12 / test 28.
+// 30% of each category by largest remainder, which adds up to dev 12 / test 28. `broad` guards the
+// output limit while tuning, so it stays out of the published test split.
 const DEV_COUNTS: Record<Category, number> = {
   direct: 5,
   comparison: 2,
   exception: 2,
   no_answer: 2,
   other_role: 1,
+  broad: 4,
 };
 
+const BROAD_MIN_FACTS = 4;
 const NGRAM_SIZE = 5;
 const MIN_WORDS = 6;
 const MAX_WORDS = 25;
@@ -151,6 +155,10 @@ function checkCategoryShape(question: GeneratedQuestion, sources: Fact[], catalo
         : ['no_answer must have no documents or facts'];
     case 'other_role':
       return question.expectedDocSlugs.length > 0 ? [] : ['other_role needs at least one expected document'];
+    case 'broad':
+      return question.sourceFactIds.length >= BROAD_MIN_FACTS
+        ? []
+        : [`broad needs at least ${BROAD_MIN_FACTS} facts`];
   }
 }
 

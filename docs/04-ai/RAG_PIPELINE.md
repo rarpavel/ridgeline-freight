@@ -127,8 +127,8 @@ One `request_traces` row per request (candidates with scores, gate, prompt versi
 | `finalK` / `perDocCap` | 8 / 3 | `retrieval_config` | dev split |
 | `simFloor` | 0.45 | env `SIM_FLOOR` | dev split |
 | chunk size | 50–600 tokens | `CHUNKER_VERSION` | dev split |
-| `MAX_OUTPUT_TOKENS` | 1,500 | env | dev split (ADR-0021), broad questions (§3.2) |
-| `REASONING_EFFORT` | `low` | env | broad questions (§3.2) |
+| `MAX_OUTPUT_TOKENS` | 1,500 | env | dev split (ADR-0021, `EVALUATION.md §7`), broad questions (§3.2) |
+| `REASONING_EFFORT` | `low` | env | broad questions (§3.2), dev split (`EVALUATION.md §7`) |
 
 ### 3.1 `SIM_FLOOR` calibration (RAG-033, 2026-11-03)
 
@@ -199,6 +199,6 @@ The questions, written for this comparison and not from the eval set:
 - `hr`: "Give me an overview of everything the handbook says about what drivers must do and may claim."
 - `admin`: "What obligations do we have toward customers, carriers and employees when something goes wrong?"
 
-Seven questions chosen to be broad show the fault and its fix. They do not give a rate for real traffic. The effort and the limit are not recorded in `eval_runs`; the labels above are the record.
+Seven questions chosen to be broad show the fault and its fix. They do not give a rate for real traffic. The effort and the limit are not recorded in `eval_runs`; the labels above are the record. Four broad questions, based on these, are now in the dev split, which catches the fault on its own (`EVALUATION.md §7`).
 
 Roadmap (not MVP): HNSW index with iterative scans at larger corpus sizes; reranker between fusion and gate; query condensation for follow-ups.

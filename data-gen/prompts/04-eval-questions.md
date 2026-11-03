@@ -7,8 +7,8 @@ Generate the evaluation set: questions by category with expected answers, expect
 A **different model family** from the one that wrote the documents (default `claude-haiku-5-5`); JSON output. The model receives facts and the world bible, never the document text. One call per category.
 
 ## Inputs
-- `{{category}}` — `direct | comparison | exception | no_answer | other_role`.
-- `{{count}}` — number of questions for this category (16 / 6 / 5 / 8 / 5).
+- `{{category}}` — `direct | comparison | exception | no_answer | other_role | broad`.
+- `{{count}}` — number of questions for this category (16 / 6 / 5 / 8 / 5 / 4).
 - `{{registry_json}}` — all facts (for `no_answer`, the model must avoid them).
 - `{{world_json}}`, `{{catalog_json}}` (slug, title, type, roles).
 - `{{dataset_version}}`.
@@ -50,6 +50,9 @@ Category rules:
 - other_role: answerable from a document the role is NOT allowed to read (e.g., sales asking about PTO
   accrual). expectedAnswer = null (the assistant must refuse); expectedDocSlugs lists the document that
   would answer it; "notes" names the disallowed document type.
+- broad: a value across a whole document type or a summary of one document, at least 4 facts; the answer
+  takes a long reply. expectedAnswer gives every value, attributed to its document. At most 8 documents,
+  the number of passages a prompt holds.
 
 Style rules (all categories):
 1. Paraphrase. Never reuse more than 4 consecutive words from a fact's "statement". Vary verbs and
@@ -67,8 +70,8 @@ Style rules (all categories):
 { "type": "array", "items": { "type": "object",
   "required": ["slug","category","role","question","expectedAnswer","expectedDocSlugs","sourceFactIds","distractorDocSlugs","notes"],
   "properties": {
-    "slug": {"type":"string","pattern":"^(direct|comparison|exception|no_answer|other_role)-\\d{2}$"},
-    "category": {"enum":["direct","comparison","exception","no_answer","other_role"]},
+    "slug": {"type":"string","pattern":"^(direct|comparison|exception|no_answer|other_role|broad)-\\d{2}$"},
+    "category": {"enum":["direct","comparison","exception","no_answer","other_role","broad"]},
     "role": {"enum":["sales","hr","ops","admin"]},
     "question": {"type":"string","minLength":20,"maxLength":200},
     "expectedAnswer": {"type":["string","null"]},
@@ -83,7 +86,7 @@ The script adds `split` (stratified dev/test), `reviewed: false`, `datasetVersio
 ## Validation rules (`pnpm datagen:questions` post-check)
 - Schema valid; counts per category exact; slugs unique.
 - Every `expectedDocSlugs`/`distractorDocSlugs` exists in the catalog; every `sourceFactIds` exists in the registry and belongs to an expected document.
-- Role/document consistency: for `direct|comparison|exception` the role is in `access_roles` of every expected document; for `other_role` it is in none.
+- Role/document consistency: for `direct|comparison|exception|broad` the role is in `access_roles` of every expected document; for `other_role` it is in none.
 - Overlap check: no 5-gram shared between `question` and the source fact `statement`.
 - `no_answer`: no fact value or alias appears in the question's expected answer (null) and the question does not name a non-existent document as if it existed.
 - Manual review sets `reviewed: true` (`EVALUATION.md §1`).

@@ -64,6 +64,8 @@ function metrics(overrides: Partial<Metrics> = {}): Metrics {
     latencyP50: 5000,
     latencyP95: 7000,
     costPerQuestion: 0.000123,
+    truncatedAnswers: 0,
+    outputTokensMax: 300,
     correctness: 0.625,
     faithfulness: 0.5,
     needsReview: 0,
@@ -79,6 +81,8 @@ const SCORES: ResultScores = {
   leak: null,
   citationsValid: 1,
   citationsDropped: 0,
+  truncated: false,
+  outputTokens: 300,
   correctness: 1,
   faithfulness: 0.5,
 };
@@ -279,7 +283,7 @@ describe('/admin/eval', () => {
   });
 
   describe('detail', () => {
-    it('shows the metrics of all five categories', async () => {
+    it('shows the metrics of every category', async () => {
       await signInAs('admin', 'admin');
 
       const html = await detailHtml(runAId);

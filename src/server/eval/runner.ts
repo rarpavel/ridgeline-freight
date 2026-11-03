@@ -266,7 +266,7 @@ async function runQuestion(
     .where(eq(requestTraces.id, traceId));
   if (!trace) throw new Error('trace_not_written');
 
-  const { refused, ttftMs, latencyMs, costUsd } = finished;
+  const { refused, truncated, usage, ttftMs, latencyMs, costUsd } = finished;
   const { candidates } = trace.retrieval;
   // Refusals too: the rubric scores them, and the check against the refusal flag needs them.
   const verdict = judge
@@ -293,6 +293,8 @@ async function runQuestion(
             candidates,
             citationsValid: trace.citationsValid,
             citationsDropped: trace.citationsDropped,
+            truncated,
+            outputTokens: usage.outputTokens,
             accessRolesBySlug,
           },
         ),
