@@ -6,9 +6,9 @@ Last updated: 2026-11-03
 
 ## 1. Dataset
 
-- 40 questions in `data/eval/questions.json`, generated per `SYNTHETIC_DATA.md §6` and manually reviewed (`reviewed: true` required to be imported).
-- Categories: direct 16, comparison 6, exception 5, no_answer 8, other_role 5.
-- Split: `dev` 12 and `test` 28, stratified by category. **Only the test split is reported** in the README and the case study; dev is for tuning `simFloor`, chunking and prompts.
+- 44 questions in `data/eval/questions.json`, generated per `SYNTHETIC_DATA.md §6` and manually reviewed (`reviewed: true` required to be imported).
+- Categories: direct 16, comparison 6, exception 5, no_answer 8, other_role 5, broad 4.
+- Split: `dev` 16 and `test` 28, stratified by category except `broad`, which is dev only. **Only the test split is reported** in the README and the case study; dev is for tuning `simFloor`, chunking and prompts.
 
 | Category | Total | dev | test |
 |----------|-------|-----|------|
@@ -17,8 +17,10 @@ Last updated: 2026-11-03
 | exception | 5 | 2 | 3 |
 | no_answer | 8 | 2 | 6 |
 | other_role | 5 | 1 | 4 |
+| broad | 4 | 4 | 0 |
 
 - Versioned with `data/VERSION`; every run records it.
+- `broad` asks for a value across a document type or a summary of a document, so the answer is long. It guards the output limit while tuning (§7). The first 12 dev questions could not: their largest answer used 833 tokens, so they stayed clean while broad questions were refused at the limit (ADR-0022). It stays out of the test split, so the targets in §3 and the published run are measured on the same 28 questions as before.
 
 ## 2. Metrics
 
@@ -26,14 +28,16 @@ Deterministic (no LLM):
 
 | Metric | Definition | Population |
 |--------|------------|------------|
-| `retrievalHitRate` | all `expectedDocSlugs` have ≥ 1 chunk among the 8 in-prompt chunks | direct, comparison, exception |
+| `retrievalHitRate` | all `expectedDocSlugs` have ≥ 1 chunk among the 8 in-prompt chunks | direct, comparison, exception, broad |
 | `retrievalHitRate@20` | same, among the 20 fused candidates | same |
 | `leakCount` | other_role questions with ≥ 1 retrieved chunk from a disallowed document (must be 0) | other_role |
 | `refusalAccuracy` | refused (gate, `NO_ANSWER:`, or zero-citation conversion) | no_answer, other_role |
-| `falseRefusalRate` | refused although answerable | direct, comparison, exception |
+| `falseRefusalRate` | refused although answerable | direct, comparison, exception, broad |
 | `citationValidity` | valid citations / all citations emitted | answered |
 | `ttftP50/P95`, `latencyP50/P95` | ms to first delta / to done | all |
 | `costPerQuestion` | USD from `pricing.json` | all |
+| `truncatedAnswers` | answers the model stopped at `MAX_OUTPUT_TOKENS` (`finish_reason: length`), refused or not | all |
+| `outputTokensMax` | largest `outputTokens`, reasoning included; `null` if no question reached the model | all |
 
 LLM judge (per answered question): `correctness` 0/1 (expected values present, attributed to the right document, qualifiers kept) and `faithfulness` 0–1 (share of claims supported by cited chunk text). Refusals are judged too, for the agreement check in §4, but stay out of these two aggregates: `refusalAccuracy` and `falseRefusalRate` already measure them, and the 1.0 the rubric gives a refusal would inflate `faithfulness`. `needsReview` and `judgeErrors` count flagged and unscored results across all of them. All four are `null` in a run without the judge.
 
@@ -85,5 +89,31 @@ When to run: before closing M2 (`--no-judge`, dev), M3 (dev, tuning), M4 (test, 
 ## 6. `/admin/eval`
 
 Read-only: list of runs (label, date, model, prompt version, dataset version, headline metrics); run detail with per-question rows (category, question, expected, answer, refused, hit, correctness, faithfulness, latency, trace link). The README table is copied by hand from the `published` run, with the date.
+
+## 7. Answers at the output limit
+
+`falseRefusalRate` alone misses part of this fault: an answer cut off after its first citation is not refused. `truncatedAnswers` counts both kinds, and `outputTokensMax` shows the margin left before any answer reaches the limit. Neither stops a run or has a target; read them after any change to the prompt, the model, `REASONING_EFFORT` or `MAX_OUTPUT_TOKENS`. The effort and the limit are not recorded in `eval_runs`, so put them in the label.
+
+Check on 2026-11-03, `pnpm eval --split dev --no-judge`, dataset `2026.11-2`, prompt `rag-system.v3`, limit 1,500, 3 runs per setting. `medium` is the control for the fault of ADR-0022: `REASONING_EFFORT` cannot leave the parameter out, as the code did before that change.
+
+| Effort (labels) | falseRefusalRate, all / broad | truncatedAnswers | outputTokensMax | refusalAccuracy | leakCount | Cost per question |
+|-----------------|-----|---|-----|---|---|-----|
+| **low** (`broad-low-1500-1..3`) | **0.000 / 0.000 in all 3** | **0, 0, 0** | **1,230, 1,134, 1,116** | **1.000** | **0** | **$0.00101–0.00106** |
+| medium (`broad-control-medium-1500-1..3`) | 0.154, 0.154, 0.231 / 0.500, 0.500, 0.750 | 3, 3, 3 | 1,500, 1,500, 1,500 | 1.000 | 0 | $0.00180–0.00182 |
+
+Every answer at the limit came from a broad question, so the first 12 dev questions alone still show nothing at `medium`. `broad-02` and `broad-03` were refused at the limit in all 3 control runs and `broad-01` in 1. `broad-04` was cut off in 2 and kept its citations, so only `truncatedAnswers` shows those. At `low`, `broad-03` uses up to 82% of the limit, the smallest margin in the set.
+
+Dev numbers from before dataset `2026.11-2` cover 12 questions, so compare them by category, not overall: `broad` raises the overall latency and cost.
+
+**What these questions do not show yet: complete answers.** No answer at `low` is cut off, but only `broad-01` has all its facts, in all 3 runs. The rest are limited by the 8 passages in the prompt, not by tokens (a literal search for the fact values, per run):
+
+| Question | Facts found at low | Why |
+|----------|-----|-----|
+| `broad-01` | 6 of 6 | All six MSAs reach the prompt |
+| `broad-02` | 5 of 12 | Harbor Point and Cedar Valley never reach the prompt, so its `retrievalHit` is false; of the other 4, only Lakeshore and Northline give both values |
+| `broad-03` | 7 of 12 | All four agreements reach the prompt, but none of the payment terms do, nor Granite Fork's detention rate |
+| `broad-04` | 2 of 6, really 1 | Other handbooks take 5 of the 8 passages, so the hours, detention, layover and OS&D sections miss the prompt. The second match is a false one: layover and lumper fees are both $150.00 |
+
+In run 1, the answers to `broad-02` and `broad-03` say what the passages leave out rather than guessing it. The judge should score these three questions low on `correctness` until retrieval changes, and no judge has run on them. That is a retrieval limit (`finalK` 8, `perDocCap` 3), outside this check.
 
 Roadmap (not MVP): CI regression gate against a committed baseline, run-vs-run diff view, formal judge/human agreement study.

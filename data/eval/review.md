@@ -28,3 +28,16 @@ Checklist: unambiguous; one correct answer from the facts; the expected document
 - **Invoice date aliases.** The registry aliases for payment terms still say "from the invoice date". They do not affect `pnpm datagen:validate`, which matches on the value `Net N`, so they stay.
 - **Indirect questions.** At least 20 of 40 use indirect phrasing (the rule is ≥ 40%).
 - **Rate sheet terms next to MSA terms.** The FTL rate sheet's TONU and cargo cap terms differ from the MSAs. The questions that touch them name the customer, and the rate sheet is listed as a distractor.
+
+## Broad questions (2026-11-03)
+
+Four questions added to the dev split to catch answers at the output limit (`docs/04-ai/EVALUATION.md §7`). Written by hand and reviewed by an AI agent against the same checklist: each source fact's value was found in the Markdown source of its document and in the expected answer, and `pnpm datagen:questions` passes. The other 40 questions are unchanged.
+
+| Question | Role | Source facts | Note |
+|---|---|---|---|
+| broad-01 | sales | 6, from all 6 MSAs | Ad hoc question from `RAG_PIPELINE.md §3.2`, unchanged |
+| broad-02 | sales | 12, from all 6 MSAs | Ad hoc question, unchanged |
+| broad-03 | ops | 12, from all 4 carrier agreements | "Insurance" replaced with detention, because the registry has no insurance facts to check an answer against |
+| broad-04 | hr | 6, from the driver handbook | "Everything the handbook says" narrowed to the driver handbook, which gives one correct answer |
+
+Three ad hoc questions were left out: "Are late delivery penalties ever waived…" has no fact behind it and is often refused for that reason, and "What obligations do we have…" and "Summarize every fee…" have no single correct answer.
