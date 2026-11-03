@@ -20,8 +20,8 @@ import {
 } from './fuse';
 import type { PromptChunk } from './prompt';
 
-const VECTOR_TOP_K = 20;
-const FTS_TOP_K = 20;
+export const VECTOR_TOP_K = 20;
+export const FTS_TOP_K = 20;
 
 export type RetrieveDeps = { db: typeof appDb };
 

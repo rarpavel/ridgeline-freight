@@ -11,6 +11,18 @@ import {
   uuid,
 } from 'drizzle-orm/pg-core';
 
+import type { TraceCandidate } from './request-traces';
+import type { ResultScores } from '@/server/eval/metrics';
+
+export type RetrievalConfig = {
+  k: number;
+  vectorTopK: number;
+  ftsTopK: number;
+  finalK: number;
+  perDocCap: number;
+  simFloor: number;
+};
+
 // CHECK constraints on category, split and role live in a custom migration (DATA_MODEL.md §4).
 export const evalQuestions = pgTable('eval_questions', {
   id: uuid('id').primaryKey().defaultRandom(),
@@ -37,7 +49,7 @@ export const evalRuns = pgTable('eval_runs', {
   embeddingModel: text('embedding_model').notNull(),
   judgeModel: text('judge_model'),
   promptVersion: text('prompt_version').notNull(),
-  retrievalConfig: jsonb('retrieval_config').notNull(),
+  retrievalConfig: jsonb('retrieval_config').$type<RetrievalConfig>().notNull(),
   gitSha: text('git_sha').notNull(),
   datasetVersion: text('dataset_version').notNull(),
   startedAt: timestamp('started_at', { withTimezone: true }).notNull().defaultNow(),
@@ -57,8 +69,8 @@ export const evalResults = pgTable(
     answer: text('answer').notNull(),
     refused: boolean('refused').notNull(),
     citedChunkIds: uuid('cited_chunk_ids').array().notNull().default([]),
-    retrieved: jsonb('retrieved').notNull(),
-    scores: jsonb('scores').notNull(),
+    retrieved: jsonb('retrieved').$type<TraceCandidate[]>().notNull(),
+    scores: jsonb('scores').$type<ResultScores>().notNull(),
     judgeRationale: text('judge_rationale'),
     ttftMs: integer('ttft_ms'),
     latencyMs: integer('latency_ms').notNull(),

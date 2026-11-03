@@ -22,9 +22,13 @@ export type AnswerDeps = RetrieveDeps & {
   llm: StreamChat;
   signal: AbortSignal;
   llmTimeoutMs?: number;
+  /** The eval CLI sets these two; the chat route keeps the defaults. */
+  source?: 'chat' | 'eval';
+  simFloor?: number;
 };
 
 const ROUTE = '/api/chat';
+const EVAL_ROUTE = 'cli:eval';
 const CLIENT_DISCONNECTED = 'client_disconnected';
 
 const ERROR_MESSAGES: Record<ChatErrorCode, string> = {
@@ -71,17 +75,18 @@ function errorCode(err: unknown): ChatErrorCode {
  */
 export async function* answerQuestion(
   { question, user }: { question: string; user: SessionUser },
-  { db, embed, llm, signal, llmTimeoutMs }: AnswerDeps,
+  { db, embed, llm, signal, llmTimeoutMs, source = 'chat', simFloor = env.SIM_FLOOR }: AnswerDeps,
 ): AsyncGenerator<ChatEvent, void, undefined> {
   const traceId = randomUUID();
   const startedAt = Date.now();
   const roles = [user.role];
-  const logFields = { traceId, route: ROUTE, account: user.account, role: user.role };
+  const route = source === 'eval' ? EVAL_ROUTE : ROUTE;
+  const logFields = { traceId, route, account: user.account, role: user.role };
   // Filled in as the request advances, so whatever ends it leaves a trace of how far it got. `gate`
   // stays 'answer' when retrieval itself fails: nothing refused the question.
   const trace: RequestTrace = {
     id: traceId,
-    source: 'chat',
+    source,
     account: user.account,
     role: user.role,
     question,
@@ -89,7 +94,7 @@ export async function* answerQuestion(
     retrieval: {
       candidates: [],
       bestSim: null,
-      simFloor: env.SIM_FLOOR,
+      simFloor,
       ftsMatches: 0,
       ftsAllTermsMatches: 0,
       vectorUnavailable: false,
@@ -100,7 +105,7 @@ export async function* answerQuestion(
   try {
     const result = await retrieve({ question, roles }, { db, embed });
     const { candidates, bestSim, ftsAllTermsMatches, embeddingTokens } = result;
-    const retrieval = toTraceRetrieval(result, env.SIM_FLOOR);
+    const retrieval = toTraceRetrieval(result, simFloor);
     trace.retrieval = retrieval;
     const embeddingUsage: ModelUsage[] = [];
     if (embeddingTokens !== null) {
@@ -119,7 +124,7 @@ export async function* answerQuestion(
       model: env.CHAT_MODEL,
     };
 
-    if (refuseWithoutLlm({ bestSim, ftsAllTermsMatches }, env.SIM_FLOOR)) {
+    if (refuseWithoutLlm({ bestSim, ftsAllTermsMatches }, simFloor)) {
       const usage: TokenUsage = { inputTokens: 0, outputTokens: 0 };
       trace.gate = 'refuse_gate';
       trace.refused = true;
