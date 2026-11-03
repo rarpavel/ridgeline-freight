@@ -91,7 +91,7 @@ export function visibleText({ text, citations }: Pick<ChatState, 'text' | 'citat
     : text;
 }
 
-/** Rate-limit windows are whole UTC hours (`date_trunc('hour', now())`, DATA_MODEL.md §3). */
+/** Rate-limit windows are whole UTC hours (`windowStart` in guardrails/rateLimit.ts). */
 export function nextRateLimitWindow(now: number): number {
   const hourMs = 60 * 60 * 1000;
   return (Math.floor(now / hourMs) + 1) * hourMs;

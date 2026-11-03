@@ -1,6 +1,11 @@
+import { execFile } from 'node:child_process';
+import { promisify } from 'node:util';
+
 import { hashSync } from 'bcryptjs';
 import { NextRequest } from 'next/server';
-import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
+import { afterAll, afterEach, beforeAll, beforeEach, describe, expect, it, vi } from 'vitest';
+
+import { createDatabase, dropDatabase, withClient } from './helpers/database';
 
 vi.mock('server-only', () => ({}));
 vi.mock('@/server/logger', () => ({ logger: { info: vi.fn(), warn: vi.fn(), error: vi.fn() } }));
@@ -18,6 +23,9 @@ vi.mock('next/headers', () => ({
   }),
 }));
 
+const run = promisify(execFile);
+
+const DB_NAME = `ridgeline_auth_${process.pid}`;
 const ORIGIN = 'https://ridgeline.test';
 const PASSWORDS = { sales: 'sales-password', admin: 'admin-password' };
 // Cost 4 is the bcrypt minimum; these hashes exist only for this test file.
@@ -26,14 +34,18 @@ const ACCOUNTS = [
   { id: 'admin', role: 'admin', passwordHash: hashSync(PASSWORDS.admin, 4) },
 ];
 
+const closeAppPools: (() => Promise<unknown>)[] = [];
+
 async function loadAuth() {
   vi.resetModules();
-  const [login, logout, proxyModule, requireModule] = await Promise.all([
+  const [login, logout, proxyModule, requireModule, client] = await Promise.all([
     import('@/app/api/auth/login/route'),
     import('@/app/api/auth/logout/route'),
     import('@/proxy'),
     import('@/server/auth/require'),
+    import('@/server/db/client'),
   ]);
+  closeAppPools.push(() => client.pool.end());
   return { login: login.POST, logout: logout.POST, proxy: proxyModule.proxy, ...requireModule };
 }
 
@@ -67,15 +79,29 @@ function isPassedThrough(response: Response): boolean {
 }
 
 describe('auth', () => {
-  beforeEach(() => {
-    vi.stubEnv('DATABASE_URL', 'postgres://postgres:postgres@localhost:5432/ridgeline');
+  let url: string;
+
+  beforeAll(async () => {
+    await dropDatabase(DB_NAME);
+    url = await createDatabase(DB_NAME);
+    await run('pnpm', ['db:migrate'], { env: { ...process.env, DATABASE_URL_DIRECT: url } });
+  });
+
+  afterAll(async () => {
+    await dropDatabase(DB_NAME);
+  });
+
+  beforeEach(async () => {
+    await withClient(url, (client) => client.query('TRUNCATE rate_limits'));
+    vi.stubEnv('DATABASE_URL', url);
     vi.stubEnv('OPENAI_API_KEY', 'test-openai-key');
     vi.stubEnv('SESSION_SECRET', 'test-session-secret-at-least-32-chars');
     vi.stubEnv('DEMO_ACCOUNTS_JSON', JSON.stringify(ACCOUNTS));
     cookieJar.clear();
   });
 
-  afterEach(() => {
+  afterEach(async () => {
+    await Promise.all(closeAppPools.splice(0).map((close) => close()));
     vi.unstubAllEnvs();
   });
 
@@ -121,6 +147,50 @@ describe('auth', () => {
       expect(body.error.code).toBe('unauthorized');
       expect(body.error.message).not.toMatch(/password is|account is|unknown|not found/i);
       expect(await unknownAccount.json()).toEqual(body);
+    });
+
+    it('answers 429 to the 6th attempt after 5 failures from one IP, even with the right password', async () => {
+      const auth = await loadAuth();
+      const fromIp = (ip: string, password: string) =>
+        new Request(`${ORIGIN}/api/auth/login`, {
+          method: 'POST',
+          headers: { 'content-type': 'application/json', 'x-forwarded-for': ip },
+          body: JSON.stringify({ account: 'sales', password }),
+        });
+
+      for (let attempt = 1; attempt <= 5; attempt += 1) {
+        const failed = await auth.login(fromIp('203.0.113.7', 'not-the-password'));
+        expect(failed.status).toBe(401);
+      }
+
+      const blocked = await auth.login(fromIp('203.0.113.7', PASSWORDS.sales));
+      expect(blocked.status).toBe(429);
+      expect(blocked.headers.get('set-cookie')).toBeNull();
+      expect(await blocked.json()).toMatchObject({ error: { code: 'rate_limited' } });
+
+      const otherIp = await auth.login(fromIp('203.0.113.8', PASSWORDS.sales));
+      expect(otherIp.status).toBe(200);
+    });
+
+    it('counts only failures: successful logins do not use up the attempts', async () => {
+      const auth = await loadAuth();
+
+      for (let attempt = 1; attempt <= 6; attempt += 1) {
+        await signIn(auth, 'sales');
+      }
+      const rows = await withClient(url, (client) =>
+        client.query<{ count: number }>('SELECT count FROM rate_limits'),
+      );
+      expect(rows.rows.map(({ count }) => count)).toEqual([0]);
+    });
+
+    it('does not count a malformed login body', async () => {
+      const auth = await loadAuth();
+
+      expect((await auth.login(loginRequest('{not json'))).status).toBe(400);
+
+      const rows = await withClient(url, (client) => client.query('SELECT 1 FROM rate_limits'));
+      expect(rows.rowCount).toBe(0);
     });
 
     it('does not accept another account password', async () => {

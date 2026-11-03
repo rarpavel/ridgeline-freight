@@ -28,7 +28,7 @@ Last updated: 2026-11-03
 
 - Login: `POST /api/auth/login { account, password }` → bcrypt compare against `DEMO_ACCOUNTS_JSON` hashes → session `{ account, role, issuedAt }`.
 - A wrong password and an unknown account get the same 401 and pay for the same bcrypt compare, so neither the body nor the timing reveals which accounts exist.
-- Planned, not yet enforced: failed logins count toward the IP rate limit; 5 failures in an hour → 429 (arrives with the rate limiter).
+- 5 failed logins from one IP in an hour → 429, also for the right password (`rate_limits`, key `login:<sha256>`). The attempt is counted before bcrypt runs and given back when the password is right, so parallel guesses cannot pass together and successful logins do not count.
 - Login and logout refuse a POST whose `Origin` is another host, because neither needs an incoming cookie and so `SameSite=Lax` does not protect them.
 - Sessions are stateless. Logout clears the cookie in the browser, but a copy of the cookie stays valid until its 12 h TTL ends. The role is read from the cookie too, so changing or removing an account in `DEMO_ACCOUNTS_JSON` does not affect existing sessions; only rotating `SESSION_SECRET` invalidates them server-side.
 - `proxy.ts` covers `/chat`, `/documents`, `/admin`, `/api/chat`, `/api/documents`, `/api/traces`: pages redirect to `/login?next=<path>` and API routes answer 401; a non-admin on `/admin/*` gets 403. It only redirects: every handler repeats the check with `requireSession()` / `requireRole()`.
@@ -126,7 +126,20 @@ Roadmap: a committed injection test corpus with automated tests and an `injectio
 | Question length | 500 chars | request validation |
 | Output | 1,500 tokens, reasoning included, at low effort (ADR-0021, ADR-0022) | model call |
 | Daily tokens (global) | `DAILY_TOKEN_BUDGET` (default 400k ≈ $0.30 on `gpt-5-mini`) | `usage_daily` check before the model call |
+| Failed logins per IP | 5 / hour | `rate_limits` (`login:<sha256>`) |
 | Provider spend | monthly cap in the provider dashboard | manual |
+
+`/api/chat` checks in this order, each before anything is spent: session, question length (400 with no database query), IP limit, account limit, daily budget. Windows are whole UTC hours and the budget day is a UTC day. The `ip:` and `acct:` counts include refused requests. An unreachable database stops the request with 503 `db_error`: the limits fail closed.
+
+The eval CLI calls `answerQuestion` directly, so these limits do not apply to it and it adds nothing to `usage_daily`. The budget counts the chat model's input and output tokens, not embeddings.
+
+**Known limits:**
+- Requests already running can pass the budget by what they use, because usage is added after the answer.
+- A client that disconnects mid-answer adds no tokens, because the provider reports usage only at the end of the stream. Rate limits bound this, and the provider cap is the hard stop.
+- Fixed windows allow a 2× burst at a window edge (ADR-0008).
+- `rate_limits` rows are not pruned; at demo scale the table stays small.
+- The IP hash has no salt, so it hides addresses from a casual reader of the table, not from someone who hashes the IPv4 range.
+- The client address comes from `x-forwarded-for`, which Vercel overwrites. Behind another host a client could set it.
 
 ## 8. Headers
 

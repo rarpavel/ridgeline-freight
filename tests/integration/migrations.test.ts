@@ -11,6 +11,7 @@ import { afterAll, beforeAll, describe, expect, it, vi } from 'vitest';
 import { chunks } from '@/server/db/schema/chunks';
 import { documents, documentTexts } from '@/server/db/schema/documents';
 import { evalQuestions, evalResults, evalRuns } from '@/server/db/schema/eval';
+import { rateLimits, usageDaily } from '@/server/db/schema/guardrails';
 import { requestTraces } from '@/server/db/schema/request-traces';
 
 import { createDatabase, dropDatabase, withClient } from './helpers/database';
@@ -110,7 +111,9 @@ describe('migrations', () => {
       'eval_questions',
       'eval_results',
       'eval_runs',
+      'rate_limits',
       'request_traces',
+      'usage_daily',
     ]);
   });
 
@@ -341,6 +344,8 @@ describe('migrations', () => {
     expect(await columnsOf(client, 'eval_questions')).toEqual(drizzleColumnsOf(evalQuestions));
     expect(await columnsOf(client, 'eval_runs')).toEqual(drizzleColumnsOf(evalRuns));
     expect(await columnsOf(client, 'eval_results')).toEqual(drizzleColumnsOf(evalResults));
+    expect(await columnsOf(client, 'rate_limits')).toEqual(drizzleColumnsOf(rateLimits));
+    expect(await columnsOf(client, 'usage_daily')).toEqual(drizzleColumnsOf(usageDaily));
     // tsv is added by a custom migration and is read through SQL, never written.
     expect(await columnsOf(client, 'chunks')).toEqual([...drizzleColumnsOf(chunks), 'tsv'].sort());
   });

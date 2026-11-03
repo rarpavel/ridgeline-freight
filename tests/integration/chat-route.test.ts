@@ -174,6 +174,9 @@ describe('POST /api/chat', () => {
     vi.stubEnv('OPENAI_API_KEY', 'test-openai-key');
     vi.stubEnv('CHAT_MODEL', 'test-chat-model');
     vi.stubEnv('MAX_OUTPUT_TOKENS', '1500');
+    // This file sends more requests than an hour allows; guardrails.test.ts covers the limits.
+    vi.stubEnv('RATE_LIMIT_ACCOUNT_PER_HOUR', '1000');
+    vi.stubEnv('RATE_LIMIT_IP_PER_HOUR', '1000');
     vi.stubEnv('SESSION_SECRET', SECRET);
     vi.stubEnv(
       'DEMO_ACCOUNTS_JSON',

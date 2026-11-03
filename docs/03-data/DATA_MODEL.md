@@ -187,8 +187,8 @@ CREATE TABLE request_traces (
 CREATE INDEX request_traces_created_idx ON request_traces (created_at DESC);
 
 CREATE TABLE rate_limits (
-  key              text NOT NULL,                              -- 'acct:sales' | 'ip:<sha256 of ip>'
-  window_start     timestamptz NOT NULL,                       -- date_trunc('hour', now())
+  key              text NOT NULL,                              -- 'acct:sales' | 'ip:<sha256 of ip>' | 'login:<sha256 of ip>'
+  window_start     timestamptz NOT NULL,                       -- the whole UTC hour
   count            int NOT NULL DEFAULT 0,
   PRIMARY KEY (key, window_start)
 );
@@ -198,7 +198,7 @@ CREATE TABLE usage_daily (
   requests         int NOT NULL DEFAULT 0,
   input_tokens     bigint NOT NULL DEFAULT 0,
   output_tokens    bigint NOT NULL DEFAULT 0,
-  cost_usd         numeric(10,4) NOT NULL DEFAULT 0
+  cost_usd         numeric(10,6) NOT NULL DEFAULT 0            -- the scale of request_traces.cost_usd
 );
 ```
 
@@ -235,12 +235,12 @@ WHERE c.tsv @@ q AND d.access_roles && $2::text[];
 Rate limit (one statement):
 
 ```sql
-INSERT INTO rate_limits (key, window_start, count) VALUES ($1, date_trunc('hour', now()), 1)
+INSERT INTO rate_limits (key, window_start, count) VALUES ($1, $2, 1)  -- $2: the whole UTC hour, from the app's clock
 ON CONFLICT (key, window_start) DO UPDATE SET count = rate_limits.count + 1
 RETURNING count;
 ```
 
-Daily budget: `INSERT INTO usage_daily (day) VALUES (current_date) ON CONFLICT DO NOTHING; SELECT input_tokens + output_tokens FROM usage_daily WHERE day = current_date;` before the model call; `UPDATE … SET` after it.
+Daily budget: `SELECT input_tokens, output_tokens FROM usage_daily WHERE day = $1` before the model call, where no row means nothing is spent yet; `INSERT … ON CONFLICT (day) DO UPDATE SET` adding to the row after it. `$1` is the UTC day from the app's clock.
 
 ## 4. Migration strategy
 
@@ -258,6 +258,7 @@ Daily budget: `INSERT INTO usage_daily (day) VALUES (current_date) ON CONFLICT D
 | `0004_request_traces_constraints.sql` | custom | CHECK constraints on `source`, `gate` and `refusal_reason` |
 | `0005_eval_tables.sql` | generated | `eval_questions`, `eval_runs`, `eval_results`, their foreign keys and the unique constraint on `slug` |
 | `0006_eval_constraints.sql` | custom | CHECK constraints on `eval_questions` `category`, `split`, `role` and on `eval_runs.split` |
+| `0007_guardrails.sql` | generated | `rate_limits`, `usage_daily` |
 
 - `chunks.tsv` and the CHECK constraints are not declared in `src/server/db/schema/*.ts`, so Drizzle never tries to write `tsv`; queries reach it through `sql`. `tests/integration/migrations.test.ts` fails if the database columns and the Drizzle schema diverge.
 - Forward-only; a rollback is a new migration. CI applies all migrations to a fresh `pgvector/pgvector:pg17` container on every PR. Production migrations are run from the developer's machine before merging the PR that needs them (`DEPLOYMENT.md §3`); migrations are additive so the previous app version keeps working.
