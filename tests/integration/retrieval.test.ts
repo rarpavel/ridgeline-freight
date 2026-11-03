@@ -8,7 +8,12 @@ import { afterAll, beforeAll, describe, expect, it, vi } from 'vitest';
 import { AppError } from '@/lib/errors';
 import { chunks } from '@/server/db/schema/chunks';
 import { documents } from '@/server/db/schema/documents';
-import { retrieve, retrieveCandidates, type RetrieveDeps } from '@/server/rag/retrieve';
+import {
+  loadPromptChunks,
+  retrieve,
+  retrieveCandidates,
+  type RetrieveDeps,
+} from '@/server/rag/retrieve';
 
 import { createDatabase, dropDatabase } from './helpers/database';
 
@@ -298,6 +303,48 @@ describe('retrieval', () => {
       expect(result.ftsMatches).toBe(20);
       expect(result.vectorUnavailable).toBe(false);
       expect(result.candidates.some((c) => c.vectorRank !== null && c.ftsRank !== null)).toBe(true);
+    });
+  });
+
+  describe('loadPromptChunks', () => {
+    const hitsFor = async (question: string) => {
+      const { fts } = await retrieveCandidates(
+        { questionEmbedding: null, question, roles: ['admin'] },
+        { db },
+      );
+      return fts.map(({ chunkId }) => chunkId);
+    };
+
+    it('returns the chunks in the order asked for, with their document title', async () => {
+      const chunkIds = (await hitsFor('fixture policy')).slice(0, 5).reverse();
+
+      const loaded = await loadPromptChunks({ chunkIds, roles: ['admin'] }, { db });
+
+      expect(loaded.map(({ chunkId }) => chunkId)).toEqual(chunkIds);
+      expect(loaded.every(({ documentTitle }) => documentTitle.length > 0)).toBe(true);
+      expect(loaded.every(({ content }) => content.startsWith('Fixture policy'))).toBe(true);
+    });
+
+    it('applies the role filter even to a chunk id it is handed', async () => {
+      const chunkIds = await hitsFor('PTO accrual');
+      expect(chunkIds.length).toBeGreaterThan(0);
+
+      const forSales = await loadPromptChunks({ chunkIds, roles: ['sales'] }, { db });
+      const forHr = await loadPromptChunks({ chunkIds, roles: ['hr'] }, { db });
+
+      expect(forSales).toEqual([]);
+      expect(forHr.map(({ chunkId }) => chunkId)).toEqual(chunkIds);
+    });
+
+    it('skips an id that no longer exists and asks nothing for an empty list', async () => {
+      const [known] = await hitsFor('PTO accrual');
+      if (!known) throw new Error('No fixture chunk');
+      const missing = '00000000-0000-4000-8000-000000000000';
+
+      const loaded = await loadPromptChunks({ chunkIds: [missing, known], roles: ['hr'] }, { db });
+
+      expect(loaded.map(({ chunkId }) => chunkId)).toEqual([known]);
+      expect(await loadPromptChunks({ chunkIds: [], roles: ['hr'] }, { db })).toEqual([]);
     });
   });
 });
