@@ -2,7 +2,7 @@
 
 What is tested at which level, with which tools, and what runs in CI. The goal is confidence in retrieval, access control and citations, not coverage numbers.
 
-Last updated: 2026-11-02
+Last updated: 2026-11-03
 
 ## 1. Levels
 
@@ -29,7 +29,7 @@ Last updated: 2026-11-02
 ### Integration (`tests/integration/`, `globalSetup` starts/uses the Postgres container)
 - `migrations.test.ts`: fresh DB → all migrations apply → schema matches Drizzle.
 - `ingest.test.ts`: ingest 3 fixture documents with a deterministic fake embedder (hash → vector) → counts, idempotency (second run skips), `--force` re-embeds.
-- `retrieval.test.ts`: role filter returns only allowed documents for each role; FTS zero-match path; vector-unavailable fallback.
+- `retrieval.test.ts`: role filter returns only allowed documents for each role, in the FTS list and the all-terms count; any-word FTS matching and rank; FTS zero-match path; vector-unavailable fallback; gate signals on off-topic questions.
 - `rbac-leak.test.ts`: with the full demo corpus ingested (fake embedder), for every eval question and every role, no returned document outside `access_roles`; `other_role` questions return zero chunks. **This test must stay green forever.**
 - `guardrails.test.ts`: 21st request in an hour → 429; daily budget reached → 503; windows reset.
 - `auth.test.ts`: wrong password → 401; cookie attributes; `/admin/*` forbidden for non-admin; cross-site login and logout refused. Counting failed logins in the limiter is added here with the rate limiter.

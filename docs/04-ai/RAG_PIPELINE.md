@@ -61,12 +61,13 @@ answerQuestion({ question, session }) →
 
 ### 2.1 Retrieval (`retrieve.ts`)
 
-`retrieveCandidates({ questionEmbedding, question, roles }, { db })` runs one read-only `REPEATABLE READ` transaction, so a concurrent ingest cannot show the two statements different chunks, with two statements (`DATA_MODEL.md §3`):
+`retrieveCandidates({ questionEmbedding, question, roles }, { db })` runs one read-only `REPEATABLE READ` transaction, so a concurrent ingest cannot show the statements different chunks, with three statements (`DATA_MODEL.md §3`):
 - Vector: exact cosine scan on `chunks.embedding` with `documents.access_roles && $roles`, top-20, `sim = 1 - distance`.
-- FTS: `websearch_to_tsquery('english', question)`, `ts_rank_cd(tsv, query)`, same role filter, top-20. Zero matches is a normal outcome.
-- Both order ties by `chunks.id`, so a run is reproducible. Empty `roles` returns nothing. A failed query becomes `AppError('db_error')`, without the query parameters in its message.
+- FTS: any word of the question (`plainto_tsquery('english', question)` with `&` replaced by `|`), `ts_rank_cd(tsv, query)`, same role filter, top-20. Zero matches is a normal outcome.
+- All-terms count: chunks matching `websearch_to_tsquery('english', question)`, same role filter. It feeds only the gate (ADR-0019).
+- Both lists order ties by `chunks.id`, so a run is reproducible. Empty `roles` returns nothing. A failed query becomes `AppError('db_error')`, without the query parameters in its message.
 
-`retrieve({ question, roles }, { db, embed })` embeds the question before the transaction, calls `retrieveCandidates` and `fuseRrf`, and returns `{ candidates, bestSim, ftsMatches, vectorUnavailable }`.
+`retrieve({ question, roles }, { db, embed })` embeds the question before the transaction, calls `retrieveCandidates` and `fuseRrf`, and returns `{ candidates, bestSim, ftsMatches, ftsAllTermsMatches, vectorUnavailable }`. `ftsMatches` is the length of the FTS list, so at most 20.
 - If the embedding call fails: a `retrieval.vector_unavailable` warning, FTS-only, `vectorUnavailable = true`, `bestSim = null`; the trace stores the flag as `retrieval.vectorUnavailable`.
 
 Candidates hold ids and scores only; `prompt.ts` needs the chunk text and document title, and that query must carry the same role filter.
@@ -78,10 +79,10 @@ Reciprocal Rank Fusion, `k = 60`: `score(c) = Σ_lists 1 / (k + rank_list(c))`, 
 ### 2.3 Gate (`gate.ts`)
 
 ```
-refuseWithoutLlm = (bestSim === null || bestSim < SIM_FLOOR) && ftsMatches === 0
+refuseWithoutLlm = (bestSim === null || bestSim < SIM_FLOOR) && ftsAllTermsMatches === 0
 ```
 
-`bestSim` is `null` when the embedding call failed (`vectorUnavailable`) or the role can read no chunks. A similarity of exactly `SIM_FLOOR` passes. Default `SIM_FLOOR = 0.30` (placeholder; calibrated on the dev split in M3 by comparing best-sim distributions of answerable vs. `no_answer` questions, stored in `retrieval_config.simFloor`). The floor is read from env in `answer.ts` and passed in, so `gate.ts` stays a pure function.
+`bestSim` is `null` when the embedding call failed (`vectorUnavailable`) or the role can read no chunks. The gate does not read `ftsMatches`: the any-word list is non-empty for all 40 eval questions, refusal questions included, while no chunk holds every word of any of them, so on those questions cosine alone decides (ADR-0019). A similarity of exactly `SIM_FLOOR` passes. Default `SIM_FLOOR = 0.30` (placeholder; calibrated on the dev split in M3 by comparing best-sim distributions of answerable vs. `no_answer` questions, stored in `retrieval_config.simFloor`). The floor is read from env in `answer.ts` and passed in, so `gate.ts` stays a pure function.
 
 A gate refusal makes no model call and sends `meta` with `gate: 'refuse'`, the fixed refusal text (`refusal.ts`) as one `delta` and in `citations`, then `done` with `refused: true`, `reason: 'gate'`, zero usage and `ttftMs: null`.
 

@@ -210,7 +210,7 @@ Notes:
 
 ## 3. Query patterns
 
-Retrieval (two statements in one transaction):
+Retrieval (three statements in one transaction):
 
 ```sql
 -- vector candidates (exact scan)
@@ -219,11 +219,17 @@ FROM chunks c JOIN documents d ON d.id = c.document_id
 WHERE d.access_roles && $2::text[]
 ORDER BY c.embedding <=> $1::vector, c.id LIMIT 20;
 
--- fts candidates
+-- fts candidates: any word of the question
 SELECT c.id, c.document_id, ts_rank_cd(c.tsv, q) AS score
-FROM chunks c JOIN documents d ON d.id = c.document_id, websearch_to_tsquery('english', $3) q
+FROM chunks c JOIN documents d ON d.id = c.document_id,
+     CAST(replace(plainto_tsquery('english', $3)::text, ' & ', ' | ') AS tsquery) q
 WHERE c.tsv @@ q AND d.access_roles && $2::text[]
 ORDER BY score DESC, c.id LIMIT 20;
+
+-- chunks holding every word of the question, for the gate (ADR-0019)
+SELECT count(*)
+FROM chunks c JOIN documents d ON d.id = c.document_id, websearch_to_tsquery('english', $3) q
+WHERE c.tsv @@ q AND d.access_roles && $2::text[];
 ```
 
 Rate limit (one statement):

@@ -1,6 +1,6 @@
 import 'server-only';
 
-import { and, cosineDistance, desc, eq, inArray, sql } from 'drizzle-orm';
+import { and, cosineDistance, count, desc, eq, inArray, sql } from 'drizzle-orm';
 import { DrizzleQueryError } from 'drizzle-orm/errors';
 
 import { AppError } from '@/lib/errors';
@@ -28,6 +28,7 @@ export type RetrieveDeps = { db: typeof appDb };
 export type RetrievedLists = {
   vector: VectorHit[];
   fts: FtsHit[];
+  ftsAllTermsMatches: number;
   vectorUnavailable: boolean;
 };
 
@@ -35,6 +36,7 @@ export type RetrievalResult = {
   candidates: FusedCandidate[];
   bestSim: number | null;
   ftsMatches: number;
+  ftsAllTermsMatches: number;
   vectorUnavailable: boolean;
   /** `null` when the embedding call failed. */
   embeddingTokens: number | null;
@@ -45,9 +47,9 @@ export type EmbedQuery = (text: string) => Promise<EmbeddedQuery>;
 export type LoadedChunk = PromptChunk & { chunkId: string; documentId: string };
 
 /**
- * The two statements of DATA_MODEL.md §3. Role filtering happens here and only here (CLAUDE.md
- * rule 1). A null embedding runs FTS alone. Repeatable read gives both one snapshot, so a concurrent
- * ingest can't show them different chunks of the same document.
+ * The three statements of DATA_MODEL.md §3. Role filtering happens here and only here (CLAUDE.md
+ * rule 1). A null embedding skips the vector statement. Repeatable read gives all one snapshot, so a
+ * concurrent ingest can't show them different chunks of the same document.
  */
 export async function retrieveCandidates(
   {
@@ -83,7 +85,9 @@ export async function retrieveCandidates(
 
         // tsv isn't in the Drizzle schema (DATA_MODEL.md §4). No match is a normal, empty result.
         const tsv = sql`"chunks"."tsv"`;
-        const query = sql`websearch_to_tsquery('english', ${question})`;
+        // Any word may match, or a question rarely finds a chunk holding all of its words (ADR-0019).
+        // plainto_tsquery only joins quoted lexemes with ' & ', and a lexeme never holds a space.
+        const query = sql`replace(plainto_tsquery('english', ${question})::text, ' & ', ' | ')::tsquery`;
         const score = sql<number>`ts_rank_cd(${tsv}, ${query})`;
         const fts = await tx
           .select({
@@ -99,7 +103,20 @@ export async function retrieveCandidates(
           .orderBy(desc(score), chunks.id)
           .limit(FTS_TOP_K);
 
-        return { vector, fts, vectorUnavailable: questionEmbedding === null };
+        // The gate reads this, not the list above, which nearly any question reaches (ADR-0019).
+        const allTerms = sql`websearch_to_tsquery('english', ${question})`;
+        const [allTermsRow] = await tx
+          .select({ matches: count() })
+          .from(chunks)
+          .innerJoin(documents, eq(documents.id, chunks.documentId))
+          .where(sql`${tsv} @@ ${allTerms} AND ${isAllowed}`);
+
+        return {
+          vector,
+          fts,
+          ftsAllTermsMatches: allTermsRow?.matches ?? 0,
+          vectorUnavailable: questionEmbedding === null,
+        };
       },
       { isolationLevel: 'repeatable read', accessMode: 'read only' },
     );
@@ -161,7 +178,7 @@ export async function retrieve(
   { db, embed }: RetrieveDeps & { embed: EmbedQuery },
 ): Promise<RetrievalResult> {
   const embedded = await embedQuestion(question, embed);
-  const { vector, fts, vectorUnavailable } = await retrieveCandidates(
+  const { vector, fts, ftsAllTermsMatches, vectorUnavailable } = await retrieveCandidates(
     { questionEmbedding: embedded?.embedding ?? null, question, roles },
     { db },
   );
@@ -169,6 +186,7 @@ export async function retrieve(
     candidates: fuseRrf(vector, fts, DEFAULT_FUSE_OPTIONS),
     bestSim: vector[0]?.sim ?? null,
     ftsMatches: fts.length,
+    ftsAllTermsMatches,
     vectorUnavailable,
     embeddingTokens: embedded?.tokens ?? null,
   };

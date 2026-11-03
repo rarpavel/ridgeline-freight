@@ -255,7 +255,8 @@ describe('request_traces', () => {
 
     expect(retrieval).toMatchObject({
       simFloor: 0.3,
-      ftsMatches: 1,
+      ftsMatches: 2,
+      ftsAllTermsMatches: 1,
       vectorUnavailable: false,
     });
     expect(retrieval.bestSim).toBeCloseTo(1);

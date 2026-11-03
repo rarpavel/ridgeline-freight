@@ -2,7 +2,7 @@
 
 Authoritative specification of the project. v1 is the original brief (`docs/00-review/SPEC_ORIGINAL.md`), v2 applied the review (`docs/00-review/SPEC_REVIEW.md`), and v3 cuts the scope to an MVP that a solo developer can ship in 5–6 weeks of evenings. §12 lists what was cut and why; §13 keeps the cut items as a roadmap. The documents under `docs/01-product` … `docs/07-portfolio` must stay consistent with this file.
 
-Last updated: 2026-11-02
+Last updated: 2026-11-03
 
 ## 1. Goal
 
@@ -73,9 +73,9 @@ Tables (DDL in `docs/03-data/DATA_MODEL.md`): `documents`, `document_texts`, `ch
 
 ## 6. Retrieval and generation
 
-1. Vector top-20 (cosine, exact scan) and FTS top-20 (`websearch_to_tsquery('english', $q)`, `ts_rank_cd`), both with `access_roles && $roles`.
+1. Vector top-20 (cosine, exact scan) and FTS top-20 (any word of the question, `ts_rank_cd`; ADR-0019), both with `access_roles && $roles`.
 2. RRF (k = 60) → top-8, at most 3 chunks per document.
-3. Gate: best cosine < `SIM_FLOOR` **and** no FTS matches → refusal without a model call. `SIM_FLOOR` calibrated on the dev split.
+3. Gate: best cosine < `SIM_FLOOR` **and** no chunk holds every word of the question → refusal without a model call. `SIM_FLOOR` calibrated on the dev split.
 4. Prompt: versioned system prompt (`prompts/rag-system.v1.md`) + context blocks `[1]..[8]` + the question. `max_tokens ≤ 700`.
 5. SSE events: `meta` → `delta`* → `citations` → `done` | `error`.
 6. Post-processing: parse `[n]`, drop unknown aliases (logged), detect `NO_ANSWER:`, convert zero-citation answers to refusals, write `request_traces`.
