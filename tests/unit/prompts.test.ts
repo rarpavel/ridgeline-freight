@@ -32,12 +32,12 @@ describe('loadPrompt', () => {
     expect(formatPromptVersion(prompt)).toBe('rag-system@v1#1a2b3c4d');
   });
 
-  it('keeps prompts/rag-system.v2.md equal to the block in data-gen prompt 05', () => {
+  it('keeps prompts/rag-system.v3.md equal to the block in data-gen prompt 05', () => {
     const source = readFileSync('data-gen/prompts/05-rag-system-prompt.md', 'utf8');
     const block = /## Prompt \(system\)\n\n```\n([\s\S]*?)```/.exec(source)?.[1];
 
     expect(block).toBeDefined();
-    expect(loadPrompt('rag-system', 2).text).toBe(block);
+    expect(loadPrompt('rag-system', 3).text).toBe(block);
   });
 });
 

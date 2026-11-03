@@ -38,7 +38,7 @@ async function checkAnthropic(): Promise<void> {
 async function main(): Promise<void> {
   await checkOpenAi();
   await checkAnthropic();
-  console.log(formatPromptVersion(loadPrompt('rag-system', 2)));
+  console.log(formatPromptVersion(loadPrompt('rag-system', 3)));
 }
 
 main().catch((err: unknown) => {

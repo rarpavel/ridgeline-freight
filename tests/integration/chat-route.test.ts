@@ -217,7 +217,7 @@ describe('POST /api/chat', () => {
     const meta = eventOf(events, 'meta')?.data;
     expect(meta?.gate).toBe('answer');
     expect(meta?.model).toBe('test-chat-model');
-    expect(meta?.promptVersion).toMatch(/^rag-system@v2#/);
+    expect(meta?.promptVersion).toMatch(/^rag-system@v3#/);
     expect(meta?.traceId).toMatch(/^[0-9a-f-]{36}$/);
 
     expect(eventOf(events, 'citations')?.data).toEqual({

@@ -7,7 +7,7 @@ import { renderPrompt } from '@/server/prompts/render';
 const MAX_QUESTION_CHARS = 500;
 const CONTEXT_HEADING = 'CONTEXT PASSAGES (the only information you may use):';
 
-const ragSystemPrompt = loadPrompt('rag-system', 2);
+const ragSystemPrompt = loadPrompt('rag-system', 3);
 
 export const RAG_SYSTEM_PROMPT_VERSION = formatPromptVersion(ragSystemPrompt);
 

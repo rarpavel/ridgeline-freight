@@ -225,7 +225,7 @@ describe('runEval', () => {
         simFloor: 0.3,
       },
     });
-    expect(row.promptVersion).toMatch(/^rag-system@v2#/);
+    expect(row.promptVersion).toMatch(/^rag-system@v3#/);
     expect(row.finishedAt).toBeInstanceOf(Date);
     expect(row.metrics).toEqual(JSON.parse(JSON.stringify(metrics)));
     expect(Object.keys(metrics?.overall ?? {})).toEqual(expect.arrayContaining([...METRIC_KEYS]));
