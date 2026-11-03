@@ -61,6 +61,37 @@ beforeEach(() => {
   scripted = [];
 });
 
+describe('embedQuery', () => {
+  it('returns the embedding with the tokens the provider counted', async () => {
+    scripted = [
+      {
+        status: 200,
+        body: {
+          data: vectorsFor(['text-3']),
+          usage: { prompt_tokens: 7, total_tokens: 7 },
+        },
+      },
+    ];
+
+    const { embedding, tokens } = await embeddings.embedQuery('text-3');
+
+    expect(requests[0]).toMatchObject({ model: 'test-embedding-model', input: ['text-3'] });
+    expect(embedding).toHaveLength(DIMENSIONS);
+    expect(tokens).toBe(7);
+  });
+
+  it('rejects an embedding of the wrong length', async () => {
+    scripted = [
+      {
+        status: 200,
+        body: { data: vectorsFor(['text-3'], 3072), usage: { prompt_tokens: 7, total_tokens: 7 } },
+      },
+    ];
+
+    await expect(embeddings.embedQuery('text-3')).rejects.toThrow('length 1536, got 3072');
+  });
+});
+
 describe('embedTexts', () => {
   it('splits the input into batches of 64 and sends the configured model', async () => {
     const texts = Array.from({ length: 130 }, (_, index) => `text-${index}`);

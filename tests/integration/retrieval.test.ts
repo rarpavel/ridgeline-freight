@@ -238,7 +238,7 @@ describe('retrieval', () => {
   });
 
   describe('retrieve', () => {
-    const embedAs = (index: number) => async (texts: string[]) => texts.map(() => axis(index));
+    const embedAs = (index: number) => async () => ({ embedding: axis(index), tokens: 5 });
 
     it('gives sales no hr_policy document for a PTO question that hr gets', async () => {
       const question = 'How many PTO days do I accrue?';
@@ -284,6 +284,7 @@ describe('retrieval', () => {
         bestSim: null,
         ftsMatches: 0,
         vectorUnavailable: true,
+        embeddingTokens: null,
       });
     });
 

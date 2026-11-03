@@ -16,6 +16,21 @@ const embedBatch: EmbedBatch = async (batch) => {
   return [...response.data].sort((a, b) => a.index - b.index).map((item) => item.embedding);
 };
 
+export type EmbeddedQuery = { embedding: number[]; tokens: number };
+
+/** One text with what it cost; the chat path needs the tokens for its trace, ingest does not. */
+export async function embedQuery(text: string): Promise<EmbeddedQuery> {
+  const response = await openai.embeddings.create({ model: env.EMBEDDING_MODEL, input: [text] });
+  const embedding = response.data[0]?.embedding;
+  if (embedding?.length !== EMBEDDING_DIMENSIONS) {
+    throw new AppError(
+      'llm_error',
+      `Expected an embedding of length ${EMBEDDING_DIMENSIONS}, got ${embedding?.length}`,
+    );
+  }
+  return { embedding, tokens: response.usage.total_tokens };
+}
+
 export async function embedTexts(
   texts: string[],
   embed: EmbedBatch = embedBatch,

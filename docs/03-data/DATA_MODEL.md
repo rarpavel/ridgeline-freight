@@ -168,8 +168,8 @@ CREATE TABLE request_traces (
   role             text NOT NULL,
   question         text NOT NULL,
   embedding_model  text,
-  retrieval        jsonb NOT NULL,                             -- same shape as eval_results.retrieved + bestSim, ftsMatches
-  gate             text NOT NULL CHECK (gate IN ('answer','refuse_gate')),
+  retrieval        jsonb NOT NULL,                             -- {candidates: [...], bestSim, simFloor, ftsMatches, vectorUnavailable}, OBSERVABILITY.md §1
+  gate             text NOT NULL CHECK (gate IN ('answer','refuse_gate')),  -- 'answer' also when retrieval failed before the gate
   prompt_version   text,
   model            text,
   input_tokens     int,
@@ -182,7 +182,7 @@ CREATE TABLE request_traces (
   generated_text   text,                                       -- the model's answer before validation
   citations_valid  int NOT NULL DEFAULT 0,
   citations_dropped int NOT NULL DEFAULT 0,
-  error            text
+  error            text                                        -- 'llm_error' | 'db_error' | 'internal' | 'client_disconnected'
 );
 CREATE INDEX request_traces_created_idx ON request_traces (created_at DESC);
 
@@ -248,6 +248,8 @@ Daily budget: `INSERT INTO usage_daily (day) VALUES (current_date) ON CONFLICT D
 | `0000_enable_pgvector.sql` | custom | `CREATE EXTENSION vector`, before any table uses the type |
 | `0001_corpus_tables.sql` | generated | `documents`, `document_texts`, `chunks`, their foreign keys, unique constraints and `chunks_document_idx` |
 | `0002_corpus_constraints_and_tsv.sql` | custom | CHECK constraints on `doc_type`, `access_roles`, `char_end > char_start` and `token_count > 0`; generated `tsv`; `chunks_tsv_idx` |
+| `0003_request_traces.sql` | generated | `request_traces`, `request_traces_created_idx` |
+| `0004_request_traces_constraints.sql` | custom | CHECK constraints on `source`, `gate` and `refusal_reason` |
 
 - `chunks.tsv` and the CHECK constraints are not declared in `src/server/db/schema/*.ts`, so Drizzle never tries to write `tsv`; queries reach it through `sql`. `tests/integration/migrations.test.ts` fails if the database columns and the Drizzle schema diverge.
 - Forward-only; a rollback is a new migration. CI applies all migrations to a fresh `pgvector/pgvector:pg17` container on every PR. Production migrations are run from the developer's machine before merging the PR that needs them (`DEPLOYMENT.md §3`); migrations are additive so the previous app version keeps working.

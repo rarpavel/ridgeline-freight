@@ -2,26 +2,39 @@
 
 What is logged and traced so that a bad answer can be explained after the fact: per-request traces in Postgres, structured logs, health, and the dashboards we actually use (the admin pages and Vercel logs).
 
-Last updated: 2026-11-02
+Last updated: 2026-11-03
 
 ## 1. Per-request trace (`request_traces`)
 
-Written once per chat request and once per eval question (`source = 'eval'`). Fields: see `DATA_MODEL.md §2`. The `retrieval` JSON holds every candidate from both lists:
+Written once per chat request and once per eval question (`source = 'eval'`, from RAG-032). Fields: see `DATA_MODEL.md §2`. The `id` is the `traceId` of the SSE `meta` event. The `retrieval` JSON holds every candidate from both lists and the signals the gate read:
 
 ```json
-[{ "chunkId": "…", "documentId": "…", "slug": "msa-harbor-point-foods", "sectionRef": "4.3",
-   "vectorRank": 1, "vectorSim": 0.61, "ftsRank": 3, "ftsScore": 0.12, "rrf": 0.0323, "inPrompt": true, "cited": true }]
+{ "candidates": [{ "chunkId": "…", "documentId": "…", "slug": "msa-harbor-point-foods", "sectionRef": "4.3",
+    "vectorRank": 1, "vectorSim": 0.61, "ftsRank": 3, "ftsScore": 0.12, "rrf": 0.0323, "inPrompt": true, "cited": true }],
+  "bestSim": 0.61, "simFloor": 0.30, "ftsMatches": 4, "vectorUnavailable": false }
 ```
 
-plus `gate`, `bestSim`, `simFloor`, `ftsMatches`, `vectorUnavailable`. This single row answers: what was retrieved, why it was or was not refused, what the model cited, what it cost, how long it took.
+This single row, with its `gate` column, answers: what was retrieved, why it was or was not refused, what the model cited, what it cost, how long it took.
+
+The row is written when the request ends, however it ends, and the stream stays open until then, so a client that has read to the end of the stream can read the trace. The `gate` is `refuse_gate` here and in logs; the SSE `meta` event calls the same decision `refuse`.
+
+| Outcome | `error` | `gate` | `model`, `prompt_version` | tokens | `cost_usd` |
+|---------|---------|--------|---------------------------|--------|------------|
+| Answer or model refusal | null | `answer` | set | set | embedding + model |
+| Gate refusal | null | `refuse_gate` | null | null | embedding |
+| Model fails or client disconnects mid-answer | `llm_error`, `client_disconnected` | `answer` | set | null | embedding only, because a stream that does not finish reports no usage; the real bill can be higher |
+| Retrieval fails | `db_error`, `internal` | `answer` (no gate decision was reached) | null | null | null |
+
+Cost: `src/server/llm/pricing.ts` multiplies token counts by the list prices in `config/pricing.json`, which records the date they were checked as `asOf` and the provider pages they came from. Cached-input discounts are ignored, so a cost can read slightly high. `cost_usd` is null when the embedding call failed or a configured model has no price (`pricing.unknown_model`), so a missing price never reads as a low cost. Prices are re-checked by hand; nothing updates them.
 
 Retention: unbounded in the MVP (demo traffic); prune by hand if the table grows. Question text is stored (synthetic demo, shared accounts); if the project were used with real data, hash or truncate it.
 
 ## 2. Logs
 
 - `pino` JSON to stdout; Vercel keeps runtime logs (Hobby: short retention, `TO VERIFY` current window). Fields per line: `level, time, msg, traceId, route, account, role, durationMs` and event-specific data.
-- Events: `chat.done` (gate, tokens, cost, latency, citations valid/dropped, refused), `chat.error`, `auth.login.fail`, `guardrail.rate_limited`, `guardrail.budget_exhausted`, `ingest.document`, `eval.question`, `health.db_error`, `health.git_sha_unavailable`, `db.pool_error`.
+- Events: `chat.done` (gate, tokens, cost, latency, citations valid/dropped, refused), `chat.error`, `chat.trace_failed`, `chat.citations_dropped`, `chat.client_disconnected`, `pricing.unknown_model`, `auth.login.fail`, `guardrail.rate_limited`, `guardrail.budget_exhausted`, `ingest.document`, `eval.question`, `health.db_error`, `health.git_sha_unavailable`, `db.pool_error`.
 - Redaction: `authorization`, `cookie`, `*.apiKey`, `*.password`.
+- Question, passages, prompt and answer never go to the logs; the question and the generated text live only in `request_traces`.
 - Errors logged as `err` keep only `type`, `message`, `stack`, `code`, and the same fields of nested `cause` and `errors`, because `pg` attaches its client, password included, to its errors.
 
 ## 3. Metrics we look at

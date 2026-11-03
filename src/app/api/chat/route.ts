@@ -6,7 +6,7 @@ import { encodeSseEvent, type ChatEvent } from '@/lib/sse';
 import { requireSession } from '@/server/auth/require';
 import { db } from '@/server/db/client';
 import { errorResponse } from '@/server/http';
-import { embedTexts } from '@/server/llm/embeddings';
+import { embedQuery } from '@/server/llm/embeddings';
 import { answerQuestion } from '@/server/rag/answer';
 import { streamChat } from '@/server/rag/generate';
 
@@ -58,7 +58,7 @@ export async function POST(request: Request) {
     const abort = new AbortController();
     const events = answerQuestion(
       { question, user },
-      { db, embed: embedTexts, llm: streamChat, signal: abort.signal },
+      { db, embed: embedQuery, llm: streamChat, signal: abort.signal },
     );
     return new Response(toSseStream(events, abort), {
       headers: {

@@ -8,6 +8,7 @@ import type { Role } from '@/server/auth/session';
 import type { db as appDb } from '@/server/db/client';
 import { chunks } from '@/server/db/schema/chunks';
 import { documents } from '@/server/db/schema/documents';
+import type { EmbeddedQuery } from '@/server/llm/embeddings';
 import { logger } from '@/server/logger';
 
 import {
@@ -35,7 +36,11 @@ export type RetrievalResult = {
   bestSim: number | null;
   ftsMatches: number;
   vectorUnavailable: boolean;
+  /** `null` when the embedding call failed. */
+  embeddingTokens: number | null;
 };
+
+export type EmbedQuery = (text: string) => Promise<EmbeddedQuery>;
 
 export type LoadedChunk = PromptChunk & { chunkId: string; documentId: string };
 
@@ -65,6 +70,8 @@ export async function retrieveCandidates(
             .select({
               chunkId: chunks.id,
               documentId: chunks.documentId,
+              slug: documents.slug,
+              sectionRef: chunks.sectionRef,
               sim: sql<number>`1 - (${distance})`,
             })
             .from(chunks)
@@ -79,7 +86,13 @@ export async function retrieveCandidates(
         const query = sql`websearch_to_tsquery('english', ${question})`;
         const score = sql<number>`ts_rank_cd(${tsv}, ${query})`;
         const fts = await tx
-          .select({ chunkId: chunks.id, documentId: chunks.documentId, score })
+          .select({
+            chunkId: chunks.id,
+            documentId: chunks.documentId,
+            slug: documents.slug,
+            sectionRef: chunks.sectionRef,
+            score,
+          })
           .from(chunks)
           .innerJoin(documents, eq(documents.id, chunks.documentId))
           .where(sql`${tsv} @@ ${query} AND ${isAllowed}`)
@@ -97,13 +110,9 @@ export async function retrieveCandidates(
   }
 }
 
-async function embedQuestion(
-  question: string,
-  embed: (texts: string[]) => Promise<number[][]>,
-): Promise<number[] | null> {
+async function embedQuestion(question: string, embed: EmbedQuery): Promise<EmbeddedQuery | null> {
   try {
-    const [embedding] = await embed([question]);
-    return embedding ?? null;
+    return await embed(question);
   } catch (err) {
     logger.warn({ err }, 'retrieval.vector_unavailable');
     return null;
@@ -149,11 +158,11 @@ export async function loadPromptChunks(
 /** Embeds outside the transaction, so no connection waits on the network. */
 export async function retrieve(
   { question, roles }: { question: string; roles: readonly Role[] },
-  { db, embed }: RetrieveDeps & { embed: (texts: string[]) => Promise<number[][]> },
+  { db, embed }: RetrieveDeps & { embed: EmbedQuery },
 ): Promise<RetrievalResult> {
-  const questionEmbedding = await embedQuestion(question, embed);
+  const embedded = await embedQuestion(question, embed);
   const { vector, fts, vectorUnavailable } = await retrieveCandidates(
-    { questionEmbedding, question, roles },
+    { questionEmbedding: embedded?.embedding ?? null, question, roles },
     { db },
   );
   return {
@@ -161,5 +170,6 @@ export async function retrieve(
     bestSim: vector[0]?.sim ?? null,
     ftsMatches: fts.length,
     vectorUnavailable,
+    embeddingTokens: embedded?.tokens ?? null,
   };
 }
