@@ -86,4 +86,8 @@ When to run: before closing M2 (`--no-judge`, dev), M3 (dev, tuning), M4 (test, 
 
 Read-only: list of runs (label, date, model, prompt version, dataset version, headline metrics); run detail with per-question rows (category, question, expected, answer, refused, hit, correctness, faithfulness, latency, trace link). The README table is copied by hand from the `published` run, with the date.
 
+Headline metrics are hit rate, correctness, faithfulness, refusal accuracy, leaks, p50 TTFT and cost per question, shown overall in the list and per category in the detail. The detail always lists all five categories, filters its question rows with `?category=<name>` (an unknown name shows every row) and opens the judge's rationale in a `<details>` element. A metric a run does not have shows `—`, and an unfinished run is marked `Not finished`. The trace link opens the JSON of `GET /api/traces/:id`; there is no trace page.
+
+Server components read through `src/server/db/queries/eval.ts`, with no API of their own. Access is checked in `proxy.ts` and again by `requireRole('admin')` in both pages (`tests/integration/admin-eval.test.ts`). The page does not link from the chat: an admin opens the URL directly.
+
 Roadmap (not MVP): CI regression gate against a committed baseline, run-vs-run diff view, formal judge/human agreement study.
