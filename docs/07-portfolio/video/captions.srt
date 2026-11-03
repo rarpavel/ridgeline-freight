@@ -1,0 +1,47 @@
+1
+00:00:00,000 --> 00:00:06,456
+Ridgeline Freight is a fictional logistics company with 24 internal documents.
+
+2
+00:00:06,756 --> 00:00:09,612
+I'm logging in as a sales rep.
+
+3
+00:00:16,200 --> 00:00:19,512
+Every claim carries a citation.
+
+4
+00:00:19,812 --> 00:00:22,620
+One click opens the clause.
+
+5
+00:00:22,920 --> 00:00:29,184
+The sources panel shows what was retrieved, with scores, cost and latency.
+
+6
+00:00:47,000 --> 00:00:54,008
+Comparison questions pull passages from two documents and attribute each figure to its source.
+
+7
+00:01:02,100 --> 00:01:06,564
+When the documents don't contain the answer, it says so.
+
+8
+00:01:06,864 --> 00:01:14,880
+Refusals are enforced by the retrieval gate and by citation validation, not just by the prompt.
+
+9
+00:01:18,000 --> 00:01:21,456
+Access control lives in the SQL query.
+
+10
+00:01:21,756 --> 00:01:30,060
+A sales user never retrieves a chunk from an HR document, and an automated test proves it for every role and question.
+
+11
+00:01:37,000 --> 00:01:47,656
+Quality is measured on a held-out test set: hit rate, correctness, faithfulness and refusal accuracy, with an independent judge model.
+
+12
+00:01:47,956 --> 00:01:51,004
+Code and methodology are public.

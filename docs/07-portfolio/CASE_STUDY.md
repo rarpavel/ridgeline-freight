@@ -23,20 +23,22 @@ Last updated: 2026-11-03
 
 **What adapts to your company.** Your documents (DOCX today; PDF and scans on the roadmap), your roles and permissions, your model provider (any OpenAI-compatible endpoint, including private deployments), your cloud (AWS/Azure/GCP or on-prem). Synthetic demo data contains no PII; nothing is used to train models.
 
-**Links.** Live demo (demo logins on the page) · 2-minute video · GitHub repository · evaluation methodology.
+**Links.** Live demo (demo logins on the page) · [2-minute video](https://youtu.be/E97KsiWyTzg) · GitHub repository · evaluation methodology.
 
 ## 2. Demo video script (2:00, English voice-over, 1080p, cursor visible)
 
 | Time | Scene | Narration (short) |
 |------|-------|-------------------|
 | 0:00–0:10 | Login page, pick `sales` | "Ridgeline Freight is a fictional logistics company with 24 internal documents. I'm logging in as a sales rep." |
-| 0:10–0:40 | Ask: "What is the late delivery penalty in the Harbor Point Foods MSA?" → streamed answer with `[1]` → click chip → viewer scrolls to §4.3 highlighted; open "Show sources" | "Every claim carries a citation. One click opens the clause. The sources panel shows what was retrieved, with scores, cost and latency." |
+| 0:10–0:40 | Ask: "What is the late delivery penalty in the Harbor Point Foods MSA?" → streamed answer with `[1]` → click chip → viewer scrolls to §7.2 highlighted; open "Show sources" | "Every claim carries a citation. One click opens the clause. The sources panel shows what was retrieved, with scores, cost and latency." |
 | 0:40–1:00 | Ask: "Which has the stricter liability cap, Harbor Point Foods or Lakeshore Retail?" → two figures, two citations | "Comparison questions pull passages from two documents and attribute each figure to its source." |
 | 1:00–1:15 | Ask: "What is the CEO's salary?" → refusal | "When the documents don't contain the answer, it says so. Refusals are enforced by the retrieval gate and by citation validation, not just by the prompt." |
-| 1:15–1:35 | Ask: "How many PTO days do drivers accrue per month?" as `sales` → refusal; sources panel lists no HR document | "Access control lives in the SQL query. A sales user never retrieves a chunk from an HR document, and an automated test proves it for every role and question." |
-| 1:35–2:00 | `/admin/eval`: metrics table and per-question results; back to the chat with the show-sources panel open | "Quality is measured on a held-out test set — hit rate, correctness, faithfulness, refusal accuracy — with an independent judge model. Code and methodology are public." |
+| 1:15–1:35 | Ask: "How many PTO days do drivers accrue per month?" as `sales` → refusal; sources panel shows "In prompt (0)", expand "Not in prompt" to show no HR document | "Access control lives in the SQL query. A sales user never retrieves a chunk from an HR document, and an automated test proves it for every role and question." |
+| 1:35–2:00 | Sign in as `admin` (cut the login out), `/admin/eval`: metrics table and per-question results; back to the chat with the show-sources panel open | "Quality is measured on a held-out test set — hit rate, correctness, faithfulness, refusal accuracy — with an independent judge model. Code and methodology are public." |
 
-Recording checklist: warm the DB and model first (one throwaway question); 1440×900 window; hide bookmarks; prepare the four questions in a text file; record in one take per scene; add captions.
+Recording checklist: warm the DB and model first (one throwaway question); 1440×900 window; hide bookmarks; the four questions are in `docs/07-portfolio/video/questions.txt`; record in one take per scene; add captions from `docs/07-portfolio/video/captions.srt`.
+
+Published: https://youtu.be/E97KsiWyTzg (unlisted). Recorded on a local copy of the app with a scripted browser and a drawn cursor; scene 6 shows a local display copy of the published test run `98810a54`, so the list also has local dev runs. The wait for the model is cut from scene 2. Voice-over: OpenAI `gpt-4o-mini-tts`, voice `ash`; captions are burned in.
 
 ## 3. README structure
 
