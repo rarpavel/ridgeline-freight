@@ -117,6 +117,14 @@ Roadmap: a committed injection test corpus with automated tests and an `injectio
 - Validated at boot by `src/env.ts`; the app refuses to start without them.
 - Rotation: `SESSION_SECRET` (one-liner in `DEPLOYMENT.md`), provider keys (dashboard + Vercel env + redeploy), Neon password (console + both URLs).
 
+### Review, 2026-11-03
+
+- **Git history, all branches:** no `sk-…` key, `AKIA…` key, Neon password (`npg_…`), `neon.tech` host or GitHub token, and no committed `.env` or `.pem` file. `postgres://` appears only with local or placeholder hosts (`localhost`, `127.0.0.1`). This searches for these patterns only, so a secret in another format would not be found.
+- **`.env.example`:** lists every variable in `src/env.ts`, and its only passwords are for the local Docker database.
+- **Vercel production env, names only:** `DATABASE_URL`, `OPENAI_API_KEY`, `SESSION_SECRET`, `DEMO_ACCOUNTS_JSON`, `SIM_FLOOR`, `NEXT_PUBLIC_APP_ENV`. `ANTHROPIC_API_KEY` is absent because only the CLIs use it. Values were not read.
+- **Vercel preview env, names only:** `DATABASE_URL`, `OPENAI_API_KEY`, `SESSION_SECRET`, `DEMO_ACCOUNTS_JSON`, `NEXT_PUBLIC_APP_ENV`, so a preview deployment can boot and call the provider. Values were not read, so this does not show whether Preview shares the production database or key.
+- **Dependabot:** version updates are on (`.github/dependabot.yml`). Security alerts were off and were turned on during this review. They then showed 3 open alerts, all in development dependencies: `minimatch` and `esbuild` (medium), `deepmerge` (low).
+
 ## 7. Abuse and cost limits
 
 | Limit | Value | Enforced in |
@@ -127,7 +135,8 @@ Roadmap: a committed injection test corpus with automated tests and an `injectio
 | Output | 1,500 tokens, reasoning included, at low effort (ADR-0021, ADR-0022) | model call |
 | Daily tokens (global) | `DAILY_TOKEN_BUDGET` (default 400k ≈ $0.30 on `gpt-5-mini`) | `usage_daily` check before the model call |
 | Failed logins per IP | 5 / hour | `rate_limits` (`login:<sha256>`) |
-| Provider spend | monthly cap in the provider dashboard | manual |
+| Provider spend, OpenAI | $20 / month, enforced since 2026-11-03: requests fail once it is reached | dashboard, manual |
+| Provider spend, Anthropic | $10 / month, set 2026-11-03; the key is used only by the CLIs, not in production | dashboard, manual |
 
 `/api/chat` checks in this order, each before anything is spent: session, question length (400 with no database query), IP limit, account limit, daily budget. Windows are whole UTC hours and the budget day is a UTC day. The `ip:` and `acct:` counts include refused requests. An unreachable database stops the request with 503 `db_error`: the limits fail closed.
 
@@ -135,7 +144,7 @@ The eval CLI calls `answerQuestion` directly, so these limits do not apply to it
 
 **Known limits:**
 - Requests already running can pass the budget by what they use, because usage is added after the answer.
-- A client that disconnects mid-answer adds no tokens, because the provider reports usage only at the end of the stream. Rate limits bound this, and the provider cap is the hard stop.
+- A client that disconnects mid-answer adds no tokens, because the provider reports usage only at the end of the stream. Rate limits bound this, and the enforced OpenAI limit is the hard stop.
 - Fixed windows allow a 2× burst at a window edge (ADR-0008).
 - `rate_limits` rows are not pruned; at demo scale the table stays small.
 - The IP hash has no salt, so it hides addresses from a casual reader of the table, not from someone who hashes the IPv4 range.
@@ -143,4 +152,4 @@ The eval CLI calls `answerQuestion` directly, so these limits do not apply to it
 
 ## 8. Headers
 
-`next.config.ts` `headers()`: `Strict-Transport-Security: max-age=63072000; includeSubDomains`, `X-Content-Type-Options: nosniff`, `Referrer-Policy: strict-origin-when-cross-origin`, `X-Frame-Options: DENY`, `Permissions-Policy: camera=(), microphone=(), geolocation=()`. A Content-Security-Policy is a roadmap item (Next.js 16 needs a nonce-based setup).
+`next.config.ts` `headers()`: `Strict-Transport-Security: max-age=63072000; includeSubDomains`, `X-Content-Type-Options: nosniff`, `Referrer-Policy: strict-origin-when-cross-origin`, `X-Frame-Options: DENY`, `Permissions-Policy: camera=(), microphone=(), geolocation=()`. A Content-Security-Policy is a roadmap item (Next.js 16 needs a nonce-based setup). They apply to every path; `tests/integration/headers.test.ts` checks them on a real Next.js server, on `/login` and on a proxy redirect.
