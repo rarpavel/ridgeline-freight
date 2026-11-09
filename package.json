@@ -41,7 +41,7 @@
     "drizzle-orm": "0.45.4",
     "iron-session": "9.0.1",
     "js-tiktoken": "1.0.21",
-    "lucide-react": "^1.66.0",
+    "lucide-react": "^1.69.0",
     "mammoth": "1.13.0",
     "next": "16.4.3",
     "openai": "7.47.0",
